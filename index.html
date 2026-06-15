@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Documentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css"> </head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
     <div id="tela-login" class="container-login">
@@ -33,19 +36,78 @@
     </div>
 
     <div id="conteudo-sistema" class="painel-sistema">
-        <h1>Painel do Escritório</h1>
         
-        <div class="cartao-cadastro">
-            <h3>Cadastrar Novo Cliente</h3>
-            <form id="form-cliente" class="form-inline">
-                <input type="text" id="nome" class="input-moderno flex-2" placeholder="Nome do Cliente" required>
-                <input type="text" id="documento" class="input-moderno flex-1" placeholder="CPF/CNPJ">
-                <button type="submit" class="botao-moderno largura-auto">Salvar</button>
-            </form>
+        <div id="menu-principal" class="secao-dashboard">
+            <p class="subtitulo-painel">PAINEL DE CONTROLE</p>
+            <h1 class="titulo-boasvindas">Bem-Vindo, Rag Despachos!</h1>
+            <p class="instrucao-painel">Selecione uma opção abaixo para começar.</p>
+            
+            <div class="grid-botoes">
+                <button class="btn-dashboard vermelho" onclick="mostrarTela('tela-fatura')">
+                    <i class="fa-regular fa-file-lines"></i> Criar Fatura
+                </button>
+                <button class="btn-dashboard azul" onclick="mostrarTela('tela-editar-fatura')">
+                    <i class="fa-regular fa-pen-to-square"></i> Editar Fatura
+                </button>
+                <button class="btn-dashboard verde-agua" onclick="mostrarTela('tela-crt')">
+                    <i class="fa-regular fa-file-lines"></i> Criar CRT
+                </button>
+                <button class="btn-dashboard verde-escuro" onclick="mostrarTela('tela-editar-crt')">
+                    <i class="fa-regular fa-pen-to-square"></i> Editar CRT
+                </button>
+                <button class="btn-dashboard roxo-claro" onclick="mostrarTela('tela-mic')">
+                    <i class="fa-regular fa-file-lines"></i> Criar MIC
+                </button>
+                <button class="btn-dashboard roxo-escuro" onclick="mostrarTela('tela-editar-mic')">
+                    <i class="fa-regular fa-pen-to-square"></i> Editar MIC
+                </button>
+                <button class="btn-dashboard laranja" onclick="mostrarTela('tela-adicionar-dados')">
+                    <i class="fa-solid fa-database"></i> Adicionar Dados
+                </button>
+            </div>
         </div>
 
-        <h3>Clientes Cadastrados</h3>
-        <ul id="lista-clientes" class="lista-estilizada"></ul>
+        <div id="tela-adicionar-dados" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            
+            <div class="cartao-cadastro">
+                <h3>Cadastrar Novo Cliente</h3>
+                <form id="form-cliente" class="form-inline">
+                    <input type="text" id="nome" class="input-moderno flex-2" placeholder="Nome do Cliente" required>
+                    <input type="text" id="documento" class="input-moderno flex-1" placeholder="CPF/CNPJ">
+                    <button type="submit" class="botao-moderno largura-auto">Salvar</button>
+                </form>
+            </div>
+
+            <h3>Clientes Cadastrados</h3>
+            <ul id="lista-clientes" class="lista-estilizada"></ul>
+        </div>
+
+        <div id="tela-fatura" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Criar Fatura</h2><p>Área em desenvolvimento...</p>
+        </div>
+        <div id="tela-editar-fatura" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Editar Fatura</h2><p>Área em desenvolvimento...</p>
+        </div>
+        <div id="tela-crt" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Criar CRT</h2><p>Área em desenvolvimento...</p>
+        </div>
+        <div id="tela-editar-crt" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Editar CRT</h2><p>Área em desenvolvimento...</p>
+        </div>
+        <div id="tela-mic" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Criar MIC</h2><p>Área em desenvolvimento...</p>
+        </div>
+        <div id="tela-editar-mic" class="sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+            <h2>Editar MIC</h2><p>Área em desenvolvimento...</p>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
