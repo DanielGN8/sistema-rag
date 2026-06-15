@@ -115,3 +115,23 @@ async function buscarClientes() {
         listaClientes.appendChild(li);
     });
 }
+
+// ==========================================
+// NAVIGATION SYSTEM (CONTROLE DE TELAS)
+// ==========================================
+function mostrarTela(idTela) {
+    // Esconde o menu principal de botões
+    document.getElementById('menu-principal').style.display = 'none';
+    
+    // Mostra a tela que o usuário clicou
+    document.getElementById(idTela).style.display = 'block';
+}
+
+function voltarAoMenu() {
+    // Seleciona todas as sub-paginas e esconde-as
+    const subPaginas = document.querySelectorAll('.sub-pagina');
+    subPaginas.forEach(pagina => pagina.style.display = 'none');
+    
+    // Mostra o menu principal novamente
+    document.getElementById('menu-principal').style.display = 'block';
+}
