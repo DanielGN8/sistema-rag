@@ -112,36 +112,33 @@ async function buscarClientes() {
 
 
 // ==========================================
-// 4. NAVIGATION SYSTEM (SISTEMA DE NAVEGAÇÃO)
+// NAVIGATION SYSTEM (CONTROLE DE TELAS REVISADO)
 // ==========================================
 
-// Abre Fatura, CRT, MIC ou Painel de Dados vindo do Menu Principal
+// 1. Abre qualquer tela principal ou secundária
 function mostrarTela(idTela) {
+    // Esconde o menu principal de 7 botões
     document.getElementById('menu-principal').style.display = 'none';
+    
+    // Mostra a tela desejada
     document.getElementById(idTela).style.display = 'block';
 }
 
-// Volta de qualquer sub-painel para o Menu Principal de Boas-Vindas
-function voltarAoMenu() {
-    const subPaginas = document.querySelectorAll('.sub-pagina');
-    subPaginas.forEach(pagina => pagina.style.display = 'none');
-    
-    const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
-    telasCadastro.forEach(tela => tela.style.display = 'none');
-
-    document.getElementById('menu-principal').style.display = 'block';
-}
-
-// Abre um formulário de cadastro final vindo do Painel de Dados
+// 2. Abre uma tela de cadastro final vinda do painel de dados
 function mostrarTelaCadastro(idCadastro) {
+    // Esconde o painel secundário de dados
     document.getElementById('tela-adicionar-dados').style.display = 'none';
+    
+    // Mostra o formulário específico (Ex: cadastro-itens)
     document.getElementById(idCadastro).style.display = 'block';
 }
 
-// Volta de um formulário de cadastro final para o Painel de Dados intermediário
+// 3. Volta de um formulário específico para o Painel de Dados intermediário
 function voltarAoPainelDados() {
+    // Esconde TODAS as telas que têm a classe 'tela-cadastro-final'
     const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
     telasCadastro.forEach(tela => tela.style.display = 'none');
     
+    // Mostra o painel de Adicionar/Editar Dados novamente
     document.getElementById('tela-adicionar-dados').style.display = 'block';
 }
