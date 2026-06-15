@@ -4,27 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Documentos</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
-    <div id="tela-login" style="position: fixed; top:0; left:0; width:100vw; height:100vh; background:#222; color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index: 9999;">
-        <h2>Acesso ao Sistema</h2>
-        <form id="form-login" style="display:flex; flex-direction:column; gap:10px; width:250px;">
-            <input type="text" id="login-usuario" placeholder="Nome de Usuário" required style="padding:10px;">
-            <input type="password" id="login-pin" placeholder="PIN (Apenas números)" required style="padding:10px;">
-            <button type="submit" style="padding:10px; background:#4ca374; color:white; border:none; cursor:pointer;">Entrar</button>
-        </form>
+
+    <div id="tela-login" class="container-login">
+        <div class="cartao-login">
+            <h2>Seja bem-vindo!</h2>
+            <p>Insira suas credenciais para acessar o painel.</p>
+            
+            <form id="form-login" class="form-grupo">
+                <div class="campo-input">
+                    <label for="login-usuario">Usuário</label>
+                    <input type="text" id="login-usuario" class="input-moderno" placeholder="Ex: daniel.adm" required>
+                </div>
+                
+                <div class="campo-input">
+                    <label for="login-pin">PIN de Acesso</label>
+                    <input type="password" id="login-pin" class="input-moderno" placeholder="Digite seu PIN" required maxlength="8">
+                </div>
+                
+                <button type="submit" class="botao-moderno">Entrar no Sistema</button>
+            </form>
+        </div>
     </div>
 
-    <div id="conteudo-sistema" style="display: none; padding: 20px;">
+    <div id="conteudo-sistema" class="painel-sistema">
         <h1>Painel do Escritório</h1>
         
-        <form id="form-cliente">
-            <input type="text" id="nome" placeholder="Nome do Cliente" required>
-            <input type="text" id="documento" placeholder="CPF/CNPJ">
-            <button type="submit">Salvar Cliente</button>
-        </form>
-        <ul id="lista-clientes"></ul>
+        <div class="cartao-cadastro">
+            <h3>Cadastrar Novo Cliente</h3>
+            <form id="form-cliente" class="form-inline">
+                <input type="text" id="nome" class="input-moderno flex-2" placeholder="Nome do Cliente" required>
+                <input type="text" id="documento" class="input-moderno flex-1" placeholder="CPF/CNPJ">
+                <button type="submit" class="botao-moderno largura-auto">Salvar</button>
+            </form>
+        </div>
+
+        <h3>Clientes Cadastrados</h3>
+        <ul id="lista-clientes" class="lista-estilizada"></ul>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
