@@ -117,21 +117,37 @@ async function buscarClientes() {
 }
 
 // ==========================================
-// NAVIGATION SYSTEM (CONTROLE DE TELAS)
+// NAVIGATION SYSTEM (CONTROLE DE TELAS AVANÇADO)
 // ==========================================
+
+// 1. Mostra uma tela vinda do Menu Principal (Fatura, CRT, MIC ou Painel de Dados)
 function mostrarTela(idTela) {
-    // Esconde o menu principal de botões
     document.getElementById('menu-principal').style.display = 'none';
-    
-    // Mostra a tela que o usuário clicou
     document.getElementById(idTela).style.display = 'block';
 }
 
+// 2. Volta do Painel de Dados ou de qualquer folha para o Menu Principal
 function voltarAoMenu() {
-    // Seleciona todas as sub-paginas e esconde-as
     const subPaginas = document.querySelectorAll('.sub-pagina');
     subPaginas.forEach(pagina => pagina.style.display = 'none');
     
-    // Mostra o menu principal novamente
+    // Garante que as telas de cadastro finais também fechem se o usuário voltar direto
+    const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
+    telasCadastro.forEach(tela => tela.style.display = 'none');
+
     document.getElementById('menu-principal').style.display = 'block';
+}
+
+// 3. Entra em um formulário de cadastro específico vindo do Painel de Dados
+function mostrarTelaCadastro(idCadastro) {
+    document.getElementById('tela-adicionar-dados').style.display = 'none';
+    document.getElementById(idCadastro).style.display = 'block';
+}
+
+// 4. Volta do formulário específico para o Painel de Dados intermediário
+function voltarAoPainelDados() {
+    const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
+    telasCadastro.forEach(tela => tela.style.display = 'none');
+    
+    document.getElementById('tela-adicionar-dados').style.display = 'block';
 }
