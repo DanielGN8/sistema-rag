@@ -11,12 +11,12 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ==========================================
 // SELEÇÃO DE ELEMENTOS DO HTML (DOM)
 // ==========================================
-// Elementos da Tela de Login
+// Elementos de Login e Telas Principais
 const telaLogin = document.getElementById('tela-login');
 const conteudoSistema = document.getElementById('conteudo-sistema');
 const formLogin = document.getElementById('form-login');
 
-// Elementos do Sistema de Clientes
+// Elementos do Formulário de Exportadores (Antigo Clientes)
 const formCliente = document.getElementById('form-cliente');
 const listaClientes = document.getElementById('lista-clientes');
 
@@ -25,14 +25,13 @@ const listaClientes = document.getElementById('lista-clientes');
 // 1. SISTEMA DE ACESSO (LOGIN POR PIN)
 // ==========================================
 formLogin.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Impede a página de recarregar
+    e.preventDefault();
 
     const usuarioDigitado = document.getElementById('login-usuario').value;
     const pinDigitado = document.getElementById('login-pin').value;
 
     console.log("Tentando realizar login para:", usuarioDigitado);
 
-    // Busca na tabela 'usuarios' se existe a combinação exata de Usuário e PIN
     const { data: usuarios, error } = await supabaseClient
         .from('usuarios')
         .select('*')
@@ -45,15 +44,13 @@ formLogin.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Se o banco retornar alguma linha, a combinação está correta
     if (usuarios.length > 0) {
         alert('Acesso liberado!');
         
-        // Esconde a tela de login e mostra o sistema
         telaLogin.style.display = 'none';
-        conteudoSistema.style.display = 'block';
+        conteudoSistema.style.display = 'block'; // Corrigido aqui!
         
-        // Puxa os clientes do banco de dados agora que o acesso foi liberado
+        // Carrega os dados dos exportadores preventivamente
         buscarClientes(); 
     } else {
         alert('Usuário ou PIN incorretos. Tente novamente.');
@@ -62,53 +59,50 @@ formLogin.addEventListener('submit', async (e) => {
 
 
 // ==========================================
-// 2. CADASTRO DE CLIENTES
+// 2. CADASTRO DE EXPORTADORES (SUA TABELA DE CLIENTES)
 // ==========================================
 formCliente.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Impede a página de recarregar
+    e.preventDefault();
     
     const nome = document.getElementById('nome').value;
     const documento = document.getElementById('documento').value;
 
-    console.log("Tentando enviar cliente:", { nome, documento });
+    console.log("Tentando enviar exportador:", { nome, documento });
 
-    // Insere os dados na tabela do Supabase
     const { data, error } = await supabaseClient
-        .from('clientes')
+        .from('clientes') // Continua usando sua tabela 'clientes' do banco
         .insert([{ nome: nome, documento: documento }])
-        .select(); // O .select() força o retorno para confirmar a inserção
+        .select();
 
     if (error) {
         console.error('Erro detalhado do Supabase:', error);
-        alert('Erro ao salvar cliente: ' + error.message);
+        alert('Erro ao salvar exportador: ' + error.message);
     } else {
-        console.log('Sucesso! Cliente salvo:', data);
-        alert('Cliente salvo com sucesso!');
-        formCliente.reset(); // Limpa os campos do formulário
-        buscarClientes();    // Atualiza a lista exibida na tela
+        console.log('Sucesso! Exportador salvo:', data);
+        alert('Exportador salvo com sucesso!');
+        formCliente.reset();
+        buscarClientes(); 
     }
 });
 
 
 // ==========================================
-// 3. BUSCA E LISTAGEM DE CLIENTES
+// 3. BUSCA E LISTAGEM DE EXPORTADORES
 // ==========================================
 async function buscarClientes() {
-    console.log("Buscando lista de clientes atualizada...");
+    console.log("Buscando lista de exportadores...");
     
     const { data: clientes, error } = await supabaseClient
         .from('clientes')
         .select('*');
 
     if (error) {
-        console.error('Erro ao buscar clientes:', error.message);
+        console.error('Erro ao buscar exportadores:', error.message);
         return;
     }
 
-    // Limpa a lista antes de desenhar os itens atualizados
     listaClientes.innerHTML = ''; 
     
-    // Cria um item na lista para cada cliente encontrado no banco
     clientes.forEach(cliente => {
         const li = document.createElement('li');
         li.textContent = `${cliente.nome} - ${cliente.documento || 'Sem documento'}`;
@@ -116,35 +110,35 @@ async function buscarClientes() {
     });
 }
 
+
 // ==========================================
-// NAVIGATION SYSTEM (CONTROLE DE TELAS AVANÇADO)
+// 4. NAVIGATION SYSTEM (SISTEMA DE NAVEGAÇÃO)
 // ==========================================
 
-// 1. Mostra uma tela vinda do Menu Principal (Fatura, CRT, MIC ou Painel de Dados)
+// Abre Fatura, CRT, MIC ou Painel de Dados vindo do Menu Principal
 function mostrarTela(idTela) {
     document.getElementById('menu-principal').style.display = 'none';
     document.getElementById(idTela).style.display = 'block';
 }
 
-// 2. Volta do Painel de Dados ou de qualquer folha para o Menu Principal
+// Volta de qualquer sub-painel para o Menu Principal de Boas-Vindas
 function voltarAoMenu() {
     const subPaginas = document.querySelectorAll('.sub-pagina');
     subPaginas.forEach(pagina => pagina.style.display = 'none');
     
-    // Garante que as telas de cadastro finais também fechem se o usuário voltar direto
     const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
     telasCadastro.forEach(tela => tela.style.display = 'none');
 
     document.getElementById('menu-principal').style.display = 'block';
 }
 
-// 3. Entra em um formulário de cadastro específico vindo do Painel de Dados
+// Abre um formulário de cadastro final vindo do Painel de Dados
 function mostrarTelaCadastro(idCadastro) {
     document.getElementById('tela-adicionar-dados').style.display = 'none';
     document.getElementById(idCadastro).style.display = 'block';
 }
 
-// 4. Volta do formulário específico para o Painel de Dados intermediário
+// Volta de um formulário de cadastro final para o Painel de Dados intermediário
 function voltarAoPainelDados() {
     const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
     telasCadastro.forEach(tela => tela.style.display = 'none');
