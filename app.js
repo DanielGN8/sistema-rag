@@ -3,7 +3,7 @@ const SUPABASE_URL = "https://pfygllkzjjtttgwdjhlu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmeWdsbGt6amp0dHRnd2RqaGx1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDI5NjMsImV4cCI6MjA5NzExODk2M30.Dd_Y7zyKHLsrorXGBYxiBLcsSCz3kNG3cJvCyTzvSAQ";
 
 // Inicializa o cliente do Supabase
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const form = document.getElementById('form-cliente');
 const lista = document.getElementById('lista-clientes');
@@ -18,7 +18,7 @@ form.addEventListener('submit', async (e) => {
     console.log("Tentando enviar dados:", { nome, documento });
 
     // Insere os dados na tabela do Supabase
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('clientes')
         .insert([{ nome: nome, documento: documento }])
         .select(); // O .select() força o Supabase a retornar o dado criado e confirma a inserção
@@ -36,7 +36,7 @@ form.addEventListener('submit', async (e) => {
 
 // 2. Função para Buscar e Listar Clientes
 async function buscarClientes() {
-    const { data: clientes, error } = await supabase
+    const { data: clientes, error } = await supabaseClient
         .from('clientes')
         .select('*');
 
