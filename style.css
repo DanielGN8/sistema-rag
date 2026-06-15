@@ -124,7 +124,7 @@ body {
    ESTILOS DO PAINEL DO SISTEMA
    ========================================== */
 .painel-sistema {
-    display: none; /* Controlado pelo app.js */
+    display: block; /* Controlado pelo app.js */
     padding: 40px;
     max-width: 800px;
     margin: 0 auto;
