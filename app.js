@@ -112,33 +112,46 @@ async function buscarClientes() {
 
 
 // ==========================================
-// NAVIGATION SYSTEM (CONTROLE DE TELAS REVISADO)
+// NAVIGATION SYSTEM (SISTEMA DE NAVEGAÇÃO COMPLETO)
 // ==========================================
 
-// 1. Abre qualquer tela principal ou secundária
+// 1. Abre qualquer tela principal ou sub-painel
 function mostrarTela(idTela) {
     // Esconde o menu principal de 7 botões
     document.getElementById('menu-principal').style.display = 'none';
     
-    // Mostra a tela desejada
+    // Mostra a tela desejada (ex: tela-adicionar-dados)
     document.getElementById(idTela).style.display = 'block';
 }
 
 // 2. Abre uma tela de cadastro final vinda do painel de dados
 function mostrarTelaCadastro(idCadastro) {
-    // Esconde o painel secundário de dados
+    // Esconde o painel secundário de dados (os 7 botões internos)
     document.getElementById('tela-adicionar-dados').style.display = 'none';
     
-    // Mostra o formulário específico (Ex: cadastro-itens)
+    // Mostra o formulário específico (ex: cadastro-itens)
     document.getElementById(idCadastro).style.display = 'block';
 }
 
-// 3. Volta de um formulário específico para o Painel de Dados intermediário
-function voltarAoPainelDados() {
-    // Esconde TODAS as telas que têm a classe 'tela-cadastro-final'
-    const telasCadastro = document.querySelectorAll('.tela-cadastro-final');
-    telasCadastro.forEach(tela => tela.style.display = 'none');
+// 3. Função ÚNICA e inteligente para voltar de QUALQUER tela
+function voltarAoMenu() {
+    // Esconde o painel intermediário de Adicionar/Editar dados
+    document.getElementById('tela-adicionar-dados').style.display = 'none';
     
-    // Mostra o painel de Adicionar/Editar Dados novamente
+    // Esconde TODAS as sub-telas de cadastro de uma vez só
+    const subPaginas = document.querySelectorAll('.sub-pagina');
+    subPaginas.forEach(pagina => pagina.style.display = 'none');
+    
+    // Mostra o Menu Principal de Boas-Vindas novamente
+    document.getElementById('menu-principal').style.display = 'block';
+}
+
+// 4. Função para voltar dos formulários específicos para o Painel de Dados
+function voltarAoPainelDados() {
+    // Esconde TODAS as sub-telas de cadastro (Itens, Exportadores, etc.)
+    const subPaginas = document.querySelectorAll('.sub-pagina');
+    subPaginas.forEach(pagina => pagina.style.display = 'none');
+    
+    // Força o painel de gerenciamento de dados a aparecer de volta
     document.getElementById('tela-adicionar-dados').style.display = 'block';
 }
