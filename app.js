@@ -10,20 +10,24 @@ const lista = document.getElementById('lista-clientes');
 
 // 1. Função para Cadastrar Cliente
 form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Impede a página de recarregar
     
     const nome = document.getElementById('nome').value;
     const documento = document.getElementById('documento').value;
 
+    console.log("Tentando enviar dados:", { nome, documento });
+
     // Insere os dados na tabela do Supabase
     const { data, error } = await supabase
         .from('clientes')
-        .insert([{ nome: nome, documento: documento }]);
+        .insert([{ nome: nome, documento: documento }])
+        .select(); // O .select() força o Supabase a retornar o dado criado e confirma a inserção
 
     if (error) {
-        console.error('Erro ao salvar:', error.message);
-        alert('Erro ao salvar cliente');
+        console.error('Erro detalhado do Supabase:', error);
+        alert('Erro ao salvar cliente: ' + error.message);
     } else {
+        console.log('Sucesso! Dados salvos:', data);
         alert('Cliente salvo com sucesso!');
         form.reset();
         buscarClientes(); // Atualiza a lista na tela
