@@ -68,20 +68,43 @@
         </div>
 
         <div id="tela-adicionar-dados" class="sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
-            
-            <div class="cartao-cadastro">
-                <h3>Cadastrar Novo Cliente</h3>
-                <form id="form-cliente" class="form-inline">
-                    <input type="text" id="nome" class="input-moderno flex-2" placeholder="Nome do Cliente" required>
-                    <input type="text" id="documento" class="input-moderno flex-1" placeholder="CPF/CNPJ">
-                    <button type="submit" class="botao-moderno largura-auto">Salvar</button>
-                </form>
-            </div>
-
-            <h3>Clientes Cadastrados</h3>
-            <ul id="lista-clientes" class="lista-estilizada"></ul>
+    <div class="secao-dashboard">
+        <h1 class="titulo-boasvindas" style="font-size: 36px; margin-bottom: 40px;">Adicionar / Editar Dados</h1>
+        
+        <div class="grid-botoes" style="margin-bottom: 40px;">
+            <button class="btn-dashboard azul" onclick="mostrarTelaCadastro('cadastro-itens')">
+                <i class="fa-solid fa-box"></i> Itens
+            </button>
+            <button class="btn-dashboard verde-agua" onclick="mostrarTelaCadastro('cadastro-exportadores')">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Exportadores
+            </button>
+            <button class="btn-dashboard roxo-claro" onclick="mostrarTelaCadastro('cadastro-importadores')">
+                <i class="fa-solid fa-arrow-down-left-from-square"></i> Importadores
+            </button>
+            <button class="btn-dashboard laranja" onclick="mostrarTelaCadastro('cadastro-transportadoras')">
+                <i class="fa-solid fa-building"></i> Transportadoras
+            </button>
+            <button class="btn-dashboard verde-escuro" onclick="mostrarTelaCadastro('cadastro-caminhoes')">
+                <i class="fa-solid fa-truck"></i> Caminhões
+            </button>
+            <button class="btn-dashboard roxo-escuro" onclick="mostrarTelaCadastro('cadastro-motoristas')">
+                <i class="fa-solid fa-id-card"></i> Motoristas
+            </button>
+            <button class="btn-dashboard vermelho" onclick="mostrarTelaCadastro('cadastro-despachantes')">
+                <i class="fa-solid fa-clipboard-user"></i> Despachantes
+            </button>
         </div>
+
+        <button class="btn-voltar-cinza" onclick="voltarAoMenu()">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
+    </div>
+</div> 
+<div id="cadastro-exportadores" class="tela-cadastro-final" style="display: none;">
+    </div>
+
+<div id="cadastro-itens" class="tela-cadastro-final" style="display: none;">
+    </div>
 
         <div id="tela-fatura" class="sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
