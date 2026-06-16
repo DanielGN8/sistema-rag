@@ -225,9 +225,65 @@
                 </table>
             </div>
         </div>
-        <div id="cadastro-importadores" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Importadores</h2><p>Área em desenvolvimento...</p>
+<div id="cadastro-importadores" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            
+            <div class="cartao-cadastro">
+                <h3 id="titulo-form-importador"><i class="fa-solid fa-arrow-down-left-and-arrow-up-right-to-square"></i> Cadastrar Novo Importador</h3>
+                
+                <input type="hidden" id="importador-id-oculto">
+
+                <form id="form-importador" class="form-grid-layout">
+                    <div class="campo-largo">
+                        <label>Razão Social / Nome do Importador <span style="color: red;">*</span></label>
+                        <input type="text" id="imp-nome" class="input-moderno" placeholder="Ex: Comercial Internacional S.A." required>
+                    </div>
+                    <div>
+                        <label>Documento / Identificação Fiscal (RUT/NIT/CNPJ) <span style="color: red;">*</span></label>
+                        <input type="text" id="imp-documento" class="input-moderno" placeholder="Ex: 21548763-9" required>
+                    </div>
+                    <div>
+                        <label>Cidade / Estado / País <span style="color: red;">*</span></label>
+                        <input type="text" id="imp-cidade-estado" class="input-moderno" placeholder="Ex: Asunción / Paraguai" required>
+                    </div>
+                    <div class="campo-largo">
+                        <label>Endereço Completo <span style="color: red;">*</span></label>
+                        <input type="text" id="imp-endereco" class="input-moderno" placeholder="Ex: Av. Mariscal López, 245" required>
+                    </div>
+                    <div>
+                        <label>Prazo de Pagamento Padrão <span style="color: red;">*</span></label>
+                        <input type="text" id="imp-prazo" class="input-moderno" placeholder="Ex: 30 dias / À Vista" required>
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-importador" class="botao-moderno largura-auto">Salvar Importador</button>
+                        <button type="button" id="btn-cancelar-imp-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioImportador()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-importador" class="input-moderno" placeholder="Pesquisar importadores por nome, documento ou país..." oninput="filtrarImportadores()">
+            </div>
+
+            <h3>Importadores Cadastrados</h3>
+            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Razão Social / Nome</th>
+                            <th>Documento</th>
+                            <th>Cidade / Estado / País</th>
+                            <th>Endereço</th>
+                            <th>Prazo Padrão</th>
+                            <th style="text-align: center; width: 150px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-importadores-corpo">
+                        </tbody>
+                </table>
+            </div>
         </div>
         <div id="cadastro-transportadoras" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
@@ -437,5 +493,6 @@
     <script src="js/caminhoes.js"></script>
     <script src="js/despachantes.js"></script>
     <script src="js/exportadores.js"></script>
+    <script src="js/importadores.js"></script>
 </body>
 </html>
