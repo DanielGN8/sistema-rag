@@ -101,18 +101,60 @@
             </div>
         </div>
 
-        <div id="cadastro-exportadores" class="tela-cadastro-final sub-pagina" style="display: none;">
+<div id="cadastro-exportadores" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            
             <div class="cartao-cadastro">
-                <h3>Cadastrar Novo Exportador</h3>
-                <form id="form-cliente" class="form-inline">
-                    <input type="text" id="nome" class="input-moderno flex-2" placeholder="Nome / Razão Social" required>
-                    <input type="text" id="documento" class="input-moderno flex-1" placeholder="CNPJ / CPF">
-                    <button type="submit" class="botao-moderno largura-auto">Salvar</button>
+                <h3 id="titulo-form-exportador"><i class="fa-solid fa-arrow-up-right-from-square"></i> Cadastrar Novo Exportador</h3>
+                
+                <input type="hidden" id="exportador-id-oculto">
+
+                <form id="form-exportador" class="form-grid-layout">
+                    <div class="campo-largo">
+                        <label>Razão Social / Nome do Exportador <span style="color: red;">*</span></label>
+                        <input type="text" id="exp-nome" class="input-moderno" placeholder="Ex: Indústria de Alimentos S.A." required>
+                    </div>
+                    <div>
+                        <label>CNPJ / Identificação Fiscal <span style="color: red;">*</span></label>
+                        <input type="text" id="exp-cnpj" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
+                    </div>
+                    <div>
+                        <label>Cidade / Estado <span style="color: red;">*</span></label>
+                        <input type="text" id="exp-cidade-estado" class="input-moderno" placeholder="Ex: Foz do Iguaçu / PR" required>
+                    </div>
+                    <div class="campo-largo">
+                        <label>Endereço Completo <span style="color: red;">*</span></label>
+                        <input type="text" id="exp-endereco" class="input-moderno" placeholder="Ex: Av. Brasil, 1500 - Centro" required>
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-exportador" class="botao-moderno largura-auto">Salvar Exportador</button>
+                        <button type="button" id="btn-cancelar-exp-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioExportador()">Cancelar</button>
+                    </div>
                 </form>
             </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-exportador" class="input-moderno" placeholder="Pesquisar exportadores por nome, CNPJ ou cidade..." oninput="filtrarExportadores()">
+            </div>
+
             <h3>Exportadores Cadastrados</h3>
-            <ul id="lista-clientes" class="lista-estilizada"></ul>
+            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Razão Social / Nome</th>
+                            <th>CNPJ</th>
+                            <th>Cidade / Estado</th>
+                            <th>Endereço</th>
+                            <th style="text-align: center; width: 150px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-exportadores-corpo">
+                        </tbody>
+                </table>
+            </div>
         </div>
 
 <div id="cadastro-itens" class="tela-cadastro-final sub-pagina" style="display: none;">
@@ -394,5 +436,6 @@
     <script src="js/motoristas.js"></script>
     <script src="js/caminhoes.js"></script>
     <script src="js/despachantes.js"></script>
+    <script src="js/exportadores.js"></script>
 </body>
 </html>
