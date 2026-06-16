@@ -195,9 +195,60 @@
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
             <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Caminhões</h2><p>Área em desenvolvimento...</p>
         </div>
-        <div id="cadastro-motoristas" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Motoristas</h2><p>Área em development...</p>
+<div id="cadastro-motoristas" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            
+            <div class="cartao-cadastro">
+                <h3 id="titulo-form-motorista"><i class="fa-solid fa-id-card"></i> Cadastrar Novo Motorista</h3>
+                
+                <input type="hidden" id="motorista-id-oculto">
+
+                <form id="form-motorista" class="form-grid-layout">
+                    <div class="campo-largo">
+                        <label>Nome Completo <span style="color: red;">*</span></label>
+                        <input type="text" id="moto-nome" class="input-moderno" placeholder="Ex: João da Silva" required>
+                    </div>
+                    <div>
+                        <label>Documento Pessoal (CPF/RG) <span style="color: red;">*</span></label>
+                        <input type="text" id="moto-doc" class="input-moderno" placeholder="Ex: 123.456.789-00" required>
+                    </div>
+                    <div>
+                        <label>Nacionalidade</label>
+                        <input type="text" id="moto-nacionalidade" class="input-moderno" placeholder="Ex: Brasileira">
+                    </div>
+                    <div>
+                        <label>CNH / Carteira de Habilitação</label>
+                        <input type="text" id="moto-cnh" class="input-moderno" placeholder="Ex: 98765432100">
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-motorista" class="botao-moderno largura-auto">Salvar Motorista</button>
+                        <button type="button" id="btn-cancelar-moto-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioMotorista()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-motorista" class="input-moderno" placeholder="Pesquisar motoristas por nome, documento ou CNH..." oninput="filtrarMotoristas()">
+            </div>
+
+            <h3>Motoristas Cadastrados</h3>
+            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Nome Completo</th>
+                            <th>Documento</th>
+                            <th>Nacionalidade</th>
+                            <th>CNH</th>
+                            <th style="text-align: center; width: 150px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-motoristas-corpo">
+                        </tbody>
+                </table>
+            </div>
         </div>
         <div id="cadastro-despachantes" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
@@ -234,5 +285,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
     <script src="js/itens.js"></script>
+    <script src="js/motoristas.js"></script>
 </body>
 </html>
