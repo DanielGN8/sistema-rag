@@ -115,9 +115,73 @@
             <ul id="lista-clientes" class="lista-estilizada"></ul>
         </div>
 
-        <div id="cadastro-itens" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Itens</h2><p>Área em desenvolvimento...</p>
+<div id="cadastro-itens" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            
+            <div class="cartao-cadastro">
+                <h3 id="titulo-form-item"><i class="fa-solid fa-box"></i> Cadastrar Novo Item</h3>
+                
+                <input type="hidden" id="item-id-oculto">
+
+                <form id="form-item" class="form-grid-layout">
+                    <div class="campo-largo">
+                        <label>Nome do Item / Descrição</label>
+                        <input type="text" id="item-nome" class="input-moderno" placeholder="Ex: Fio de Cobre Eletrolítico" required>
+                    </div>
+                    <div>
+                        <label>Unidade</label>
+                        <input type="text" id="item-unidade" class="input-moderno" placeholder="Ex: KG, UN, M" required>
+                    </div>
+                    <div>
+                        <label>NCM</label>
+                        <input type="text" id="item-ncm" class="input-moderno" placeholder="Ex: 7408.11.00" required>
+                    </div>
+                    <div>
+                        <label>Tipo de Item</label>
+                        <input type="text" id="item-tipo" class="input-moderno" placeholder="Ex: Matéria-prima">
+                    </div>
+                    <div>
+                        <label>Processo Produtivo</label>
+                        <input type="text" id="item-processo" class="input-moderno" placeholder="Ex: Extrusão">
+                    </div>
+                    <div>
+                        <label>Código do Fabricante</label>
+                        <input type="text" id="item-cod-fabricante" class="input-moderno" placeholder="Ex: COD-74">
+                    </div>
+                    <div>
+                        <label>Fabricante</label>
+                        <input type="text" id="item-fabricante" class="input-moderno" placeholder="Ex: Metalúrgica Silva">
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-item" class="botao-moderno largura-auto">Salvar Item</button>
+                        <button type="button" id="btn-cancelar-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioItem()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-item" class="input-moderno" placeholder="Pesquisar itens por nome, NCM ou fabricante..." oninput="filtrarItens()">
+            </div>
+
+            <h3>Itens Cadastrados</h3>
+            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Unidade</th>
+                            <th>NCM</th>
+                            <th>Tipo</th>
+                            <th>Fabricante</th>
+                            <th style="text-align: center; width: 150px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-itens-corpo">
+                        </tbody>
+                </table>
+            </div>
         </div>
         <div id="cadastro-importadores" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
@@ -165,7 +229,10 @@
             <h2 style="color: #2563eb; margin-bottom: 12px;">Editar MIC</h2><p>Área em desenvolvimento...</p>
         </div>
 
-    </div> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
+    <script src="js/itens.js"></script>
 </body>
 </html>
