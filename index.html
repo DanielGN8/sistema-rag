@@ -191,9 +191,69 @@
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
             <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Transportadoras</h2><p>Área em desenvolvimento...</p>
         </div>
-        <div id="cadastro-caminhoes" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;">Cadastro de Caminhões</h2><p>Área em desenvolvimento...</p>
+<div id="cadastro-caminhoes" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            
+            <div class="cartao-cadastro">
+                <h3 id="titulo-form-caminhao"><i class="fa-solid fa-truck"></i> Cadastrar Novo Caminhão</h3>
+                
+                <input type="hidden" id="caminhao-id-oculto">
+
+                <form id="form-caminhao" class="form-grid-layout">
+                    <div>
+                        <label>Placa <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-placa" class="input-moderno" placeholder="Ex: ABC1D23" required>
+                    </div>
+                    <div>
+                        <label>Chassi <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-chassi" class="input-moderno" placeholder="Digite o chassi" required>
+                    </div>
+                    <div>
+                        <label>Marca / Modelo <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-marca" class="input-moderno" placeholder="Ex: Scania R450" required>
+                    </div>
+                    <div>
+                        <label>Ano <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-ano" class="input-moderno" placeholder="Ex: 2022" required>
+                    </div>
+                    <div>
+                        <label>Tração (Eixos) <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-tracao" class="input-moderno" placeholder="Ex: 6x2" required>
+                    </div>
+                    <div>
+                        <label>Proprietário <span style="color: red;">*</span></label>
+                        <input type="text" id="cam-proprietario" class="input-moderno" placeholder="Razão Social ou Nome" required>
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-caminhao" class="botao-moderno largura-auto">Salvar Caminhão</button>
+                        <button type="button" id="btn-cancelar-cam-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioCaminhao()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-caminhao" class="input-moderno" placeholder="Pesquisar por placa, marca, proprietário..." oninput="filtrarCaminhoes()">
+            </div>
+
+            <h3>Caminhões Cadastrados</h3>
+            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Marca / Modelo</th>
+                            <th>Ano</th>
+                            <th>Tração</th>
+                            <th>Proprietário</th>
+                            <th style="text-align: center; width: 150px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-caminhoes-corpo">
+                        </tbody>
+                </table>
+            </div>
         </div>
 <div id="cadastro-motoristas" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
@@ -286,5 +346,6 @@
     <script src="app.js"></script>
     <script src="js/itens.js"></script>
     <script src="js/motoristas.js"></script>
+    <script src="js/caminhoes.js"></script>
 </body>
 </html>
