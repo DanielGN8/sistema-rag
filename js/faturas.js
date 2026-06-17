@@ -354,25 +354,37 @@ async function carregarListaFaturasDoBanco() {
     tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando faturas...</td></tr>`;
 
     try {
-        // MÁGICA DO REVOLUTION: Buscamos a fatura e dizemos ao Supabase para trazer 
-        // o nome do exportador e do importador das tabelas relacionadas de uma vez só!
+        // Ajustamos a busca para trazer os dados gerais da fatura.
+        // Se o Join falhar por diferença de nome de chave estrangeira,
+        // trazemos os dados limpos primeiro para garantir que a tabela nunca fique travada em erro!
         const { data: faturas, error } = await supabaseClient
             .from('faturas')
             .select(`
                 *,
-                exportadores ( exportador ),
-                importadores ( importador )
+                exportadores!id_exportador ( exportador ),
+                importadores!id_importador ( importador )
             `)
-            .order('id', { ascending: false }); // Mostra as mais recentes primeiro
+            .order('id', { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+            // Plano de contingência: Se der erro de relacionamento (Join), busca as faturas puras
+            console.warn('Aviso: Erro no relacionamento de chaves. Buscando dados puros...', error);
+            const { data: faturasPuras, error: errorPuro } = await supabaseClient
+                .from('faturas')
+                .select('*')
+                .order('id', { ascending: false });
+                
+            if (errorPuro) throw errorPuro;
+            listaFaturasGeralBanco = faturasPuras || [];
+        } else {
+            listaFaturasGeralBanco = faturas || [];
+        }
 
-        listaFaturasGeralBanco = faturas || [];
         renderizarLinhasTabelaFaturas(listaFaturasGeralBanco);
 
     } catch (err) {
-        console.error('Erro ao buscar lista de faturas:', err);
-        tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding:20px;">Erro ao carregar dados do banco.</td></tr>`;
+        console.error('Erro crítico ao buscar lista de faturas:', err);
+        tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding:20px;">Erro ao carregar dados do banco. Verifique o console.</td></tr>`;
     }
 }
 
