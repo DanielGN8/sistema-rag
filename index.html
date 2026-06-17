@@ -185,8 +185,12 @@
                         <input type="text" id="item-ncm" class="input-moderno" placeholder="Ex: 7408.11.00" required>
                     </div>
                     <div>
-                        <label>Tipo de Item</label>
-                        <input type="text" id="item-tipo" class="input-moderno" placeholder="Ex: Matéria-prima">
+                        <label>Tipo de Item <span style="color: red;">*</span></label>
+                            <select id="item-tipo" class="input-moderno" required>
+                                <option value="" disabled selected>Selecione o tipo...</option>
+                                <option value="Carga Viva">Carga Viva</option>
+                                <option value="Carga Seca">Carga Seca</option>
+                            </select>
                     </div>
                     <div>
                         <label>Processo Produtivo</label>
@@ -669,3 +673,4 @@
     <script src="js/frotas.js">
 </body>
 </html>
+
