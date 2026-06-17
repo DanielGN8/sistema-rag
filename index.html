@@ -43,11 +43,8 @@
             <p class="instrucao-painel">Selecione uma opção abaixo para começar.</p>
             
             <div class="grid-botoes">
-                <button class="btn-dashboard vermelho" onclick="mostrarTela('tela-fatura')">
-                    <i class="fa-regular fa-file-lines"></i> Criar Fatura
-                </button>
-                <button class="btn-dashboard azul" onclick="mostrarTela('tela-editar-fatura')">
-                    <i class="fa-regular fa-pen-to-square"></i> Editar Fatura
+               <button class="botao-painel-dados roxo" onclick="mostrarTelaCadastro('painel-faturas')">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Faturas
                 </button>
                 <button class="btn-dashboard verde-agua" onclick="mostrarTela('tela-crt')">
                     <i class="fa-regular fa-file-lines"></i> Criar CRT
@@ -66,7 +63,76 @@
                 </button>
             </div>
         </div>
+    
+<div id="painel-faturas" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</button>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2><i class="fa-solid fa-file-invoice-dollar"></i> Gerenciamento de Faturas</h2>
+                <p style="color: #64748b;">Selecione uma ação para prosseguir com os documentos comerciais</p>
+            </div>
 
+            <div class="grid-botoes-painel" style="margin-bottom: 40px;">
+                <button class="botao-painel-dados verde" onclick="abrirFormularioNovaFatura()">
+                    <i class="fa-solid fa-circle-plus"></i> Nova Fatura
+                </button>
+                <button class="botao-painel-dados azul" onclick="visualizarListaFaturas()">
+                    <i class="fa-solid fa-list-check"></i> Ver Faturas
+                </button>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+
+            <div id="sub-bloco-form-fatura" class="cartao-cadastro" style="display: none;">
+                <h3 id="titulo-form-fatura"><i class="fa-solid fa-plus"></i> Nova Fatura Comercial</h3>
+                <input type="hidden" id="fatura-id-oculto">
+                
+                <form id="form-fatura" class="form-grid-layout">
+                    <div class="campo-largo">
+                        <p style="color: #64748b; text-align: center; padding: 20px; border: 2px dashed #cbd5e1; border-radius: 8px;">
+                            [Os campos de preenchimento da fatura serão desenhados aqui no próximo passo]
+                        </p>
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" class="botao-moderno largura-auto">Salvar Fatura</button>
+                        <button type="button" class="btn-voltar" style="margin:0;" onclick="fecharSubBlocosFatura()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="sub-bloco-lista-faturas" style="display: none;">
+                <div class="barra-pesquisa-container">
+                    <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                    <input type="text" id="busca-fatura" class="input-moderno" placeholder="Pesquisar por número da fatura, importador ou exportador...">
+                </div>
+
+                <h3>Faturas Emitidas</h3>
+                <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <table class="tabela-moderna">
+                        <thead>
+                            <tr>
+                                <th>Nº Fatura</th>
+                                <th>Exportador</th>
+                                <th>Importador</th>
+                                <th>Data Emissão</th>
+                                <th>Valor Total</th>
+                                <th style="text-align: center; width: 180px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-faturas-corpo">
+                            <tr>
+                                <td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Use a busca ou clique em Ver Faturas para listar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+</div>
+
+
+
+        
         <div id="tela-adicionar-dados" class="sub-pagina" style="display: none;">
             <div class="secao-dashboard">
                 <h1 class="titulo-boasvindas" style="font-size: 36px; margin-bottom: 40px;">Adicionar / Editar Dados</h1>
@@ -671,6 +737,8 @@
     <script src="js/transportadoras.js"></script>
     <script src="js/proprietarios.js"></script>
     <script src="js/frotas.js">
+    <script src="js/faturas.js"></script>
 </body>
 </html>
+
 
