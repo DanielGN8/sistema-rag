@@ -334,3 +334,134 @@ async function salvarFaturaCompletaBanco(e) {
         alert('Erro ao salvar no banco de dados: ' + (err.message || err));
     }
 }
+
+// =======================================================
+// 8. LISTAGEM E BUSCA DE FATURAS CADASTRADAS
+// =======================================================
+
+let listaFaturasGeralBanco = []; // Cache local das faturas para busca rápida sem sobrecarregar o Supabase
+
+// Atualiza a função de visualização de abas para carregar o banco sempre que o usuário clicar em "Ver Faturas"
+const funcaoVisualizarListaOriginal = visualizarListaFaturas;
+visualizarListaFaturas = async function() {
+    funcaoVisualizarListaOriginal();
+    await carregarListaFaturasDoBanco();
+};
+
+// Função principal que busca os dados no Supabase
+async function carregarListaFaturasDoBanco() {
+    const tabelaCorpo = document.getElementById('tabela-faturas-corpo');
+    tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando faturas...</td></tr>`;
+
+    try {
+        // MÁGICA DO REVOLUTION: Buscamos a fatura e dizemos ao Supabase para trazer 
+        // o nome do exportador e do importador das tabelas relacionadas de uma vez só!
+        const { data: faturas, error } = await supabaseClient
+            .from('faturas')
+            .select(`
+                *,
+                exportadores ( exportador ),
+                importadores ( importador )
+            `)
+            .order('id', { ascending: false }); // Mostra as mais recentes primeiro
+
+        if (error) throw error;
+
+        listaFaturasGeralBanco = faturas || [];
+        renderizarLinhasTabelaFaturas(listaFaturasGeralBanco);
+
+    } catch (err) {
+        console.error('Erro ao buscar lista de faturas:', err);
+        tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding:20px;">Erro ao carregar dados do banco.</td></tr>`;
+    }
+}
+
+// Função que monta o HTML de cada linha da tabela
+function renderizarLinhasTabelaFaturas(lista) {
+    const tabelaCorpo = document.getElementById('tabela-faturas-corpo');
+    tabelaCorpo.innerHTML = '';
+
+    if (lista.length === 0) {
+        tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhuma fatura localizada.</td></tr>`;
+        return;
+    }
+
+    lista.forEach(fat => {
+        // Recupera os nomes vindo dos relacionamentos com tratativa caso estejam nulos
+        const nomeExportador = fat.exportadores ? fat.exportadores.exportador : 'Não identificado';
+        const nomeImportador = fat.importadores ? fat.importadores.importador : 'Não identificado';
+        
+        // Formata a data ISO (AAAA-MM-DD) de volta para o formato visual brasileiro (DD/MM/AAAA)
+        let dataFormatada = fat.data_emissao;
+        if (fat.data_emissao && fat.data_emissao.includes('-')) {
+            const partes = fat.data_emissao.split('-');
+            dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        // Determina o símbolo da moeda para exibição estilizada
+        const simboloMoeda = fat.moeda === 'USD' ? '$' : (fat.moeda === 'BRL' ? 'R$' : fat.moeda);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><b>${fat.numero_fatura}</b></td>
+            <td>${nomeExportador}</td>
+            <td>${nomeImportador}</td>
+            <td>${dataFormatada}</td>
+            <td style="font-weight: 600; color: #0f172a;">${simboloMoeda} ${parseFloat(fat.valor_total || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td style="text-align: center;">
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <button class="btn-acao editar" onclick="carregarFaturaParaEdicaoCompleta(${fat.id})" title="Editar Fatura">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn-acao excluir" onclick="deletarFaturaDoBanco(${fat.id})" title="Excluir Fatura">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        tabelaCorpo.appendChild(tr);
+    });
+}
+
+// =======================================================
+// 9. FILTRO DE PESQUISA EM TEMPO REAL
+// =======================================================
+document.getElementById('busca-fatura').addEventListener('input', function(e) {
+    const termo = e.target.value.toLowerCase().trim();
+
+    if (!termo) {
+        renderizarLinhasTabelaFaturas(listaFaturasGeralBanco);
+        return;
+    }
+
+    const filtradas = listaFaturasGeralBanco.filter(fat => {
+        const num = (fat.numero_fatura || '').toLowerCase();
+        const exp = fat.exportadores ? fat.exportadores.exportador.toLowerCase() : '';
+        const imp = fat.importadores ? fat.importadores.importador.toLowerCase() : '';
+        
+        return num.includes(termo) || exp.includes(termo) || imp.includes(termo);
+    });
+
+    renderizarLinhasTabelaFaturas(filtradas);
+});
+
+// Função para deletar uma fatura (com confirmação)
+async function deletarFaturaDoBanco(id) {
+    if (!confirm('Tem certeza de que deseja excluir permanentemente esta fatura e todos os seus itens vinculados?')) return;
+
+    try {
+        // Como você configurou as tabelas, lembre-se que se houver "Cascade", os itens morrem juntos.
+        // Por segurança, vamos apagar os itens manualmente primeiro para evitar erros de restrição de chave:
+        await supabaseClient.from('fatura_itens').delete().eq('id_fatura', id);
+        
+        const { error } = await supabaseClient.from('faturas').delete().eq('id', id);
+        if (error) throw error;
+
+        alert('Fatura excluída com sucesso!');
+        await carregarListaFaturasDoBanco(); // Recarrega a tabela atualizada
+
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao excluir fatura: ' + err.message);
+    }
+}
