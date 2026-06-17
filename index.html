@@ -86,19 +86,132 @@
                 <h3 id="titulo-form-fatura"><i class="fa-solid fa-plus"></i> Nova Fatura Comercial</h3>
                 <input type="hidden" id="fatura-id-oculto">
                 
-                <form id="form-fatura" class="form-grid-layout">
-                    <div class="campo-largo">
-                        <p style="color: #64748b; text-align: center; padding: 30px; border: 2px dashed #cbd5e1; border-radius: 8px;">
-                            <i class="fa-solid fa-gears fa-2x" style="margin-bottom: 10px; display: block; color: #94a3b8;"></i>
-                            Campos da fatura serão renderizados aqui na próxima etapa.
-                        </p>
+<form id="form-fatura" class="form-grid-layout">
+                    <div>
+                        <label>Nº da Fatura</label>
+                        <input type="text" id="fat-numero" class="input-moderno" readonly style="background: #f1f5f9; cursor: not-allowed; font-weight: bold; color: #1e293b;" placeholder="Gerado Automaticamente">
+                    </div>
+                    <div>
+                        <label>Data de Emissão</label>
+                        <input type="text" id="fat-emissao" class="input-moderno" readonly style="background: #f1f5f9; cursor: not-allowed;" placeholder="Data Atual">
+                    </div>
+                    <div>
+                        <label>Data da Exportação <span style="color: red;">*</span></label>
+                        <input type="date" id="fat-data-exportacao" class="input-moderno" required>
+                    </div>
+                    <div>
+                        <label>Moeda <span style="color: red;">*</span></label>
+                        <select id="fat-moeda" class="input-moderno" required>
+                            <option value="USD">Dólar (USD)</option>
+                            <option value="BRL" selected>Real (BRL)</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-medio">
+                        <label>Exportador <span style="color: red;">*</span></label>
+                        <select id="fat-exportador" class="input-moderno" required>
+                            <option value="" disabled selected>Selecione o Exportador...</option>
+                            </select>
+                    </div>
+                    <div class="campo-medio">
+                        <label>Importador <span style="color: red;">*</span></label>
+                        <select id="fat-importador" class="input-moderno" required>
+                            <option value="" disabled selected>Selecione o Importador...</option>
+                            </select>
+                    </div>
+
+                    <div>
+                        <label>Peso Bruto (KG) <span style="color: red;">*</span></label>
+                        <input type="number" step="0.001" id="fat-peso-bruto" class="input-moderno" placeholder="0,000" required>
+                    </div>
+                    <div>
+                        <label>Peso Líquido (KG) <span style="color: red;">*</span></label>
+                        <input type="number" step="0.001" id="fat-peso-liquido" class="input-moderno" placeholder="0,000" required>
+                    </div>
+                    <div>
+                        <label>Volume / Quantidade <span style="color: red;">*</span></label>
+                        <input type="number" id="fat-volume-qtd" class="input-moderno" placeholder="Ex: 10" required>
+                    </div>
+                    <div>
+                        <label>Unidade de Volume <span style="color: red;">*</span></label>
+                        <select id="fat-volume-unidade" class="input-moderno" required>
+                            <option value="Caixas">Caixas</option>
+                            <option value="Pallets">Pallets</option>
+                            <option value="Volumes" selected>Volumes</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-largo" style="margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
+                        <h4 style="color: #1e253b; margin-bottom: 5px;"><i class="fa-solid fa-box-open"></i> Adicionar Itens à Fatura</h4>
+                        <p style="color: #64748b; font-size: 13px; margin-bottom: 15px;">Busque o item por Nome, Código do Fabricante ou NCM para adicioná-lo à listagem abaixo.</p>
+                    </div>
+
+                    <div class="campo-largo" style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
+                        <div>
+                            <label style="font-size: 13px;">Buscar Item (Nome, Cód ou NCM)</label>
+                            <input type="text" id="busca-item-fatura" class="input-moderno" placeholder="Digite para buscar..." oninput="pesquisarItemFaturaInput()">
+                            <div id="sugestoes-itens-fatura" style="position: absolute; background: white; border: 1px solid #cbd5e1; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 100; width: 35%; display: none; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"></div>
+                        </div>
+                        <div>
+                            <label style="font-size: 13px;">NCM do Item</label>
+                            <input type="text" id="add-item-ncm" class="input-moderno" readonly style="background: #e2e8f0; color: #475569; cursor: not-allowed; font-weight: 500;" placeholder="Bloqueado">
+                        </div>
+                        <div>
+                            <label style="font-size: 13px;">Quantidade <span style="color: red;">*</span></label>
+                            <input type="number" id="add-item-qtd" class="input-moderno" placeholder="0" oninput="calcularTotalItemRapido()">
+                        </div>
+                        <div>
+                            <label style="font-size: 13px;">Val. Unitário <span style="color: red;">*</span></label>
+                            <input type="number" step="0.01" id="add-item-valor" class="input-moderno" placeholder="0.00" oninput="calcularTotalItemRapido()">
+                        </div>
+                        <div>
+                            <button type="button" class="botao-moderno" style="background: #2563eb; padding: 11px 20px; margin: 0;" onclick="adicionarItemFaturaTabela()">
+                                <i class="fa-solid fa-plus"></i> Inscrever
+                            </button>
+                        </div>
+                        <div class="campo-largo" style="font-size: 12px; color: #64748b; margin-top: -5px;" id="preview-total-item">
+                            Total deste item: <b>$ 0,00</b>
+                        </div>
+                    </div>
+
+                    <div class="campo-largo" style="margin-top: 15px;">
+                        <h5 style="color: #475569; margin-bottom: 10px;">Produtos Incluídos nesta Fatura:</h5>
+                        <div style="overflow-x: auto; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <table class="tabela-moderna" style="margin: 0; font-size: 14px;">
+                                <style>
+                                    .tabela-moderna th { background: #f1f5f9; color: #475569; padding: 10px; }
+                                    .tabela-moderna td { padding: 10px; }
+                                </style>
+                                <thead>
+                                    <tr>
+                                        <th>Item / Descrição</th>
+                                        <th>NCM</th>
+                                        <th style="text-align: center;">Qtd</th>
+                                        <th style="text-align: right;">Val. Unitário</th>
+                                        <th style="text-align: right;">Subtotal</th>
+                                        <th style="text-align: center; width: 60px;">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-itens-fatura-incluidos">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">Nenhum produto inserido nesta fatura ainda.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="campo-largo" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <span style="font-weight: 600; color: #1e3a8a; font-size: 16px;">VALOR TOTAL DA FATURA:</span>
+                        <span id="fat-valor-total-exibicao" style="font-size: 22px; font-weight: 700; color: #1e3a8a;">$ 0,00</span>
                     </div>
                     
-                    <div class="campo-largo secao-botoes-form">
-                        <button type="submit" class="botao-moderno largura-auto">Salvar Fatura</button>
+                    <div class="campo-largo secao-botoes-form" style="margin-top: 20px;">
+                        <button type="submit" class="botao-moderno largura-auto" style="background: #10b981;">Salvar Fatura</button>
                         <button type="button" class="btn-voltar" style="margin:0;" onclick="resetarAbasFatura()">Limpar</button>
                     </div>
                 </form>
+                
             </div>
 
             <div id="sub-bloco-lista-faturas" style="display: none;">
