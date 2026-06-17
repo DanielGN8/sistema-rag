@@ -43,8 +43,8 @@
             <p class="instrucao-painel">Selecione uma opção abaixo para começar.</p>
             
             <div class="grid-botoes">
-               <button class="botao-painel-dados roxo" onclick="mostrarTelaCadastro('painel-faturas')">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> Faturas
+                <button class="botao-painel-dados roxo" onclick="mostrarTela('painel-faturas')">
+                     <i class="fa-solid fa-file-invoice-dollar"></i> Faturas
                 </button>
                 <button class="btn-dashboard verde-agua" onclick="mostrarTela('tela-crt')">
                     <i class="fa-regular fa-file-lines"></i> Criar CRT
@@ -64,19 +64,20 @@
             </div>
         </div>
     
-<div id="painel-faturas" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <div id="painel-faturas" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
             
             <div style="text-align: center; margin: 20px 0 30px 0;">
-                <h2><i class="fa-solid fa-file-invoice-dollar"></i> Gerenciamento de Faturas</h2>
+                <h2 style="color: #2563eb;"><i class="fa-solid fa-file-invoice-dollar"></i> Gerenciamento de Faturas</h2>
                 <p style="color: #64748b;">Selecione uma ação para prosseguir com os documentos comerciais</p>
             </div>
 
             <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px;">
-                <button id="btn-aba-nova" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #10b981;" onclick="abrirFormularioNovaFatura()">
+                <button id="btn-aba-nova" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #10b981; margin: 0;" onclick="abrirFormularioNovaFatura()">
                     <i class="fa-solid fa-circle-plus"></i> Nova Fatura
                 </button>
-                <button id="btn-aba-lista" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #3b82f6;" onclick="visualizarListaFaturas()">
+                <button id="btn-aba-lista" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #3b82f6; margin: 0;" onclick="visualizarListaFaturas()">
                     <i class="fa-solid fa-list-check"></i> Ver Faturas
                 </button>
             </div>
@@ -735,7 +736,7 @@
     <script src="js/importadores.js"></script>
     <script src="js/transportadoras.js"></script>
     <script src="js/proprietarios.js"></script>
-    <script src="js/frotas.js">
+    <script src="js/frotas.js"></script>
     <script src="js/faturas.js"></script>
 </body>
 </html>
