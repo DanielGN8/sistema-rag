@@ -233,3 +233,103 @@ function resetarAbasFatura() {
     document.getElementById('fatura-id-oculto').value = '';
     prepararNovaFaturaInicial();
 }
+
+// =======================================================
+// 7. GRAVAÇÃO DA FATURA E DOS ITENS NO SUPABASE
+// =======================================================
+
+// Escuta o envio do formulário de fatura
+document.getElementById('form-fatura').addEventListener('submit', salvarFaturaCompletaBanco);
+
+async function salvarFaturaCompletaBanco(e) {
+    e.preventDefault(); // Impede o recarregamento da página
+
+    // Validação crucial: Não faz sentido salvar uma fatura sem produtos
+    if (itensFaturaSelecionadosLocal.length === 0) {
+        alert('Atenção: Insira pelo menos um item/produto na lista antes de salvar a fatura.');
+        return;
+    }
+
+    // Pega o ID oculto caso seja uma edição (futura)
+    const idFaturaExistente = document.getElementById('fatura-id-oculto').value;
+
+    // 1. Calcula o valor total limpo (sem formatação de texto) para guardar no banco
+    let valorTotalNumerico = 0;
+    itensFaturaSelecionadosLocal.forEach(item => valorTotalNumerico += item.subtotal);
+
+    // 2. Monta o payload com os dados gerais (Cabeçalho da Fatura)
+    const payloadFatura = {
+        numero_fatura: document.getElementById('fat-numero').value,
+        data_emissao: document.getElementById('fat-emissao').value,
+        data_exportacao: document.getElementById('fat-data-exportacao').value,
+        moeda: document.getElementById('fat-moeda').value,
+        id_exportador: parseInt(document.getElementById('fat-exportador').value),
+        id_importador: parseInt(document.getElementById('fat-importador').value),
+        peso_bruto: parseFloat(document.getElementById('fat-peso-bruto').value),
+        peso_liquido: parseFloat(document.getElementById('fat-peso-liquido').value),
+        volume_qtd: parseFloat(document.getElementById('fat-volume-qtd').value),
+        volume_unidade: document.getElementById('fat-volume-unidade').value,
+        valor_total: valorTotalNumerico
+    };
+
+    try {
+        let idFaturaGerado = idFaturaExistente;
+
+        if (idFaturaExistente) {
+            // [CENÁRIO A] - Atualização de Fatura Existente
+            const { error: errorUpdate } = await supabaseClient
+                .from('faturas')
+                .update([payloadFatura])
+                .eq('id', idFaturaExistente);
+
+            if (errorUpdate) throw errorUpdate;
+
+            // Para atualizar os itens, a forma mais limpa e segura é apagar os antigos deste ID e reinserir
+            const { error: errorDeleteItens } = await supabaseClient
+                .from('fatura_itens')
+                .delete()
+                .eq('id_fatura', idFaturaExistente);
+
+            if (errorDeleteItens) throw errorDeleteItens;
+
+        } else {
+            // [CENÁRIO B] - Nova Fatura (Retorna o ID gerado pelo banco através do .select())
+            const { data: dadosNovos, error: errorInsert } = await supabaseClient
+                .from('faturas')
+                .insert([payloadFatura])
+                .select('id')
+                .single();
+
+            if (errorInsert) throw errorInsert;
+            idFaturaGerado = dadosNovos.id; // Captura o ID gerado pelo auto-incremento
+        }
+
+        // 3. Preparar o lote de produtos vinculando-os ao idFaturaGerado
+        const payloadItens = itensFaturaSelecionadosLocal.map(item => {
+            return {
+                id_fatura: idFaturaGerado, // O vínculo/Chave Estrangeira
+                id_item: item.id_item,
+                quantidade: item.quantidade,
+                valor_unitario: item.valor_unitario,
+                subtotal: item.subtotal
+            };
+        });
+
+        // 4. Inserção em lote (Bulk Insert) na tabela fatura_itens
+        const { error: errorItens } = await supabaseClient
+            .from('fatura_itens')
+            .insert(payloadItens);
+
+        if (errorItens) throw errorItens;
+
+        // Sucesso absoluto nas duas tabelas!
+        alert('Fatura Comercial gravada com sucesso no Supabase!');
+        
+        // Limpa tudo e reinicia a tela com um novo número e estado limpo
+        resetarAbasFatura();
+
+    } catch (err) {
+        console.error('Erro na transação de salvamento:', err);
+        alert('Erro ao salvar no banco de dados: ' + (err.message || err));
+    }
+}
