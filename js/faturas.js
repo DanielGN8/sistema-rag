@@ -24,17 +24,18 @@ async function prepararNovaFaturaInicial() {
     itemFaturaAtualInstancia = null;
     renderizarTabelaItensIncluidos();
     
-    // Automação: Define a Data de Emissão Atual no formato legível (DD/MM/AAAA)
+    // CORREÇÃO AQUI: Gera a data atual no formato ISO (AAAA-MM-DD) esperado pelo Supabase
     const hoje = new Date();
-    document.getElementById('fat-emissao').value = hoje.toLocaleDateString('pt-BR');
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
     
-    // Automação: Gera um número sequencial temporário ou timestamp exclusivo (Ex: FAT-20260617-1420)
-    // Dica: Futuramente, você pode buscar o último ID + 1 do banco de dados
-    const timestamp = hoje.getFullYear().toString() + 
-                      (hoje.getMonth()+1).toString().padStart(2, '0') + 
-                      hoje.getDate().toString().padStart(2, '0') + "-" + 
-                      hoje.getHours().toString().padStart(2, '0') + 
-                      hoje.getMinutes().toString().padStart(2, '0');
+    document.getElementById('fat-emissao').value = `${ano}-${mes}-${dia}`;
+    
+    // Automação: Gera um número sequencial temporário ou timestamp exclusivo
+    const timestamp = ano + mes + dia + "-" + 
+                      String(hoje.getHours()).padStart(2, '0') + 
+                      String(hoje.getMinutes()).padStart(2, '0');
     document.getElementById('fat-numero').value = `FAT-${timestamp}`;
 
     // Carrega os selects dinâmicos do banco de dados
