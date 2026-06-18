@@ -112,3 +112,81 @@ function voltarAoPainelDados() {
     // 3. Reexibe a tela principal com a listagem de botões de dados
     document.getElementById('tela-adicionar-dados').style.display = 'block';
 }
+
+// ==========================================
+// SISTEMA INTELIGENTE DE ALERTAS PERSONALIZADOS
+// ==========================================
+
+// Função que cria o Alerta Estilizado e o injeta dinamicamente na página
+function exibirAlertaPersonalizado(titulo, mensagem, tipo = 'info') {
+    // Remove popups antigos para não sobrepor se houver cliques rápidos
+    const alertaAnterior = document.getElementById('modal-alerta-customizado');
+    if (alertaAnterior) {
+        alertaAnterior.remove();
+    }
+
+    // Configura o ícone ideal dependendo do tipo de aviso
+    let iconeHtml = '<i class="fa-solid fa-circle-info"></i>';
+    if (tipo === 'sucesso') {
+        iconeHtml = '<i class="fa-solid fa-circle-check"></i>';
+    } else if (tipo === 'erro') {
+        iconeHtml = '<i class="fa-solid fa-circle-xmark"></i>';
+    }
+
+    // Cria a estrutura visual completa do modal na página
+    const overlay = document.createElement('div');
+    overlay.id = 'modal-alerta-customizado';
+    overlay.className = 'modal-alerta-overlay';
+    overlay.innerHTML = `
+        <div class="modal-alerta-card">
+            <div class="modal-alerta-icone ${tipo}">
+                ${iconeHtml}
+            </div>
+            <div class="modal-alerta-titulo">${titulo}</div>
+            <div class="modal-alerta-mensagem">${mensagem}</div>
+            <button class="modal-alerta-botao ${tipo}">Entendido</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Pequena pausa para garantir a animação de "Surgimento" suave
+    setTimeout(() => {
+        overlay.classList.add('ativo');
+    }, 10);
+
+    // Função interna que fecha com transição elegante antes de deletar o elemento do DOM
+    const fecharAlerta = () => {
+        overlay.classList.remove('ativo');
+        setTimeout(() => {
+            overlay.remove();
+        }, 200);
+    };
+
+    // Fechar ao clicar no botão ou na área borrada de fundo
+    overlay.querySelector('.modal-alerta-botao').addEventListener('click', fecharAlerta);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            fecharAlerta();
+        }
+    });
+}
+
+// SOBRESCRITA DO ALERT() DO NAVEGADOR
+// Isso substitui o "alert" em todos os outros arquivos de script de uma vez só!
+window.alert = function(mensagem) {
+    const textoMinusculo = mensagem.toLowerCase();
+    let tipo = 'info';
+    let titulo = 'Aviso do Sistema';
+
+    // Heurística de leitura: Deduz o tipo do alerta pelas palavras-chave da mensagem
+    if (textoMinusculo.includes('sucesso') || textoMinusculo.includes('liberado') || textoMinusculo.includes('salvo')) {
+        tipo = 'sucesso';
+        titulo = 'Sucesso!';
+    } else if (textoMinusculo.includes('erro') || textoMinusculo.includes('incorreto') || textoMinusculo.includes('não encontrado') || textoMinusculo.includes('falhou')) {
+        tipo = 'erro';
+        titulo = 'Ops! Algo deu errado';
+    }
+
+    exibirAlertaPersonalizado(titulo, mensagem, tipo);
+};
