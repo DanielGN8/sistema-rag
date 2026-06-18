@@ -11,6 +11,7 @@
 body {
     background-color: #f4f7f6;
     color: #1e293b;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Container do Sistema Expandido para PC */
@@ -22,26 +23,116 @@ body {
 }
 
 /* ==========================================
-   COMPONENTES REUTILIZÁVEIS (Inputs e Botões)
+   COMPONENTES DE FORMULÁRIO
    ========================================== */
 .input-moderno {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid #dbeafe;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
     background-color: #f8fafc;
     color: #1e293b;
     font-size: 14px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     outline: none;
 }
 
 .input-moderno:focus {
-    border-color: #60a5fa;
+    border-color: #3b82f6;
     background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
 }
 
+/* ==========================================
+   NOVA PALETA DE BOTÕES MODERNOS (SEM CORES BERRANTES)
+   ========================================== */
+
+/* Base para todos os botões pequenos/médios do sistema */
+.btn-sistema {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-sistema:active {
+    transform: scale(0.98);
+}
+
+/* 1. AZUL CORPORATIVO (Ações Principais / Navegação primária) */
+.btn-azul {
+    background-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+.btn-azul:hover {
+    background-color: #1d4ed8;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.15);
+}
+
+/* 2. VERDE ÁGUA / MENTOLADO (Salvar, Confirmar, Concluir Cadastro) */
+.btn-verde-agua {
+    background-color: #0d9488;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(13, 148, 136, 0.1);
+}
+.btn-verde-agua:hover {
+    background-color: #0f766e;
+    box-shadow: 0 4px 6px rgba(13, 148, 136, 0.15);
+}
+
+/* 3. ROXO PROFUNDO (Menus de Dados, Visualizar Painéis, Alternar Telas) */
+.btn-roxo {
+    background-color: #6d28d9;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(109, 40, 217, 0.1);
+}
+.btn-roxo:hover {
+    background-color: #5b21b6;
+    box-shadow: 0 4px 6px rgba(109, 40, 217, 0.15);
+}
+
+/* 4. VERMELHO SUAVE (Excluir, Cancelar, Voltar) */
+.btn-vermelho {
+    background-color: #e11d48;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(225, 29, 72, 0.1);
+}
+.btn-vermelho:hover {
+    background-color: #be123c;
+    box-shadow: 0 4px 6px rgba(225, 29, 72, 0.15);
+}
+
+/* Botão de Voltar Específico (Modernizado com Tom Cinza Neutro) */
+.btn-voltar {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-voltar:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+/* Botão Moderno Grande (Usado na Tela de Login) */
 .botao-moderno {
     width: 100%;
     padding: 12px;
@@ -52,35 +143,14 @@ body {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s;
 }
-
 .botao-moderno:hover {
     background-color: #1d4ed8;
 }
 
-.btn-voltar {
-    background-color: #64748b;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-voltar:hover {
-    background-color: #475569;
-}
-
 /* ==========================================
-   TELA DE LOGIN (Centralizada e Elegante)
+   TELA DE LOGIN
    ========================================== */
 .container-login {
     display: flex;
@@ -95,7 +165,7 @@ body {
     background-color: white;
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     width: 100%;
     max-width: 450px;
     text-align: center;
@@ -114,29 +184,29 @@ body {
 }
 
 /* ==========================================
-   LAYOUT DAS SUB-PÁGINAS (Modo Computador Amplo)
+   LAYOUT DAS SUB-PÁGINAS (Modo Amplo)
    ========================================== */
 .sub-pagina, 
 .tela-cadastro-final {
     background-color: #ffffff;
     border-radius: 12px;
     padding: 32px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
     margin-bottom: 30px;
     width: 100%;
-    max-width: 100%; /* Remove restrições antigas estreitas */
+    max-width: 100%;
 }
 
 /* ==========================================
    PAINEL PRINCIPAL (BOAS-VINDAS)
    ========================================== */
 .cabecalho-boas-vindas {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
     color: white;
     padding: 40px;
     border-radius: 12px;
     margin-bottom: 32px;
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
 }
 
 .cabecalho-boas-vindas h1 {
@@ -150,7 +220,7 @@ body {
     opacity: 0.9;
 }
 
-/* Grade de Botões do Menu Inicial */
+/* Grade de Botões Principais (Menu de Entrada) */
 .grade-menu {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -162,21 +232,21 @@ body {
     background-color: white;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid #e2e8f0;
 }
 
 .cartao-menu:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
     border-color: #3b82f6;
 }
 
 .cartao-menu i {
-    font-size: 36px;
+    font-size: 38px;
     color: #2563eb;
     margin-bottom: 16px;
 }
@@ -193,7 +263,9 @@ body {
     color: #64748b;
 }
 
-/* Grade de Botões Interna do Painel de Dados (9 Categorias) */
+/* ==========================================
+   PAINEL DE DADOS (GRADE DE 9 CATEGORIAS)
+   ========================================== */
 .grade-dados {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -201,35 +273,45 @@ body {
     margin-top: 24px;
 }
 
+/* Estilização moderna para os 9 botões do painel interno */
 .btn-dado {
-    background-color: #f8fafc;
+    background-color: #ffffff;
     border: 1px solid #e2e8f0;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 24px 16px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     color: #334155;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
 }
 
+/* Efeito Hover Inteligente usando a cor Roxa */
 .btn-dado:hover {
-    background-color: #eff6ff;
-    border-color: #3b82f6;
-    color: #1d4ed8;
+    background-color: #f5f3ff;
+    border-color: #8b5cf6;
+    color: #5b21b6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.08);
 }
 
 .btn-dado i {
-    font-size: 20px;
-    color: #2563eb;
+    font-size: 24px;
+    color: #6d28d9; /* Ícones internos em roxo moderno */
+    transition: transform 0.2s ease;
+}
+
+.btn-dado:hover i {
+    transform: scale(1.1);
 }
 
 /* ==========================================
-   FORMULÁRIOS INTELIGENTES (Grid Multi-Colunas)
+   FORMULÁRIOS INTELIGENTES
    ========================================== */
 .form-grupo {
     display: grid;
@@ -245,15 +327,14 @@ body {
 }
 
 .campo-input label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     color: #475569;
     margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* Ocupa a linha inteira se o campo for muito grande (ex: Descrições, Observações) */
 .campo-largo {
     grid-column: 1 / -1;
 }
@@ -263,16 +344,13 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 16px;
-}
-
-.secao-botoes-form .botao-moderno {
-    width: auto;
-    padding: 12px 32px;
+    margin-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 20px;
 }
 
 /* ==========================================
-   SISTEMA DE BUSCA E FILTROS
+   BARRA DE PESQUISA
    ========================================== */
 .barra-pesquisa-container {
     position: relative;
@@ -299,10 +377,11 @@ body {
    ========================================== */
 .tabela-container {
     width: 100%;
-    overflow-x: auto; /* Permite scroll se a tabela for gigante */
+    overflow-x: auto;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     margin-top: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.01);
 }
 
 .tabela-moderna {
@@ -311,54 +390,3 @@ body {
     text-align: left;
     font-size: 14px;
     background-color: white;
-}
-
-.tabela-moderna th {
-    background-color: #f8fafc;
-    color: #1e3a8a;
-    font-weight: 600;
-    padding: 14px 16px;
-    border-bottom: 2px solid #e2e8f0;
-    white-space: nowrap;
-}
-
-.tabela-moderna td {
-    padding: 14px 16px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #334155;
-}
-
-.tabela-moderna tr:last-child td {
-    border-bottom: none;
-}
-
-.tabela-moderna tr:hover td {
-    background-color: #f8fafc;
-}
-
-/* Ações dentro da tabela (Editar / Excluir) */
-.btn-acao {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-.btn-acao.editar {
-    color: #059669;
-}
-
-.btn-acao.editar:hover {
-    background-color: #ecfdf5;
-}
-
-.btn-acao.deletar {
-    color: #dc2626;
-}
-
-.btn-acao.deletar:hover {
-    background-color: #fef2f2;
-}
