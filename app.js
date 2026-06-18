@@ -43,10 +43,11 @@ if (formLogin) {
                 telaLogin.style.display = 'none';
                 conteudoSistema.style.display = 'block';
                 
-                // Opcional: Define o nome do usuário logado no painel
-                const userLogadoElement = document.getElementById('usuario-logado');
-                if (userLogadoElement) {
-                    userLogadoElement.textContent = data.nome || usuarioInput;
+                // MUDANÇA AQUI: Altera dinamicamente o título de boas-vindas do menu
+                const usuarioLogadoElement = document.getElementById('usuario-logado');
+                if (usuarioLogadoElement) {
+                    // Se existir a coluna 'nome' no banco, usa ela, senão usa o próprio nome de usuário
+                    usuarioLogadoElement.textContent = data.nome || data.usuario || usuarioInput;
                 }
             } else {
                 alert('PIN incorreto! Tente novamente.');
