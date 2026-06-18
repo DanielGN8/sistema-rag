@@ -1,0 +1,364 @@
+/* ==========================================
+   RESET E CONFIGURAÇÕES GERAIS
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #1e293b;
+}
+
+/* Container do Sistema Expandido para PC */
+#conteudo-sistema {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* ==========================================
+   COMPONENTES REUTILIZÁVEIS (Inputs e Botões)
+   ========================================== */
+.input-moderno {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-moderno:focus {
+    border-color: #60a5fa;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
+}
+
+.botao-moderno {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-moderno:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-voltar {
+    background-color: #64748b;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-voltar:hover {
+    background-color: #475569;
+}
+
+/* ==========================================
+   TELA DE LOGIN (Centralizada e Elegante)
+   ========================================== */
+.container-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6;
+    padding: 20px;
+}
+
+.cartao-login {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.cartao-login h2 {
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.cartao-login p {
+    color: #64748b;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+/* ==========================================
+   LAYOUT DAS SUB-PÁGINAS (Modo Computador Amplo)
+   ========================================== */
+.sub-pagina, 
+.tela-cadastro-final {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 100%; /* Remove restrições antigas estreitas */
+}
+
+/* ==========================================
+   PAINEL PRINCIPAL (BOAS-VINDAS)
+   ========================================== */
+.cabecalho-boas-vindas {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+}
+
+.cabecalho-boas-vindas h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.cabecalho-boas-vindas p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Grade de Botões do Menu Inicial */
+.grade-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.cartao-menu {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e2e8f0;
+}
+
+.cartao-menu:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.15);
+    border-color: #3b82f6;
+}
+
+.cartao-menu i {
+    font-size: 36px;
+    color: #2563eb;
+    margin-bottom: 16px;
+}
+
+.cartao-menu h3 {
+    font-size: 18px;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.cartao-menu p {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Grade de Botões Interna do Painel de Dados (9 Categorias) */
+.grade-dados {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.btn-dado {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: #334155;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-dado:hover {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+
+.btn-dado i {
+    font-size: 20px;
+    color: #2563eb;
+}
+
+/* ==========================================
+   FORMULÁRIOS INTELIGENTES (Grid Multi-Colunas)
+   ========================================== */
+.form-grupo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.campo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo-input label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Ocupa a linha inteira se o campo for muito grande (ex: Descrições, Observações) */
+.campo-largo {
+    grid-column: 1 / -1;
+}
+
+.secao-botoes-form {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.secao-botoes-form .botao-moderno {
+    width: auto;
+    padding: 12px 32px;
+}
+
+/* ==========================================
+   SISTEMA DE BUSCA E FILTROS
+   ========================================== */
+.barra-pesquisa-container {
+    position: relative;
+    margin: 24px 0 20px 0;
+    width: 100%;
+}
+
+.barra-pesquisa-container .input-moderno {
+    padding-left: 46px;
+    height: 48px;
+}
+
+.icone-busca {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+/* ==========================================
+   TABELAS MODERNAS E RESPONSIVAS
+   ========================================== */
+.tabela-container {
+    width: 100%;
+    overflow-x: auto; /* Permite scroll se a tabela for gigante */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.tabela-moderna {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+    background-color: white;
+}
+
+.tabela-moderna th {
+    background-color: #f8fafc;
+    color: #1e3a8a;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.tabela-moderna td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.tabela-moderna tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-moderna tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* Ações dentro da tabela (Editar / Excluir) */
+.btn-acao {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-acao.editar {
+    color: #059669;
+}
+
+.btn-acao.editar:hover {
+    background-color: #ecfdf5;
+}
+
+.btn-acao.deletar {
+    color: #dc2626;
+}
+
+.btn-acao.deletar:hover {
+    background-color: #fef2f2;
+}
