@@ -443,3 +443,122 @@ body {
 .btn-acao.deletar:hover {
     background-color: #ffe4e6;
 }
+
+/* ==========================================
+   CAIXAS DE ALERTA E POPUPS PERSONALIZADOS
+   ========================================== */
+.modal-alerta-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px); /* Efeito moderno de vidro fosco no fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.modal-alerta-overlay.ativo {
+    opacity: 1;
+}
+
+.modal-alerta-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: scale(0.9);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid #e2e8f0;
+}
+
+.modal-alerta-overlay.ativo .modal-alerta-card {
+    transform: scale(1);
+}
+
+.modal-alerta-icone {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-size: 28px;
+}
+
+/* Cores inteligentes para os ícones baseados no tipo */
+.modal-alerta-icone.sucesso {
+    background-color: #ecfdf5;
+    color: #10b981;
+    border: 2px solid #a7f3d0;
+}
+
+.modal-alerta-icone.erro {
+    background-color: #fef2f2;
+    color: #ef4444;
+    border: 2px solid #fecaca;
+}
+
+.modal-alerta-icone.info {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border: 2px solid #bfdbfe;
+}
+
+.modal-alerta-titulo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.modal-alerta-mensagem {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.modal-alerta-botao {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.modal-alerta-botao.sucesso {
+    background-color: #10b981;
+    color: white;
+}
+.modal-alerta-botao.sucesso:hover {
+    background-color: #059669;
+}
+
+.modal-alerta-botao.erro {
+    background-color: #ef4444;
+    color: white;
+}
+.modal-alerta-botao.erro:hover {
+    background-color: #dc2626;
+}
+
+.modal-alerta-botao.info {
+    background-color: #3b82f6;
+    color: white;
+}
+.modal-alerta-botao.info:hover {
+    background-color: #2563eb;
+}
