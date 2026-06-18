@@ -3,103 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Documentos</title>
+    <title>Gerador de Documentos - Rag Despachos</title>
+    <!-- FontAwesome para Ícones Modernos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Link para o novo arquivo de Estilo Amplo -->
     <link rel="stylesheet" href="style2.css">
 </head>
 <body>
 
+    <!-- ==========================================
+       TELA DE LOGIN
+       ========================================== -->
     <div id="tela-login" class="container-login">
         <div class="cartao-login">
             <h2>Seja bem-vindo!</h2>
-            <p>Insira suas credenciais para acessar o painel.</p>
+            <p>Insira suas credenciais para acessar o painel aduaneiro.</p>
             
             <form id="form-login" class="form-grupo">
-                <div class="campo-input">
+                <div class="campo-input campo-largo">
                     <label for="login-usuario">Usuário</label>
                     <input type="text" id="login-usuario" class="input-moderno" placeholder="Ex: daniel.adm" required>
                 </div>
                 
-                <div class="campo-input">
+                <div class="campo-input campo-largo">
                     <label for="login-pin">PIN de Acesso</label>
                     <input type="password" id="login-pin" class="input-moderno" placeholder="Digite seu PIN" required maxlength="8">
                 </div>
                 
-                <button type="submit" class="botao-moderno">Entrar no Sistema</button>
+                <div class="campo-largo" style="margin-top: 10px;">
+                    <button type="submit" class="botao-moderno">Entrar no Sistema</button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- ==========================================
+       CONTEÚDO DO SISTEMA (PAINEL GERAL)
+       ========================================== -->
     <div id="conteudo-sistema" class="painel-sistema" style="display: none;">
         
-        <div id="menu-principal" class="secao-dashboard">
-            <p class="subtitulo-painel">PAINEL DE CONTROLE</p>
-            <h1 class="titulo-boasvindas">Besm-Vindo, Rag Despachos!</h1>
-            <p class="instrucao-painel">Selecione uma opção abaixo para começar.</p>
+        <!-- MENU PRINCIPAL (DASHBOARD INICIAL) -->
+        <div id="menu-principal">
+            <div class="cabecalho-boas-vindas">
+                <p style="font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; opacity: 0.8;">PAINEL DE CONTROLE</p>
+                <h1>Bem-Vindo, Rag Despachos!</h1>
+                <p>Selecione uma opção abaixo para começar a emitir ou gerenciar seus documentos aduaneiros.</p>
+            </div>
             
-            <div class="grid-botoes">
-                <button class="btn-dashboard vermelho" onclick="mostrarTela('painel-faturas')">
-                     <i class="fa-solid fa-file-invoice-dollar"></i> Faturas
-                </button>
-                <button class="btn-dashboard verde-agua" onclick="mostrarTela('tela-crt')">
-                    <i class="fa-regular fa-file-lines"></i> Criar CRT
-                </button>
-                <button class="btn-dashboard verde-escuro" onclick="mostrarTela('tela-editar-crt')">
-                    <i class="fa-regular fa-pen-to-square"></i> Editar CRT
-                </button>
-                <button class="btn-dashboard roxo-claro" onclick="mostrarTela('tela-mic')">
-                    <i class="fa-regular fa-file-lines"></i> Criar MIC
-                </button>
-                <button class="btn-dashboard roxo-escuro" onclick="mostrarTela('tela-editar-mic')">
-                    <i class="fa-regular fa-pen-to-square"></i> Editar MIC
-                </button>
-                <button class="btn-dashboard laranja" onclick="mostrarTela('tela-adicionar-dados')">
-                    <i class="fa-solid fa-database"></i> Adicionar Dados
-                </button>
+            <div class="grade-menu">
+                <div class="cartao-menu" onclick="mostrarTela('painel-faturas')">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <h3>Faturas</h3>
+                    <p>Gerencie faturas comerciais de exportação e importação.</p>
+                </div>
+                
+                <div class="cartao-menu" onclick="mostrarTela('tela-crt')">
+                    <i class="fa-solid fa-truck-moving" style="color: #0d9488;"></i>
+                    <h3>Criar CRT</h3>
+                    <p>Conhecimento de Transporte Internacional Rodoviário.</p>
+                </div>
+                
+                <div class="cartao-menu" onclick="mostrarTela('tela-editar-crt')">
+                    <i class="fa-regular fa-pen-to-square" style="color: #0f766e;"></i>
+                    <h3>Editar CRT</h3>
+                    <p>Pesquise, duplique ou edite CRTs já emitidos no sistema.</p>
+                </div>
+                
+                <div class="cartao-menu" onclick="mostrarTela('tela-mic')">
+                    <i class="fa-solid fa-file-shield" style="color: #8b5cf6;"></i>
+                    <h3>Criar MIC</h3>
+                    <p>Manifesto Internacional de Cargas e Trânsito Aduaneiro.</p>
+                </div>
+                
+                <div class="cartao-menu" onclick="mostrarTela('tela-editar-mic')">
+                    <i class="fa-regular fa-folder-open" style="color: #6d28d9;"></i>
+                    <h3>Editar MIC</h3>
+                    <p>Gerencie manifestos e folhas de rota emitidos.</p>
+                </div>
+                
+                <div class="cartao-menu" onclick="mostrarTela('tela-adicionar-dados')">
+                    <i class="fa-solid fa-database" style="color: #ea580c;"></i>
+                    <h3>Adicionar Dados</h3>
+                    <p>Cadastre motoristas, caminhões, itens, importadores e mais.</p>
+                </div>
             </div>
         </div>
-    
 
-        <div id="painel-faturas" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+        <!-- ==========================================
+           TELA: GERENCIAMENTO DE FATURAS
+           ========================================== -->
+        <div id="painel-faturas" class="sub-pagina sub-pagina-fatura" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoMenu()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
+            </button>
             
-            <div style="text-align: center; margin: 20px 0 30px 0;">
-                <h2 style="color: #2563eb;"><i class="fa-solid fa-file-invoice-dollar"></i> Gerenciamento de Faturas</h2>
-                <p style="color: #64748b;">Selecione uma ação para prosseguir com os documentos comerciais</p>
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;"><i class="fa-solid fa-file-invoice-dollar"></i> Gerenciamento de Faturas</h2>
+                <p style="color: #64748b; font-size: 15px;">Selecione uma ação para prosseguir com os documentos comerciais</p>
             </div>
 
-            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px;">
-                <button id="btn-aba-nova" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #10b981; margin: 0;" onclick="abrirFormularioNovaFatura()">
+            <!-- Seletores de Aba com Estilo Amplo -->
+            <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 32px;">
+                <button id="btn-aba-nova" class="btn-sistema btn-verde-agua" onclick="abrirFormularioNovaFatura()">
                     <i class="fa-solid fa-circle-plus"></i> Nova Fatura
                 </button>
-                <button id="btn-aba-lista" class="botao-moderno" style="width: auto; padding: 12px 24px; background: #3b82f6; margin: 0;" onclick="visualizarListaFaturas()">
-                    <i class="fa-solid fa-list-check"></i> Ver Faturas
+                <button id="btn-aba-lista" class="btn-sistema btn-azul" onclick="visualizarListaFaturas()">
+                    <i class="fa-solid fa-list-check"></i> Visualizar Faturas
                 </button>
             </div>
 
+            <!-- SUB-BLOCO: FORMULÁRIO DE NOVA FATURA -->
             <div id="sub-bloco-form-fatura" class="cartao-cadastro" style="display: none;">
-                <h3 id="titulo-form-fatura"><i class="fa-solid fa-plus"></i> Nova Fatura Comercial</h3>
+                <h3 id="titulo-form-fatura" style="border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px;"><i class="fa-solid fa-plus"></i> Nova Fatura Comercial</h3>
                 <input type="hidden" id="fatura-id-oculto">
                 
-<form id="form-fatura" class="form-grid-layout">
-                    <div>
+                <form id="form-fatura" class="form-grupo">
+                    <div class="campo-input">
                         <label>Nº da Fatura</label>
                         <input type="text" id="fat-numero" class="input-moderno" readonly style="background: #f1f5f9; cursor: not-allowed; font-weight: bold; color: #1e293b;" placeholder="Gerado Automaticamente">
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Data de Emissão</label>
                         <input type="date" id="fat-emissao" class="input-moderno" readonly style="background: #f1f5f9; cursor: not-allowed;">
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Data da Exportação <span style="color: red;">*</span></label>
                         <input type="date" id="fat-data-exportacao" class="input-moderno" required>
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Moeda <span style="color: red;">*</span></label>
                         <select id="fat-moeda" class="input-moderno" required>
                             <option value="USD">Dólar (USD)</option>
@@ -107,32 +147,36 @@
                         </select>
                     </div>
 
-                    <div class="campo-medio">
+                    <div class="campo-input">
                         <label>Exportador <span style="color: red;">*</span></label>
                         <select id="fat-exportador" class="input-moderno" required>
                             <option value="" disabled selected>Selecione o Exportador...</option>
-                            </select>
+                        </select>
                     </div>
-                    <div class="campo-medio">
+                    
+                    <div class="campo-input">
                         <label>Importador <span style="color: red;">*</span></label>
                         <select id="fat-importador" class="input-moderno" required>
                             <option value="" disabled selected>Selecione o Importador...</option>
-                            </select>
+                        </select>
                     </div>
 
-                    <div>
+                    <div class="campo-input">
                         <label>Peso Bruto (KG) <span style="color: red;">*</span></label>
                         <input type="number" step="0.001" id="fat-peso-bruto" class="input-moderno" placeholder="0,000" required>
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Peso Líquido (KG) <span style="color: red;">*</span></label>
                         <input type="number" step="0.001" id="fat-peso-liquido" class="input-moderno" placeholder="0,000" required>
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Volume / Quantidade <span style="color: red;">*</span></label>
                         <input type="number" id="fat-volume-qtd" class="input-moderno" placeholder="Ex: 10" required>
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Unidade de Volume <span style="color: red;">*</span></label>
                         <select id="fat-volume-unidade" class="input-moderno" required>
                             <option value="Caixas">Caixas</option>
@@ -141,47 +185,46 @@
                         </select>
                     </div>
 
-                    <div class="campo-largo" style="margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
-                        <h4 style="color: #1e253b; margin-bottom: 5px;"><i class="fa-solid fa-box-open"></i> Adicionar Itens à Fatura</h4>
-                        <p style="color: #64748b; font-size: 13px; margin-bottom: 15px;">Busque o item por Nome, Código do Fabricante ou NCM para adicioná-lo à listagem abaixo.</p>
+                    <!-- Seção de Adicionar Itens à Tabela -->
+                    <div class="campo-largo" style="margin-top: 24px; border-top: 2px dashed #e2e8f0; padding-top: 24px;">
+                        <h4 style="color: #1e3a8a; margin-bottom: 4px;"><i class="fa-solid fa-box-open"></i> Adicionar Itens à Fatura</h4>
+                        <p style="color: #64748b; font-size: 13px; margin-bottom: 16px;">Busque o item por Nome, Código do Fabricante ou NCM para adicioná-lo à listagem abaixo.</p>
                     </div>
 
-                    <div class="campo-largo" style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
-                        <div>
-                            <label style="font-size: 13px;">Buscar Item (Nome, Cód ou NCM)</label>
-                            <input type="text" id="busca-item-fatura" class="input-moderno" placeholder="Digite para buscar..." oninput="pesquisarItemFaturaInput()">
-                            <div id="sugestoes-itens-fatura" style="position: absolute; background: white; border: 1px solid #cbd5e1; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 100; width: 35%; display: none; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"></div>
+                    <!-- Área de Filtro de Itens Rápido -->
+                    <div class="campo-largo" style="background: #f8fafc; padding: 24px; border-radius: 10px; border: 1px solid #cbd5e1; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto; gap: 16px; align-items: flex-end;">
+                        <div class="campo-input">
+                            <label style="font-size: 12px; font-weight: bold;">Buscar Item</label>
+                            <input type="text" id="busca-item-fatura" class="input-moderno" placeholder="Nome, Código ou NCM..." oninput="pesquisarItemFaturaInput()">
+                            <div id="sugestoes-itens-fatura" style="position: absolute; background: white; border: 1px solid #cbd5e1; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 100; width: 300px; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
                         </div>
-                        <div>
-                            <label style="font-size: 13px;">NCM do Item</label>
+                        <div class="campo-input">
+                            <label style="font-size: 12px; font-weight: bold;">NCM do Item</label>
                             <input type="text" id="add-item-ncm" class="input-moderno" readonly style="background: #e2e8f0; color: #475569; cursor: not-allowed; font-weight: 500;" placeholder="Bloqueado">
                         </div>
-                        <div>
-                            <label style="font-size: 13px;">Quantidade <span style="color: red;">*</span></label>
+                        <div class="campo-input">
+                            <label style="font-size: 12px; font-weight: bold;">Quantidade <span style="color: red;">*</span></label>
                             <input type="number" id="add-item-qtd" class="input-moderno" placeholder="0" oninput="calcularTotalItemRapido()">
                         </div>
-                        <div>
-                            <label style="font-size: 13px;">Val. Unitário <span style="color: red;">*</span></label>
+                        <div class="campo-input">
+                            <label style="font-size: 12px; font-weight: bold;">Val. Unitário <span style="color: red;">*</span></label>
                             <input type="number" step="0.01" id="add-item-valor" class="input-moderno" placeholder="0.00" oninput="calcularTotalItemRapido()">
                         </div>
                         <div>
-                            <button type="button" class="botao-moderno" style="background: #2563eb; padding: 11px 20px; margin: 0;" onclick="adicionarItemFaturaTabela()">
-                                <i class="fa-solid fa-plus"></i> Inscrever
+                            <button type="button" class="btn-sistema btn-azul" style="padding: 12px 24px;" onclick="adicionarItemFaturaTabela()">
+                                <i class="fa-solid fa-plus"></i> Inserir Item
                             </button>
                         </div>
-                        <div class="campo-largo" style="font-size: 12px; color: #64748b; margin-top: -5px;" id="preview-total-item">
+                        <div class="campo-largo" style="font-size: 13px; color: #475569; margin-top: 4px;" id="preview-total-item">
                             Total deste item: <b>$ 0,00</b>
                         </div>
                     </div>
 
-                    <div class="campo-largo" style="margin-top: 15px;">
-                        <h5 style="color: #475569; margin-bottom: 10px;">Produtos Incluídos nesta Fatura:</h5>
-                        <div style="overflow-x: auto; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                            <table class="tabela-moderna" style="margin: 0; font-size: 14px;">
-                                <style>
-                                    .tabela-moderna th { background: #f1f5f9; color: #475569; padding: 10px; }
-                                    .tabela-moderna td { padding: 10px; }
-                                </style>
+                    <!-- Tabela de Itens Incluídos -->
+                    <div class="campo-largo" style="margin-top: 20px;">
+                        <h5 style="color: #475569; font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-list"></i> Produtos Incluídos nesta Fatura:</h5>
+                        <div class="tabela-container">
+                            <table class="tabela-moderna">
                                 <thead>
                                     <tr>
                                         <th>Item / Descrição</th>
@@ -189,39 +232,41 @@
                                         <th style="text-align: center;">Qtd</th>
                                         <th style="text-align: right;">Val. Unitário</th>
                                         <th style="text-align: right;">Subtotal</th>
-                                        <th style="text-align: center; width: 60px;">Ação</th>
+                                        <th style="text-align: center; width: 80px;">Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tabela-itens-fatura-incluidos">
                                     <tr>
-                                        <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">Nenhum produto inserido nesta fatura ainda.</td>
+                                        <td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Nenhum produto inserido nesta fatura ainda.</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div class="campo-largo" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <span style="font-weight: 600; color: #1e3a8a; font-size: 16px;">VALOR TOTAL DA FATURA:</span>
-                        <span id="fat-valor-total-exibicao" style="font-size: 22px; font-weight: 700; color: #1e3a8a;">$ 0,00</span>
+                    <!-- Rodapé de Valor Total -->
+                    <div class="campo-largo" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                        <span style="font-weight: 700; color: #1e3a8a; font-size: 16px;">VALOR TOTAL DA FATURA:</span>
+                        <span id="fat-valor-total-exibicao" style="font-size: 24px; font-weight: 800; color: #1e3a8a;">$ 0,00</span>
                     </div>
                     
-                    <div class="campo-largo secao-botoes-form" style="margin-top: 20px;">
-                        <button type="submit" class="botao-moderno largura-auto" style="background: #10b981;">Salvar Fatura</button>
-                        <button type="button" class="btn-voltar" style="margin:0;" onclick="resetarAbasFatura()">Limpar</button>
+                    <!-- Botões de Ação do Form -->
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Fatura</button>
+                        <button type="button" class="btn-sistema btn-vermelho" onclick="resetarAbasFatura()"><i class="fa-solid fa-trash-can"></i> Limpar</button>
                     </div>
                 </form>
-                
             </div>
 
+            <!-- SUB-BLOCO: LISTAGEM DE FATURAS -->
             <div id="sub-bloco-lista-faturas" style="display: none;">
                 <div class="barra-pesquisa-container">
                     <i class="fa-solid fa-magnifying-glass icone-busca"></i>
                     <input type="text" id="busca-fatura" class="input-moderno" placeholder="Pesquisar por número, importador ou exportador...">
                 </div>
 
-                <h3>Faturas Emitidas</h3>
-                <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-file-invoice-dollar"></i> Faturas Emitidas</h3>
+                <div class="tabela-container">
                     <table class="tabela-moderna">
                         <thead>
                             <tr>
@@ -235,7 +280,7 @@
                         </thead>
                         <tbody id="tabela-faturas-corpo">
                             <tr>
-                                <td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhuma fatura localizada.</td>
+                                <td colspan="6" style="text-align:center; color:#64748b; padding:24px;">Nenhuma fatura localizada.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -243,78 +288,92 @@
             </div>
         </div>
 
-
-
-        
+        <!-- ==========================================
+           TELA: PAINEL ADICIONAR DADOS (9 CATEGORIAS)
+           ========================================== -->
         <div id="tela-adicionar-dados" class="sub-pagina" style="display: none;">
-            <div class="secao-dashboard">
-                <h1 class="titulo-boasvindas" style="font-size: 36px; margin-bottom: 40px;">Adicionar / Editar Dados</h1>
-                
-                <div class="grid-botoes" style="margin-bottom: 40px;">
-                    <button class="btn-dashboard azul" onclick="mostrarTelaCadastro('cadastro-itens')">
-                        <i class="fa-solid fa-box"></i> Itens
-                    </button>
-                    <button class="btn-dashboard verde-agua" onclick="mostrarTelaCadastro('cadastro-exportadores')">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Exportadores
-                    </button>
-                    <button class="btn-dashboard roxo-claro" onclick="mostrarTelaCadastro('cadastro-importadores')">
-                        <i class="fa-solid fa-arrow-down-left-from-square"></i> Importadores
-                    </button>
-                    <button class="btn-dashboard laranja" onclick="mostrarTelaCadastro('cadastro-transportadoras')">
-                        <i class="fa-solid fa-building"></i> Transportadoras
-                    </button>
-                    <button class="btn-dashboard verde-escuro" onclick="mostrarTelaCadastro('cadastro-caminhoes')">
-                        <i class="fa-solid fa-truck"></i> Caminhões
-                    </button>
-                    <button class="btn-dashboard roxo-escuro" onclick="mostrarTelaCadastro('cadastro-motoristas')">
-                        <i class="fa-solid fa-id-card"></i> Motoristas
-                    </button>
-                    <button class="btn-dashboard vermelho" onclick="mostrarTelaCadastro('cadastro-despachantes')">
-                        <i class="fa-solid fa-clipboard-user"></i> Despachantes
-                    </button>
-                    <button class="btn-dashboard laranja" onclick="mostrarTelaCadastro('cadastro-proprietarios')">
-                        <i class="fa-solid fa-id-card-clip"></i> Proprietários
-                    </button>
-                    <button class="btn-dashboard vermelho" onclick="mostrarTelaCadastro('cadastro-frotas')">
-                        <i class="fa-solid fa-boxes-packing"></i> Frotas
-                    </button>
-                </div>
-
-<button type="button" class="btn-voltar-cinza" onclick="voltarAoMenu()">
-    <i class="fa-solid fa-arrow-left"></i> Voltar
-</button>
+            <button type="button" class="btn-voltar" onclick="voltarAoMenu()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
+            </button>
+            
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h1 style="color: #1e3a8a; font-size: 32px; font-weight: 700; margin-bottom: 8px;">Adicionar / Editar Dados</h1>
+                <p style="color: #64748b; font-size: 16px;">Gerencie e alimente as tabelas do banco de dados para a emissão dos seus documentos.</p>
+            </div>
+            
+            <div class="grade-dados">
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-itens')">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Produtos / Itens</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-exportadores')">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>Exportadores</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-importadores')">
+                    <i class="fa-solid fa-arrow-down-left-from-square"></i>
+                    <span>Importadores</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-transportadoras')">
+                    <i class="fa-solid fa-building-flag"></i>
+                    <span>Transportadoras</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-caminhoes')">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Caminhões</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-motoristas')">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>Motoristas</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-despachantes')">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Despachantes</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-proprietarios')">
+                    <i class="fa-solid fa-address-card"></i>
+                    <span>Proprietários</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-frotas')">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <span>Frotas / Empresas</span>
+                </button>
             </div>
         </div>
 
-<div id="cadastro-exportadores" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+        <!-- ==========================================
+           TELA: CADASTRO DE EXPORTADORES
+           ========================================== -->
+        <div id="cadastro-exportadores" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-exportador"><i class="fa-solid fa-arrow-up-right-from-square"></i> Cadastrar Novo Exportador</h3>
-                
                 <input type="hidden" id="exportador-id-oculto">
 
-                <form id="form-exportador" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-exportador" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Razão Social / Nome do Exportador <span style="color: red;">*</span></label>
                         <input type="text" id="exp-nome" class="input-moderno" placeholder="Ex: Indústria de Alimentos S.A." required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>CNPJ / Identificação Fiscal <span style="color: red;">*</span></label>
                         <input type="text" id="exp-cnpj" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Cidade / Estado <span style="color: red;">*</span></label>
                         <input type="text" id="exp-cidade-estado" class="input-moderno" placeholder="Ex: Foz do Iguaçu / PR" required>
                     </div>
-                    <div class="campo-largo">
+                    <div class="campo-input campo-largo">
                         <label>Endereço Completo <span style="color: red;">*</span></label>
                         <input type="text" id="exp-endereco" class="input-moderno" placeholder="Ex: Av. Brasil, 1500 - Centro" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-exportador" class="botao-moderno largura-auto">Salvar Exportador</button>
-                        <button type="button" id="btn-cancelar-exp-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioExportador()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-exportador" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Exportador</button>
+                        <button type="button" id="btn-cancelar-exp-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioExportador()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -324,69 +383,72 @@
                 <input type="text" id="busca-exportador" class="input-moderno" placeholder="Pesquisar exportadores por nome, CNPJ ou cidade..." oninput="filtrarExportadores()">
             </div>
 
-            <h3>Exportadores Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Exportadores Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Razão Social / Nome</th>
-                            <th>CNPJ</th>
+                            <th>CNPJ / ID Fiscal</th>
                             <th>Cidade / Estado</th>
                             <th>Endereço</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-exportadores-corpo">
-                        </tbody>
+                    <tbody id="tabela-exportadores-corpo"></tbody>
                 </table>
             </div>
         </div>
 
-<div id="cadastro-itens" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+        <!-- ==========================================
+           TELA: CADASTRO DE ITENS (PRODUTOS)
+           ========================================== -->
+        <div id="cadastro-itens" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-item"><i class="fa-solid fa-box"></i> Cadastrar Novo Item</h3>
-                
                 <input type="hidden" id="item-id-oculto">
 
-                <form id="form-item" class="form-grid-layout">
-                    <div class="campo-largo">
-                        <label>Nome do Item / Descrição</label>
+                <form id="form-item" class="form-grupo">
+                    <div class="campo-input campo-largo">
+                        <label>Nome do Item / Descrição <span style="color: red;">*</span></label>
                         <input type="text" id="item-nome" class="input-moderno" placeholder="Ex: Fio de Cobre Eletrolítico" required>
                     </div>
-                    <div>
-                        <label>Unidade</label>
+                    <div class="campo-input">
+                        <label>Unidade <span style="color: red;">*</span></label>
                         <input type="text" id="item-unidade" class="input-moderno" placeholder="Ex: KG, UN, M" required>
                     </div>
-                    <div>
-                        <label>NCM</label>
+                    <div class="campo-input">
+                        <label>NCM <span style="color: red;">*</span></label>
                         <input type="text" id="item-ncm" class="input-moderno" placeholder="Ex: 7408.11.00" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Tipo de Item <span style="color: red;">*</span></label>
-                            <select id="item-tipo" class="input-moderno" required>
-                                <option value="" disabled selected>Selecione o tipo...</option>
-                                <option value="Carga Viva">Carga Viva</option>
-                                <option value="Carga Seca">Carga Seca</option>
-                            </select>
+                        <select id="item-tipo" class="input-moderno" required>
+                            <option value="" disabled selected>Selecione o tipo...</option>
+                            <option value="Carga Viva">Carga Viva</option>
+                            <option value="Carga Seca">Carga Seca</option>
+                        </select>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Processo Produtivo</label>
                         <input type="text" id="item-processo" class="input-moderno" placeholder="Ex: Extrusão">
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Código do Fabricante</label>
                         <input type="text" id="item-cod-fabricante" class="input-moderno" placeholder="Ex: COD-74">
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Fabricante</label>
                         <input type="text" id="item-fabricante" class="input-moderno" placeholder="Ex: Metalúrgica Silva">
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-item" class="botao-moderno largura-auto">Salvar Item</button>
-                        <button type="button" id="btn-cancelar-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioItem()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-item" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Item</button>
+                        <button type="button" id="btn-cancelar-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioItem()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -396,8 +458,8 @@
                 <input type="text" id="busca-item" class="input-moderno" placeholder="Pesquisar itens por nome, NCM ou fabricante..." oninput="filtrarItens()">
             </div>
 
-            <h3>Itens Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Itens Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
@@ -406,47 +468,51 @@
                             <th>NCM</th>
                             <th>Tipo</th>
                             <th>Fabricante</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-itens-corpo">
-                        </tbody>
+                    <tbody id="tabela-itens-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-importadores" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE IMPORTADORES
+           ========================================== -->
+        <div id="cadastro-importadores" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-importador"><i class="fa-solid fa-arrow-down-left-and-arrow-up-right-to-square"></i> Cadastrar Novo Importador</h3>
-                
+                <h3 id="titulo-form-importador"><i class="fa-solid fa-arrow-down-left-from-square"></i> Cadastrar Novo Importador</h3>
                 <input type="hidden" id="importador-id-oculto">
 
-                <form id="form-importador" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-importador" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Razão Social / Nome do Importador <span style="color: red;">*</span></label>
                         <input type="text" id="imp-nome" class="input-moderno" placeholder="Ex: Comercial Internacional S.A." required>
                     </div>
-                    <div>
-                        <label>Documento / Identificação Fiscal (RUT/NIT/CNPJ) <span style="color: red;">*</span></label>
+                    <div class="campo-input">
+                        <label>RUT / NIT / Identificação Fiscal <span style="color: red;">*</span></label>
                         <input type="text" id="imp-documento" class="input-moderno" placeholder="Ex: 21548763-9" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Cidade / Estado / País <span style="color: red;">*</span></label>
                         <input type="text" id="imp-cidade-estado" class="input-moderno" placeholder="Ex: Asunción / Paraguai" required>
                     </div>
-                    <div class="campo-largo">
+                    <div class="campo-input campo-largo">
                         <label>Endereço Completo <span style="color: red;">*</span></label>
                         <input type="text" id="imp-endereco" class="input-moderno" placeholder="Ex: Av. Mariscal López, 245" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Prazo de Pagamento Padrão <span style="color: red;">*</span></label>
                         <input type="text" id="imp-prazo" class="input-moderno" placeholder="Ex: 30 dias / À Vista" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-importador" class="botao-moderno largura-auto">Salvar Importador</button>
-                        <button type="button" id="btn-cancelar-imp-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioImportador()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-importador" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Importador</button>
+                        <button type="button" id="btn-cancelar-imp-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioImportador()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -456,8 +522,8 @@
                 <input type="text" id="busca-importador" class="input-moderno" placeholder="Pesquisar importadores por nome, documento ou país..." oninput="filtrarImportadores()">
             </div>
 
-            <h3>Importadores Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Importadores Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
@@ -466,59 +532,64 @@
                             <th>Cidade / Estado / País</th>
                             <th>Endereço</th>
                             <th>Prazo Padrão</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-importadores-corpo">
-                        </tbody>
+                    <tbody id="tabela-importadores-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-transportadoras" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE TRANSPORTADORAS
+           ========================================== -->
+        <div id="cadastro-transportadoras" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-truck-ramp-box"></i> Cadastrar Nova Transportadora</h3>
-                
+                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-building-flag"></i> Cadastrar Nova Transportadora</h3>
                 <input type="hidden" id="transportadora-id-oculto">
 
-                <form id="form-transportadora" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-transportadora" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Razão Social / Nome da Transportadora <span style="color: red;">*</span></label>
                         <input type="text" id="trans-nome" class="input-moderno" placeholder="Ex: Transportes Internacionais Aliança Ltda" required>
                     </div>
-                    <div>
-                        <label>Documento (CNPJ / RUT) <span style="color: red;">*</span></label>
+                    <div class="campo-input">
+                        <label>CNPJ / RUT / Documento <span style="color: red;">*</span></label>
                         <input type="text" id="trans-doc" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Código de Registro / Código ATIT <span style="color: red;">*</span></label>
                         <input type="text" id="trans-codigo" class="input-moderno" placeholder="Ex: TR-12345/BR" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Cidade / Estado / País <span style="color: red;">*</span></label>
                         <input type="text" id="trans-cidade-estado" class="input-moderno" placeholder="Ex: Foz do Iguaçu / PR" required>
                     </div>
-                    <div class="campo-largo">
+                    <div class="campo-input campo-largo">
                         <label>Endereço Completo <span style="color: red;">*</span></label>
                         <input type="text" id="trans-endereco" class="input-moderno" placeholder="Ex: Av. das Cataratas, 4500 - Vila Yolanda" required>
                     </div>
 
-                    <div class="campo-largo" style="margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 15px;">
-                        <h4 style="color: #475569; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> Representante Legal para o Transporte</h4>
+                    <div class="campo-largo" style="margin-top: 16px; border-top: 1px dashed #e2e8f0; padding-top: 20px;">
+                        <h4 style="color: #475569; margin-bottom: 12px; font-size: 15px;"><i class="fa-solid fa-user-shield"></i> Representante Legal para o Transporte</h4>
                     </div>
-                    <div>
+                    
+                    <div class="campo-input">
                         <label>Nome do Representante <span style="color: red;">*</span></label>
                         <input type="text" id="rep-nome" class="input-moderno" placeholder="Ex: Ricardo Mendes" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Documento do Representante (CPF/RG) <span style="color: red;">*</span></label>
                         <input type="text" id="rep-doc" class="input-moderno" placeholder="Ex: 123.456.789-00" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-transportadora" class="botao-moderno largura-auto">Salvar Transportadora</button>
-                        <button type="button" id="btn-cancelar-trans-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioTransportadora()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-transportadora" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Transportadora</button>
+                        <button type="button" id="btn-cancelar-trans-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioTransportadora()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -528,61 +599,65 @@
                 <input type="text" id="busca-transportadora" class="input-moderno" placeholder="Pesquisar por nome, documento, código ou representante..." oninput="filtrarTransportadoras()">
             </div>
 
-            <h3>Transportadoras Cadastradas</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Transportadoras Cadastradas</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Razão Social</th>
                             <th>Documento</th>
-                            <th>Código</th>
+                            <th>Código ATIT</th>
                             <th>Localidade</th>
                             <th>Representante</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-transportadoras-corpo">
-                        </tbody>
+                    <tbody id="tabela-transportadoras-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-caminhoes" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE CAMINHÕES
+           ========================================== -->
+        <div id="cadastro-caminhoes" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-caminhao"><i class="fa-solid fa-truck"></i> Cadastrar Novo Caminhão</h3>
-                
                 <input type="hidden" id="caminhao-id-oculto">
 
-                <form id="form-caminhao" class="form-grid-layout">
-                    <div>
+                <form id="form-caminhao" class="form-grupo">
+                    <div class="campo-input">
                         <label>Placa <span style="color: red;">*</span></label>
                         <input type="text" id="cam-placa" class="input-moderno" placeholder="Ex: ABC1D23" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Chassi <span style="color: red;">*</span></label>
                         <input type="text" id="cam-chassi" class="input-moderno" placeholder="Digite o chassi" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Marca / Modelo <span style="color: red;">*</span></label>
                         <input type="text" id="cam-marca" class="input-moderno" placeholder="Ex: Scania R450" required>
                     </div>
-                    <div>
-                        <label>Ano <span style="color: red;">*</span></label>
+                    <div class="campo-input">
+                        <label>Ano de Fabricação <span style="color: red;">*</span></label>
                         <input type="text" id="cam-ano" class="input-moderno" placeholder="Ex: 2022" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Tração (Eixos) <span style="color: red;">*</span></label>
                         <input type="text" id="cam-tracao" class="input-moderno" placeholder="Ex: 6x2" required>
                     </div>
-                    <div>
-                        <label>Proprietário <span style="color: red;">*</span></label>
+                    <div class="campo-input">
+                        <label>Proprietário do Veículo <span style="color: red;">*</span></label>
                         <input type="text" id="cam-proprietario" class="input-moderno" placeholder="Razão Social ou Nome" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-caminhao" class="botao-moderno largura-auto">Salvar Caminhão</button>
-                        <button type="button" id="btn-cancelar-cam-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioCaminhao()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-caminhao" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Caminhão</button>
+                        <button type="button" id="btn-cancelar-cam-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioCaminhao()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -592,8 +667,8 @@
                 <input type="text" id="busca-caminhao" class="input-moderno" placeholder="Pesquisar por placa, marca, proprietário..." oninput="filtrarCaminhoes()">
             </div>
 
-            <h3>Caminhões Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Caminhões Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
@@ -602,43 +677,47 @@
                             <th>Ano</th>
                             <th>Tração</th>
                             <th>Proprietário</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-caminhoes-corpo">
-                        </tbody>
+                    <tbody id="tabela-caminhoes-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-motoristas" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE MOTORISTAS
+           ========================================== -->
+        <div id="cadastro-motoristas" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-motorista"><i class="fa-solid fa-id-card"></i> Cadastrar Novo Motorista</h3>
-                
                 <input type="hidden" id="motorista-id-oculto">
 
-                <form id="form-motorista" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-motorista" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Nome Completo <span style="color: red;">*</span></label>
                         <input type="text" id="moto-nome" class="input-moderno" placeholder="Ex: João da Silva" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Documento Pessoal (CPF/RG) <span style="color: red;">*</span></label>
                         <input type="text" id="moto-doc" class="input-moderno" placeholder="Ex: 123.456.789-00" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Nacionalidade</label>
                         <input type="text" id="moto-nacionalidade" class="input-moderno" placeholder="Ex: Brasileira">
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>CNH / Carteira de Habilitação</label>
                         <input type="text" id="moto-cnh" class="input-moderno" placeholder="Ex: 98765432100">
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-motorista" class="botao-moderno largura-auto">Salvar Motorista</button>
-                        <button type="button" id="btn-cancelar-moto-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioMotorista()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-motorista" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Motorista</button>
+                        <button type="button" id="btn-cancelar-moto-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioMotorista()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -648,8 +727,8 @@
                 <input type="text" id="busca-motorista" class="input-moderno" placeholder="Pesquisar motoristas por nome, documento ou CNH..." oninput="filtrarMotoristas()">
             </div>
 
-            <h3>Motoristas Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Motoristas Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
@@ -657,39 +736,43 @@
                             <th>Documento</th>
                             <th>Nacionalidade</th>
                             <th>CNH</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-motoristas-corpo">
-                        </tbody>
+                    <tbody id="tabela-motoristas-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-despachantes" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE DESPACHANTES
+           ========================================== -->
+        <div id="cadastro-despachantes" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-despachante"><i class="fa-solid fa-user-tie"></i> Cadastrar Novo Despachante</h3>
-                
                 <input type="hidden" id="despachante-id-oculto">
 
-                <form id="form-despachante" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-despachante" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Nome do Despachante <span style="color: red;">*</span></label>
                         <input type="text" id="desp-nome" class="input-moderno" placeholder="Ex: Carlos Alberto de Souza" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Documento (CPF/CNPJ) <span style="color: red;">*</span></label>
                         <input type="text" id="desp-documento" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Registro Profissional / Matrícula <span style="color: red;">*</span></label>
                         <input type="text" id="desp-registro" class="input-moderno" placeholder="Ex: DESP-PR-4562" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-despachante" class="botao-moderno largura-auto">Salvar Despachante</button>
-                        <button type="button" id="btn-cancelar-desp-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioDespachante()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-despachante" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Despachante</button>
+                        <button type="button" id="btn-cancelar-desp-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioDespachante()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -699,46 +782,51 @@
                 <input type="text" id="busca-despachante" class="input-moderno" placeholder="Pesquisar por nome, documento ou registro..." oninput="filtrarDespachantes()">
             </div>
 
-            <h3>Despachantes Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Despachantes Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Nome do Despachante</th>
                             <th>Documento</th>
                             <th>Registro Profissional</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-despachantes-corpo">
-                        </tbody>
+                    <tbody id="tabela-despachantes-corpo"></tbody>
                 </table>
             </div>
         </div>
-<div id="cadastro-proprietarios" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+
+        <!-- ==========================================
+           TELA: CADASTRO DE PROPRIETÁRIOS
+           ========================================== -->
+        <div id="cadastro-proprietarios" class="tela-cadastro-final sub-pagina" style="display: none;">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-proprietario"><i class="fa-solid fa-id-card-clip"></i> Cadastrar Novo Proprietário</h3>
+                <h3 id="titulo-form-proprietario"><i class="fa-solid fa-address-card"></i> Cadastrar Novo Proprietário</h3>
                 <input type="hidden" id="proprietario-id-oculto">
 
-                <form id="form-proprietario" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-proprietario" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Nome do Proprietário / Razão Social <span style="color: red;">*</span></label>
                         <input type="text" id="prop-nome" class="input-moderno" placeholder="Ex: José Carlos dos Santos" required>
                     </div>
-                    <div>
+                    <div class="campo-input">
                         <label>Documento (CPF/CNPJ) <span style="color: red;">*</span></label>
                         <input type="text" id="prop-doc" class="input-moderno" placeholder="Ex: 000.000.000-00" required>
                     </div>
-                    <div class="campo-largo">
+                    <div class="campo-input campo-largo">
                         <label>Endereço Completo <span style="color: red;">*</span></label>
                         <input type="text" id="prop-endereco" class="input-moderno" placeholder="Ex: Rua das Palmeiras, 123 - Centro" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-proprietario" class="botao-moderno largura-auto">Salvar Proprietário</button>
-                        <button type="button" id="btn-cancelar-prop-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioProprietario()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-proprietario" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Proprietário</button>
+                        <button type="button" id="btn-cancelar-prop-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioProprietario()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -748,15 +836,15 @@
                 <input type="text" id="busca-proprietario" class="input-moderno" placeholder="Pesquisar por nome ou documento..." oninput="filtrarProprietarios()">
             </div>
 
-            <h3>Proprietários Cadastrados</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Proprietários Cadastrados</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Nome / Razão Social</th>
                             <th>Documento</th>
                             <th>Endereço</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="tabela-proprietarios-corpo"></tbody>
@@ -764,30 +852,35 @@
             </div>
         </div>
 
+        <!-- ==========================================
+           TELA: CADASTRO DE FROTAS / EMPRESAS REPO.
+           ========================================== -->
         <div id="cadastro-frotas" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoPainelDados()"><i class="fa-solid fa-arrow-left"></i> Voltar para Dados</button>
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
             
             <div class="cartao-cadastro">
                 <h3 id="titulo-form-frota"><i class="fa-solid fa-boxes-packing"></i> Cadastrar Nova Frota</h3>
                 <input type="hidden" id="frota-id-oculto">
 
-                <form id="form-frota" class="form-grid-layout">
-                    <div class="campo-largo">
+                <form id="form-frota" class="form-grupo">
+                    <div class="campo-input campo-largo">
                         <label>Nome da Frota / Empresa Responsável <span style="color: red;">*</span></label>
                         <input type="text" id="frota-nome" class="input-moderno" placeholder="Ex: Frota Sul Logística" required>
                     </div>
-                    <div>
-                        <label>Documento Identificador (CNPJ) <span style="color: red;">*</span></label>
+                    <div class="campo-input">
+                        <label>CNPJ / Documento Identificador <span style="color: red;">*</span></label>
                         <input type="text" id="frota-doc" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
-                    <div class="campo-largo">
+                    <div class="campo-input campo-largo">
                         <label>Endereço Operacional <span style="color: red;">*</span></label>
                         <input type="text" id="frota-endereco" class="input-moderno" placeholder="Ex: Av. JK, 2500 - Distrito Industrial" required>
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-frota" class="botao-moderno largura-auto">Salvar Frota</button>
-                        <button type="button" id="btn-cancelar-frota-edicao" class="btn-voltar" style="display:none; margin:0;" onclick="limparFormularioFrota()">Cancelar</button>
+                        <button type="submit" id="btn-salvar-frota" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Frota</button>
+                        <button type="button" id="btn-cancelar-frota-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioFrota()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -797,49 +890,70 @@
                 <input type="text" id="busca-frota" class="input-moderno" placeholder="Pesquisar por nome da frota ou CNPJ..." oninput="filtrarFrotas()">
             </div>
 
-            <h3>Frotas Cadastradas</h3>
-            <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Frotas Cadastradas</h3>
+            <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Nome da Frota</th>
                             <th>CNPJ / Documento</th>
                             <th>Endereço</th>
-                            <th style="text-align: center; width: 150px;">Ações</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="tabela-frotas-corpo"></tbody>
                 </table>
             </div>
         </div>
+
+        <!-- ==========================================
+           TELAS EM DESENVOLVIMENTO (CRT, MIC, EDICAO)
+           ========================================== -->
         <div id="tela-fatura" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Criar Fatura</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-solid fa-file-invoice"></i> Criar Fatura</h2>
+            <p style="color: #64748b;">Módulo de faturamento em processamento aduaneiro...</p>
         </div>
+        
         <div id="tela-editar-fatura" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Editar Fatura</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-solid fa-pen-to-square"></i> Editar Fatura</h2>
+            <p style="color: #64748b;">Pesquise e gerencie suas faturas comerciais salvas...</p>
         </div>
+        
         <div id="tela-crt" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Criar CRT</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-solid fa-truck-moving"></i> Criar Conhecimento de Transporte (CRT)</h2>
+            <p style="color: #64748b;">Área em desenvolvimento para integração das tabelas de motoristas, frotas, caminhões e rotas.</p>
         </div>
+        
         <div id="tela-editar-crt" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Editar CRT</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-solid fa-file-shield"></i> Editar CRT</h2>
+            <p style="color: #64748b;">Listagem geral de conhecimentos de transporte para reemissão ou modificações...</p>
         </div>
+        
         <div id="tela-mic" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Criar MIC</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-solid fa-truck-ramp-box"></i> Criar Manifesto Internacional (MIC)</h2>
+            <p style="color: #64748b;">Área em desenvolvimento para consolidação alfandegária e geração do manifesto.</p>
         </div>
+        
         <div id="tela-editar-mic" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <h2 style="color: #2563eb; margin-bottom: 12px;">Editar MIC</h2><p>Área em desenvolvimento...</p>
+            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-regular fa-folder-open"></i> Editar MIC</h2>
+            <p style="color: #64748b;">Consulte manifestos de cargas e folhas de rotas vigentes ou finalizadas...</p>
         </div>
 
     </div>
     
+    <!-- ==========================================
+       SCRIPTS E LÓGICA DE PROGRAMAÇÃO
+       ========================================== -->
+    <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Scripts dos Módulos do Sistema -->
     <script src="app.js"></script>
     <script src="js/itens.js"></script>
     <script src="js/motoristas.js"></script>
@@ -853,5 +967,3 @@
     <script src="js/faturas.js"></script>
 </body>
 </html>
-
-
