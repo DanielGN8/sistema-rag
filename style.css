@@ -339,6 +339,11 @@ body {
     grid-column: 1 / -1;
 }
 
+/* Faz o campo ocupar 3 das 4 colunas disponíveis na linha */
+.campo-triplo {
+    grid-column: span 3;
+}
+
 .secao-botoes-form {
     grid-column: 1 / -1;
     display: flex;
