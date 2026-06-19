@@ -939,11 +939,59 @@
             <p style="color: #64748b;">Área em desenvolvimento para consolidação alfandegária e geração do manifesto.</p>
         </div>
         
-        <div id="tela-djo-ncm" class="tela-cadastro-final sub-pagina" style="display: none;">
-            <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-regular fa-folder-open"></i> Editar MIC</h2>
-            <p style="color: #64748b;">Consulte manifestos de cargas e folhas de rotas vigentes ou finalizadas...</p>
+<div id="tela-djo-ncm" class="tela-cadastro-final sub-pagina" style="display: none;">
+    <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+    <h2 style="color: #1e3a8a; margin-bottom: 20px;"><i class="fa-solid fa-gavel"></i> Declarações e NCM</h2>
+
+    <div id="djo-menu-inicial" class="grid-botoes-modulos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+        <button class="btn-moderno" onclick="abrirFluxoDJO()" style="padding: 20px; font-size: 16px; height: auto;">
+            <i class="fa-solid fa-print" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+            Imprimir DJO de um Item
+        </button>
+        <button class="btn-moderno" onclick="abrirConsultaNCM()" style="padding: 20px; font-size: 16px; height: auto; background-color: #64748b;">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+            Consultar NCMs (Breve)
+        </button>
+    </div>
+
+    <div id="djo-fluxo-selecao" style="display: none; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3>Selecione o Item para Gerar a DJO</h3>
+            <button class="btn-moderno" onclick="voltarMenuDJO()" style="background-color: #64748b; padding: 8px 16px;">
+                <i class="fa-solid fa-chevron-left"></i> Voltar
+            </button>
         </div>
+
+        <div class="grupo-pesquisa" style="margin-bottom: 20px;">
+            <input type="text" id="pesquisa-item-djo" class="input-moderno" placeholder="Digite a descrição ou NCM para buscar..." oninput="filtrarItensDJO()">
+        </div>
+
+        <div class="tabela-container" style="background: white; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                    <tr>
+                        <th style="padding: 12px 16px; color: #64748b; font-weight: 600;">Descrição do Item</th>
+                        <th style="padding: 12px 16px; color: #64748b; font-weight: 600; width: 150px;">NCM</th>
+                        <th style="padding: 12px 16px; color: #64748b; font-weight: 600; width: 150px;">Tipo de Carga</th>
+                        <th style="padding: 12px 16px; color: #64748b; font-weight: 600; width: 120px; text-align: center;">Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-itens-djo-corpo">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="ncm-fluxo-consulta" style="display: none; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3>Consulta de NCMs</h3>
+            <button class="btn-moderno" onclick="voltarMenuDJO()" style="background-color: #64748b; padding: 8px 16px;">
+                <i class="fa-solid fa-chevron-left"></i> Voltar
+            </button>
+        </div>
+        <p style="color: #64748b;">Área de consulta e gerenciamento de NCMs em desenvolvimento...</p>
+    </div>
+</div>
 
     </div>
     
@@ -965,5 +1013,6 @@
     <script src="js/proprietarios.js"></script>
     <script src="js/frotas.js"></script>
     <script src="js/faturas.js"></script>
+    <script src="js/djo.js"></script>
 </body>
 </html>
