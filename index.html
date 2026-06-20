@@ -930,8 +930,21 @@
         
         <div id="tela-djo-ncm" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoMenu()"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
-            <h2 style="color: #1e3a8a; margin-bottom: 12px;"><i class="fa-regular fa-folder-open"></i> Editar MIC</h2>
-            <p style="color: #64748b;">Consulte manifestos de cargas e folhas de rotas vigentes ou finalizadas...</p>
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h1 style="color: #1e3a8a; font-size: 32px; font-weight: 700; margin-bottom: 8px;">Adicionar / Editar Dados</h1>
+                <p style="color: #64748b; font-size: 16px;">Gerencie e alimente as tabelas do banco de dados para a emissão dos seus documentos.</p>
+            </div>
+            
+            <div class="grade-dados">
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-itens')">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Produtos / Itens</span>
+                </button>
+                <button class="btn-dado" onclick="mostrarTelaCadastro('cadastro-exportadores')">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>Exportadores</span>
+                </button>
+            </div>
         </div>
 
     </div>
