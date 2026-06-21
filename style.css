@@ -450,6 +450,121 @@ body {
 }
 
 /* ==========================================
+   CONSULTA NCM - CARD INFORMATIVO DE ATUALIZAÇÃO
+   (Editável diretamente no HTML)
+   ========================================== */
+.card-info-atualizacao {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+
+.info-atualizacao-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 13px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-atualizacao-cabecalho i {
+    font-size: 16px;
+}
+
+.info-atualizacao-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #3b82f6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.info-item p {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* ==========================================
+   CONSULTA NCM - CARTÃO DE RESULTADO
+   ========================================== */
+.resultado-ncm-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 22px;
+    animation: surgirResultado 0.25s ease;
+}
+
+.resultado-ncm-card i {
+    font-size: 22px;
+    color: #0d9488;
+    margin-top: 2px;
+}
+
+.resultado-ncm-codigo {
+    display: inline-block;
+    background-color: #1e3a8a;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.resultado-ncm-descricao {
+    font-size: 15px;
+    color: #334155;
+    line-height: 1.6;
+}
+
+.resultado-ncm-card.nao-encontrado {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+
+.resultado-ncm-card.nao-encontrado i {
+    color: #ef4444;
+}
+
+.resultado-ncm-card.nao-encontrado strong {
+    display: block;
+    color: #b91c1c;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.resultado-ncm-card.nao-encontrado p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+@keyframes surgirResultado {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
    CAIXAS DE ALERTA E POPUPS PERSONALIZADOS
    ========================================== */
 .modal-alerta-overlay {
