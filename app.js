@@ -82,6 +82,16 @@ function mostrarTelaCadastro(idCadastro) {
     document.getElementById(idCadastro).style.display = 'block';
 }
 
+// Abre um formulário específico dentro do Painel de Dados
+function mostrarTelaDJONCM(idDJONCM) {
+    console.log("Abrindo tela DJO/NCM:", idDJONCM);
+    // Esconde o painel com a grade de botões de dados
+    document.getElementById('tela-djo-ncm').style.display = 'none';
+    // Mostra o formulário escolhido
+    document.getElementById(idCadastro).style.display = 'block';
+}
+
+
 // Volta para o menu inicial de boas-vindas limpando qualquer tela aberta
 function voltarAoMenu() {
     console.log("Voltando para o Menu Principal...");
