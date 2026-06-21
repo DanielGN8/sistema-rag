@@ -974,30 +974,33 @@
     </button>
     
     <div class="cartao-cadastro" style="margin-bottom: 20px; border-left: 4px solid #3b82f6; background-color: #f8fafc;">
-        <h4 style="margin-bottom: 8px; color: #1e293b;"><i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i> Informações de Atualização do Banco</h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 13px; color: #64748b;">
-            <div><strong>Normativa Vigente:</strong> Instrução Normativa RFB nº 2.123/2023</div>
-            <div><strong>Data da Normativa:</strong> 15/12/2023</div>
-            <div><strong>Sincronizado em:</strong> 21/06/2026</div>
-        </div>
+        <h4 style="margin-bottom: 10px; color: #1e293b;"><i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i> Informações de Atualização do Banco</h4>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 4px;"><strong>Normativa Vigente:</strong> Instrução Normativa RFB nº 2.123/2023</p>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 4px;"><strong>Data da Normativa:</strong> 15/12/2023</p>
+        <p style="font-size: 13px; color: #64748b;"><strong>Sincronizado em:</strong> 21/06/2026</p>
     </div>
 
     <div class="cartao-cadastro">
         <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-magnifying-glass"></i> Consultar Código NCM</h3>
         
         <div class="form-grupo" style="margin-bottom: 20px;">
-            <label for="pesquisa-ncm-input">Digite o NCM (Apenas números):</label>
-            <div style="position: relative; display: flex; align-items: center;">
-                <input type="text" 
-                       id="pesquisa-ncm-input" 
-                       class="input-moderno" 
-                       placeholder="0000.00.00" 
-                       maxlength="10" 
-                       autocomplete="off"
-                       style="padding-left: 40px; font-size: 16px; font-weight: 600; letter-spacing: 1px;">
-                <i class="fa-solid fa-hashtag" style="position: absolute; left: 15px; color: #94a3b8;"></i>
+            <label for="pesquisa-ncm-input">Digite o NCM:</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div style="position: relative; flex: 1;">
+                    <input type="text" 
+                           id="pesquisa-ncm-input" 
+                           class="input-moderno" 
+                           placeholder="0000.00.00" 
+                           maxlength="10" 
+                           autocomplete="off"
+                           style="padding-left: 40px; font-size: 16px; font-weight: 600; letter-spacing: 1px;">
+                    <i class="fa-solid fa-hashtag" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                </div>
+                <button type="button" id="btn-pesquisar-ncm" class="btn-acao btn-salvar" style="height: 45px; padding: 0 20px; white-space: nowrap; margin-top: 0;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                </button>
             </div>
-            <small style="color: #64748b; margin-top: 5px; display: block;">A busca começará automaticamente assim que digitar os 8 números ou pressionar Enter.</small>
+            <small style="color: #64748b; margin-top: 5px; display: block;">Digite os números e clique em Pesquisar ou aperte Enter.</small>
         </div>
 
         <div id="resultado-ncm-container" style="display: none; margin-top: 25px;">
