@@ -123,6 +123,18 @@ function voltarAoPainelDados() {
     document.getElementById('tela-adicionar-dados').style.display = 'block';
 }
 
+// Volta especificamente das sub-páginas para a grade do Painel de DJO e NCMs
+function voltarAoPainelDJONCM() {
+    console.log("Voltando para o Painel da DJO e NCM...");
+    
+    // 1. Esconde as telas de cadastro específicas que usam a classe sub-pagina
+    const telas = document.querySelectorAll('.sub-pagina');
+    telas.forEach(t => t.style.display = 'none');
+
+    // 2. Reexibe a tela principal com a listagem de botões de dados
+    document.getElementById('tela-djo-ncm').style.display = 'block';
+}
+
 // ==========================================
 // SISTEMA INTELIGENTE DE ALERTAS PERSONALIZADOS
 // ==========================================
