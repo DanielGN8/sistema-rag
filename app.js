@@ -131,7 +131,13 @@ function voltarAoPainelDJONCM() {
     const telas = document.querySelectorAll('.sub-pagina');
     telas.forEach(t => t.style.display = 'none');
 
-    // 2. Reexibe a tela principal com a listagem de botões de dados
+    // 2. Limpa o campo e o resultado da Consulta NCM ao sair
+    const campoBusca = document.getElementById('busca-ncm');
+    const resultado = document.getElementById('resultado-ncm-container');
+    if (campoBusca) campoBusca.value = '';
+    if (resultado) resultado.innerHTML = '';
+    
+    // 3. Reexibe a tela principal com a listagem de botões de dados
     document.getElementById('tela-djo-ncm').style.display = 'block';
 }
 
