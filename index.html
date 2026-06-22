@@ -949,7 +949,6 @@
             </div>
         </div>
 
-    </div>
         <!-- ==========================================
            TELA: GERAR DJO
            ========================================== -->
@@ -968,59 +967,59 @@
            TELA: CONSULTA NCM
            ========================================== -->
 
-<div id="consulta-NCM" class="tela-cadastro-final sub-pagina" style="display: none;">
-    <button class="btn-voltar" onclick="voltarAoPainelDJONCM()">
-        <i class="fa-solid fa-arrow-left"></i> Voltar para DJO/NCM
-    </button>
+    <div id="consulta-NCM" class="tela-cadastro-final sub-pagina" style="display: none;">
+        <button class="btn-voltar" onclick="voltarAoPainelDJONCM()">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para DJO/NCM
+        </button>
 
-    <div style="margin-bottom: 24px;">
-        <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;"><i class="fa-brands fa-earlybirds"></i> Consulta de NCM</h2>
-        <p style="color: #64748b;">Pesquise o código NCM para visualizar a descrição cadastrada na base de dados.</p>
-    </div>
+        <div style="margin-bottom: 24px;">
+            <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;"><i class="fa-brands fa-earlybirds"></i> Consulta de NCM</h2>
+            <p style="color: #64748b;">Pesquise o código NCM para visualizar a descrição cadastrada na base de dados.</p>
+        </div>
 
     <!-- ==========================================
          CARD INFORMATIVO - EDIÇÃO MANUAL
          Atualize os 3 campos abaixo (texto dentro das tags <p>) toda vez
          que uma nova tabela de NCMs for subida no Supabase.
          ========================================== -->
-    <div class="card-info-atualizacao">
-        <div class="info-atualizacao-cabecalho">
-            <i class="fa-solid fa-circle-info"></i>
-            <span>Última Atualização da Base de NCMs</span>
+        <div class="card-info-atualizacao">
+            <div class="info-atualizacao-cabecalho">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Última Atualização da Base de NCMs</span>
+            </div>
+            <div class="info-atualizacao-grid">
+                <div class="info-item">
+                    <label>Normativa Vigente</label>
+                    <p>Resolução GECEX nº 000/0000</p>                                       <!-- edite aqui -->
+                </div>
+                <div class="info-item">
+                    <label>Data da Normativa</label>                                         <!-- edite aqui -->
+                    <p>00/00/0000</p>
+                </div>
+                <div class="info-item">
+                    <label>Adicionado ao Banco em</label>
+                    <p>00/00/0000</p>                                                        <!-- edite aqui -->
+                </div>
+            </div>
         </div>
-        <div class="info-atualizacao-grid">
-            <div class="info-item">
-                <label>Normativa Vigente</label>
-                <p>Resolução GECEX nº 000/0000</p>                                       <!-- edite aqui -->
-            </div>
-            <div class="info-item">
-                <label>Data da Normativa</label>                                         <!-- edite aqui -->
-                <p>00/00/0000</p>
-            </div>
-            <div class="info-item">
-                <label>Adicionado ao Banco em</label>
-                <p>00/00/0000</p>                                                        <!-- edite aqui -->
-            </div>
+
+        <div class="cartao-cadastro">
+            <h3><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Código NCM</h3>
+
+            <form id="form-consulta-ncm" onsubmit="event.preventDefault(); pesquisarNCM();" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px;">
+                <div class="campo-input" style="flex: 1; min-width: 220px; max-width: 320px;">
+                    <label>Código NCM</label>
+                    <input type="text" id="busca-ncm" class="input-moderno" placeholder="0000.00.00" maxlength="10" inputmode="numeric" autocomplete="off" oninput="formatarEntradaNCM(this)">
+                </div>
+                <button type="submit" id="btn-pesquisar-ncm" class="btn-sistema btn-azul">
+                    <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                </button>
+            </form>
+
+            <div id="resultado-ncm-container" style="margin-top: 24px;"></div>
         </div>
     </div>
-
-    <div class="cartao-cadastro">
-        <h3><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Código NCM</h3>
-
-        <form id="form-consulta-ncm" onsubmit="event.preventDefault(); pesquisarNCM();" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px;">
-            <div class="campo-input" style="flex: 1; min-width: 220px; max-width: 320px;">
-                <label>Código NCM</label>
-                <input type="text" id="busca-ncm" class="input-moderno" placeholder="0000.00.00" maxlength="10" inputmode="numeric" autocomplete="off" oninput="formatarEntradaNCM(this)">
-            </div>
-            <button type="submit" id="btn-pesquisar-ncm" class="btn-sistema btn-azul">
-                <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
-            </button>
-        </form>
-
-        <div id="resultado-ncm-container" style="margin-top: 24px;"></div>
-    </div>
-</div>
-    
+</div>    
     <!-- ==========================================
        SCRIPTS E LÓGICA DE PROGRAMAÇÃO
        ========================================== -->
