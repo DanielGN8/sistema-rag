@@ -682,3 +682,9 @@ body {
 .modal-alerta-botao.info:hover {
     background-color: #2563eb;
 }
+
+/* Dígitos (0-9) dentro da descrição do NCM: negrito + azul chamativo */
+.ncm-digito {
+    font-weight: 700;
+    color: #1d4ed8;
+}
