@@ -42,7 +42,7 @@ async function pesquisarNCM() {
     try {
         const { data, error } = await supabaseClient
             .from('ncm_exp')
-            .select('codigo_ncm, descricao_ncm')
+            .select('codigo_ncm, descricao_concatenada')
             .eq('codigo_ncm', codigo)
             .maybeSingle();
 
@@ -70,7 +70,7 @@ async function pesquisarNCM() {
                 <i class="fa-solid fa-circle-check"></i>
                 <div>
                     <div class="resultado-ncm-codigo">${data.codigo_ncm}</div>
-                    <div class="resultado-ncm-descricao">${data.descricao_ncm}</div>
+                    <div class="resultado-ncm-descricao">${data.descricao_concatenada}</div>
                 </div>
             </div>
         `;
