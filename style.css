@@ -535,7 +535,7 @@ body {
 .resultado-ncm-descricao {
     font-size: 15px;
     color: #334155;
-    line-height: 1.6;
+    line-height: 2;
 }
 
 .resultado-ncm-card.nao-encontrado {
