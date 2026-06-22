@@ -18,6 +18,26 @@ function formatarEntradaNCM(input) {
     input.value = formatado;
 }
 
+// Formata o texto da descrição com dois efeitos visuais:
+// 1. Todo dígito (0-9) fica em negrito e azul chamativo
+// 2. Insere uma quebra de linha antes do código exato que foi pesquisado,
+//    destacando-o como uma "âncora" no meio do texto concatenado
+function formatarDescricaoNCM(texto, codigoPesquisado) {
+    // Escapa caracteres especiais do código para usar em regex com segurança
+    const codigoEscapado = codigoPesquisado.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    // Passo 1: insere <br> antes do código exato pesquisado
+    texto = texto.replace(
+        new RegExp(codigoEscapado, 'g'),
+        `<br>${codigoPesquisado}`
+    );
+
+    // Passo 2: envolve cada dígito com uma span estilizada (negrito + azul)
+    texto = texto.replace(/\d/g, '<span class="ncm-digito">$&</span>');
+
+    return texto;
+}
+
 // Consulta o código digitado na tabela 'ncm_exp' do Supabase
 // e exibe a descrição encontrada (ou um aviso de "não encontrado")
 async function pesquisarNCM() {
@@ -65,12 +85,14 @@ async function pesquisarNCM() {
             return;
         }
 
+        const descricaoFormatada = formatarDescricaoNCM(data.descricao_concatenada, codigo);
+
         container.innerHTML = `
             <div class="resultado-ncm-card">
                 <i class="fa-solid fa-circle-check"></i>
                 <div>
                     <div class="resultado-ncm-codigo">${data.codigo_ncm}</div>
-                    <div class="resultado-ncm-descricao">${data.descricao_concatenada}</div>
+                    <div class="resultado-ncm-descricao">${descricaoFormatada}</div>
                 </div>
             </div>
         `;
