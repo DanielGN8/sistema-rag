@@ -953,73 +953,159 @@
            TELA: GERAR DJO
            ========================================== -->
 
-<div id="djo" class="tela-cadastro-final sub-pagina" style="display: none;">
+        <div id="djo" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDJONCM()">
                 <i class="fa-solid fa-arrow-left"></i> Voltar para DJO/NCM
             </button>
-            
-            <div class="cartao-cadastro">
-                <h3 id="teste"><i class="fa-solid fa-boxes-packing"></i> Página Sendo montada!</h3>
+
+            <div style="margin-bottom: 24px;">
+                <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;">
+                    <i class="fa-solid fa-file-lines"></i> Declaração Juramentada de Origem
+                </h2>
+                <p style="color: #64748b;">Selecione o item, preencha os campos obrigatórios e gere o documento.</p>
             </div>
-</div>
+
+            <!-- AVISO: NORMA DE ORIGEM -->
+            <div class="card-aviso-djo">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Módulo funcional para Itens com a <strong>Norma de Origem A</strong></span>
+            </div>
+
+            <!-- ETAPA 1: BUSCA E SELEÇÃO DE ITEM -->
+            <div class="cartao-cadastro">
+                <h3><i class="fa-solid fa-magnifying-glass"></i> Etapa 1 — Selecionar Item</h3>
+                <p style="color: #64748b; font-size: 14px; margin: 8px 0 20px 0;">Pesquise pelo nome do item, NCM, código ou fabricante.</p>
+
+                <div class="barra-pesquisa-container">
+                    <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                    <input type="text" id="busca-item-djo" class="input-moderno"
+                        placeholder="Digite o nome, NCM, código do fabricante ou fabricante..."
+                        oninput="pesquisarItemDJO(this.value)">
+                </div>
+
+                <div id="djo-resultados-container" style="margin-top: 8px;">
+                    <p class="djo-hint"><i class="fa-solid fa-circle-info"></i> Digite pelo menos 2 caracteres para buscar.</p>
+                </div>
+            </div>
+
+            <!-- ITEM SELECIONADO (aparece após a seleção) -->
+            <div id="djo-item-selecionado-card" style="display: none;" class="cartao-cadastro">
+                <h3><i class="fa-solid fa-circle-check" style="color: #0d9488;"></i> Item Selecionado</h3>
+                <div id="djo-item-selecionado-info" class="djo-item-info-grid"></div>
+                <button class="btn-sistema btn-vermelho" style="margin-top: 16px; font-size: 13px; padding: 8px 14px;" onclick="limparSelecaoDJO()">
+                    <i class="fa-solid fa-xmark"></i> Trocar Item
+                </button>
+            </div>
+
+            <!-- ETAPA 2: CAMPOS OBRIGATÓRIOS (aparece após a seleção) -->
+            <div id="djo-campos-obrigatorios" style="display: none;" class="cartao-cadastro">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Etapa 2 — Dados do Documento</h3>
+                <p style="color: #64748b; font-size: 14px; margin: 8px 0 20px 0;">Preencha os campos obrigatórios antes de gerar a DJO.</p>
+
+                <div class="form-grupo">
+
+                    <!-- NÚMERO DJO -->
+                    <div class="campo-input">
+                        <label>Número DJO <span style="color: red;">*</span></label>
+                        <input type="text" id="djo-numero" class="input-moderno" placeholder="Ex: 001/2025">
+                    </div>
+
+                    <!-- DATA -->
+                    <div class="campo-input">
+                        <label>Data do Documento <span style="color: red;">*</span></label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label class="djo-checkbox-label">
+                                <input type="checkbox" id="djo-usar-data-hoje" checked onchange="toggleDataDJO()">
+                                Usar data de hoje automaticamente
+                            </label>
+                            <input type="date" id="djo-data-manual" class="input-moderno" disabled
+                                style="opacity: 0.45; cursor: not-allowed;">
+                        </div>
+                    </div>
+
+                    <!-- OPÇÃO EXPORTADOR = PRODUTOR -->
+                    <div class="campo-input campo-largo">
+                        <label>Configuração do Documento</label>
+                        <label class="djo-checkbox-label">
+                            <input type="checkbox" id="djo-exportador-produtor" checked>
+                            Exportador também será o Produtor
+                        </label>
+                        <p style="color: #94a3b8; font-size: 12px; margin-top: 6px;">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Quando marcado, o campo "Produtor" no documento será preenchido com os dados do Exportador.
+                        </p>
+                    </div>
+
+                    <!-- BOTÃO GERAR -->
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="button" class="btn-sistema btn-azul" onclick="gerarDJO()" style="padding: 12px 28px; font-size: 15px;">
+                            <i class="fa-solid fa-file-export"></i> Gerar DJO
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
         <!-- ==========================================
            TELA: CONSULTA NCM
            ========================================== -->
 
-    <div id="consulta-NCM" class="tela-cadastro-final sub-pagina" style="display: none;">
-        <button class="btn-voltar" onclick="voltarAoPainelDJONCM()">
-            <i class="fa-solid fa-arrow-left"></i> Voltar para DJO/NCM
-        </button>
+        <div id="consulta-NCM" class="tela-cadastro-final sub-pagina" style="display: none;">
+    <button class="btn-voltar" onclick="voltarAoPainelDJONCM()">
+        <i class="fa-solid fa-arrow-left"></i> Voltar para DJO/NCM
+    </button>
 
-        <div style="margin-bottom: 24px;">
-            <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;"><i class="fa-brands fa-earlybirds"></i> Consulta de NCM</h2>
-            <p style="color: #64748b;">Pesquise o código NCM para visualizar a descrição cadastrada na base de dados.</p>
-        </div>
+    <div style="margin-bottom: 24px;">
+        <h2 style="color: #1e3a8a; font-size: 26px; margin-bottom: 6px;"><i class="fa-brands fa-earlybirds"></i> Consulta de NCM</h2>
+        <p style="color: #64748b;">Pesquise o código NCM para visualizar a descrição cadastrada na base de dados.</p>
+    </div>
 
     <!-- ==========================================
          CARD INFORMATIVO - EDIÇÃO MANUAL
          Atualize os 3 campos abaixo (texto dentro das tags <p>) toda vez
          que uma nova tabela de NCMs for subida no Supabase.
          ========================================== -->
-        <div class="card-info-atualizacao">
-            <div class="info-atualizacao-cabecalho">
-                <i class="fa-solid fa-circle-info"></i>
-                <span>Última Atualização da Base de NCMs</span>
-            </div>
-            <div class="info-atualizacao-grid">
-                <div class="info-item">
-                    <label>Normativa Vigente</label>
-                    <p>Resolução GECEX nº 812/2025</p>                                       <!-- edite aqui -->
-                </div>
-                <div class="info-item">
-                    <label>Data da Normativa</label>                                         <!-- edite aqui -->
-                    <p>22/06/2026</p>
-                </div>
-                <div class="info-item">
-                    <label>Adicionado ao Banco em</label>
-                    <p>22/06/2026</p>                                                        <!-- edite aqui -->
-                </div>
-            </div>
+    <div class="card-info-atualizacao">
+        <div class="info-atualizacao-cabecalho">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Última Atualização da Base de NCMs</span>
         </div>
-
-        <div class="cartao-cadastro">
-            <h3><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Código NCM</h3>
-
-            <form id="form-consulta-ncm" onsubmit="event.preventDefault(); pesquisarNCM();" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px;">
-                <div class="campo-input" style="flex: 1; min-width: 220px; max-width: 320px;">
-                    <label>Código NCM</label>
-                    <input type="text" id="busca-ncm" class="input-moderno" placeholder="0000.00.00" maxlength="10" inputmode="numeric" autocomplete="off" oninput="formatarEntradaNCM(this)">
-                </div>
-                <button type="submit" id="btn-pesquisar-ncm" class="btn-sistema btn-azul">
-                    <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
-                </button>
-            </form>
-
-            <div id="resultado-ncm-container" style="margin-top: 24px;"></div>
+        <div class="info-atualizacao-grid">
+            <div class="info-item">
+                <label>Normativa Vigente</label>
+                <p>Resolução GECEX nº 000/0000</p>
+            </div>
+            <div class="info-item">
+                <label>Data da Normativa</label>
+                <p>00/00/0000</p>
+            </div>
+            <div class="info-item">
+                <label>Adicionado ao Banco em</label>
+                <p>00/00/0000</p>
+            </div>
         </div>
     </div>
-</div>    
+
+    <div class="cartao-cadastro">
+        <h3><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Código NCM</h3>
+
+        <form id="form-consulta-ncm" onsubmit="event.preventDefault(); pesquisarNCM();" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px;">
+            <div class="campo-input" style="flex: 1; min-width: 220px; max-width: 320px;">
+                <label>Código NCM</label>
+                <input type="text" id="busca-ncm" class="input-moderno" placeholder="0000.00.00" maxlength="10" inputmode="numeric" autocomplete="off" oninput="formatarEntradaNCM(this)">
+            </div>
+            <button type="submit" id="btn-pesquisar-ncm" class="btn-sistema btn-azul">
+                <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+            </button>
+        </form>
+
+        <div id="resultado-ncm-container" style="margin-top: 24px;"></div>
+    </div>
+        </div>
+
+    </div> <!-- /#conteudo-sistema -->
+    
     <!-- ==========================================
        SCRIPTS E LÓGICA DE PROGRAMAÇÃO
        ========================================== -->
@@ -1039,5 +1125,6 @@
     <script src="js/frotas.js"></script>
     <script src="js/faturas.js"></script>
     <script src="js/ncm.js"></script>
+    <script src="js/djo.js"></script>
 </body>
 </html>
