@@ -538,6 +538,12 @@ body {
     line-height: 2;
 }
 
+/* Dígitos (0-9) dentro da descrição do NCM: negrito + azul chamativo */
+.ncm-digito {
+    font-weight: 700;
+    color: #1d4ed8;
+}
+
 .resultado-ncm-card.nao-encontrado {
     background-color: #fef2f2;
     border-color: #fecaca;
@@ -683,8 +689,100 @@ body {
     background-color: #2563eb;
 }
 
-/* Dígitos (0-9) dentro da descrição do NCM: negrito + azul chamativo */
-.ncm-digito {
-    font-weight: 700;
+/* ==========================================
+   MÓDULO DJO — ESTILOS
+   ========================================== */
+
+/* Aviso de norma de origem */
+.card-aviso-djo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.card-aviso-djo i {
+    font-size: 18px;
+    color: #f59e0b;
+    flex-shrink: 0;
+}
+
+/* Hint/status dentro da área de resultados */
+.djo-hint {
+    font-size: 14px;
+    color: #64748b;
+    padding: 16px 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.djo-hint-erro {
+    color: #b91c1c;
+}
+
+.djo-hint-sucesso {
+    color: #065f46;
+}
+
+/* Linha da tabela de resultados clicável */
+.djo-linha-resultado {
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.djo-linha-resultado:hover td {
+    background-color: #eff6ff !important;
     color: #1d4ed8;
+}
+
+/* Grid de informações do item selecionado */
+.djo-item-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.djo-info-campo label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.djo-info-campo p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Checkbox estilizado */
+.djo-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+}
+
+.djo-checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+    cursor: pointer;
 }
