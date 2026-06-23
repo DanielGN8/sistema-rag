@@ -63,12 +63,16 @@ async function executarBuscaDJO(termo) {
     }
 }
 
+// Cache dos resultados da última busca (evita embutir JSON em onclick)
+let cacheBuscaDJO = [];
+
 // Renderiza a tabela de resultados da busca
 function renderizarResultadosDJO(itens) {
+    cacheBuscaDJO = itens; // guarda no cache para o onclick usar pelo índice
     const container = document.getElementById('djo-resultados-container');
 
-    const linhas = itens.map(item => `
-        <tr class="djo-linha-resultado" onclick="selecionarItemDJO(${JSON.stringify(JSON.stringify(item))})">
+    const linhas = itens.map((item, idx) => `
+        <tr class="djo-linha-resultado" onclick="selecionarItemDJO(${idx})">
             <td>${item.item || '—'}</td>
             <td>${item.codigo_fabricante || '—'}</td>
             <td>${item.fabricante || '—'}</td>
@@ -102,8 +106,9 @@ function renderizarResultadosDJO(itens) {
 // SELEÇÃO DO ITEM
 // ==========================================
 
-function selecionarItemDJO(itemJson) {
-    const item = JSON.parse(itemJson);
+function selecionarItemDJO(idx) {
+    const item = cacheBuscaDJO[idx];
+    if (!item) return;
     itemSelecionadoDJO = item;
 
     // Esconde os resultados e limpa a busca
