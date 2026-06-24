@@ -1,5 +1,366 @@
-<html>
-  <head>
-  </head>
-  <body></body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declaração Juramentada de Origem - DJO</title>
+    <style>
+        /* --- ESTILOS DE TELA (PREVIEW NO SISTEMA) --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 30px;
+            color: #000;
+        }
+        .djo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        /* --- TIPOGRAFIA E TEXTOS LEGAIS --- */
+        h1 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+            letter-spacing: 0.5px;
+        }
+        .texto-legal {
+            font-size: 11px;
+            text-align: justify;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        .declaracao-final {
+            font-size: 10px;
+            text-align: justify;
+            font-weight: bold;
+            line-height: 1.4;
+            border: 1px solid #000;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        /* --- ESTRUTURA DE TABELAS E GRIDS --- */
+        .linhas-topo {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 1px solid #000;
+            padding: 8px;
+        }
+        
+        /* Layout de duas colunas (Lado a Lado: Produtor vs Exportador) */
+        .secao-dupla {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .coluna {
+            flex: 1;
+            border: 1px solid #000;
+            padding: 10px;
+            font-size: 11px;
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .coluna-titulo {
+            font-weight: bold;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 4px;
+        }
+
+        /* Subseções de itens informativos */
+        .bloco-unico {
+            border: 1px solid #000;
+            padding: 10px;
+            font-size: 11px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .bloco-titulo {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* --- TABELAS DOS COMPONENTES ( h ) --- */
+        .tabela-componentes {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        .tabela-componentes th, .tabela-componentes td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .tabela-componentes th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .titulo-subtabela {
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 4px;
+        }
+
+        /* --- BLOCOS DE ASSINATURA --- */
+        .assinaturas-layout {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            font-size: 11px;
+        }
+        .bloco-assinatura {
+            width: 45%;
+            text-align: center;
+        }
+        .linha-pessoal {
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        /* --- REGRAS EXCLUSIVAS PARA IMPRESSÃO --- */
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .djo-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            @page {
+                size: A4;
+                margin: 15mm; /* Margens padrão de documentos de comércio exterior */
+            }
+            th {
+                background-color: #f2f2f2 !important; /* Força o fundo cinza claro dos cabeçalhos no papel */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* Evita quebras órfãs dentro de tabelas */
+            tr { page-break-inside: avoid; }
+            .assinaturas-layout { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="djo-container">
+        <h1>Declaração Juramentada de Origem</h1>
+        
+        <div class="texto-legal">
+            De acordo com as determinações do Decreto nº 12.058, de 13 de junho de 2024, que dispõe sobre a execução do Ducentésimo Décimo Oitavo Protocolo Adicional ao Acordo de Complementação Econômica nº 18 (218PA-ACE18), declaramos que produzimos:
+        </div>
+
+        <!-- Número DJO e Data -->
+        <div class="linhas-topo">
+            <div>NÚMERO DJO: ____________________</div>
+            <div>DATA DE APRESENTAÇÃO: 15 de abril de 2026</div>
+        </div>
+
+        <!-- Seção Dupla: Produtor vs Exportador -->
+        <div class="secao-dupla">
+            <div class="coluna">
+                <div class="coluna-titulo">a) Razão Social Produtor (nome, CNPJ, Inscrição Estadual, E-mail, telefone)</div>
+                <strong>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA</strong><br>
+                CNPJ: 82.391.988/0001-21<br>
+                I.E.: 4220918586<br>
+                TEL: 45 - 3528-9095 | E-mail: renann.com@hotmail.com
+            </div>
+            <div class="coluna">
+                <div class="coluna-titulo">c) Razão Social do Exportador (nome, CNPJ, Inscrição Estadual, E-mail, telefone)</div>
+                <strong>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA</strong><br>
+                CNPJ: 82.391.988/0001-21<br>
+                I.E.: 4220918586<br>
+                TEL: 45 - 3528-9095 | E-mail: renann.com@hotmail.com
+            </div>
+        </div>
+
+        <!-- Seção Dupla: Endereços -->
+        <div class="secao-dupla">
+            <div class="coluna">
+                <div class="coluna-titulo">b) Domicílio Legal e Endereço da Planta Industrial:</div>
+                Rua Assis Brasil, 1008, Foz do Iguaçu, PR, CEP: 422091-85
+            </div>
+            <div class="coluna">
+                <div class="coluna-titulo">d) Domicílio Legal e Endereço da Planta Industrial:</div>
+                Rua Assis Brasil, 1008, Foz do Iguaçu, PR, CEP: 422091-85
+            </div>
+        </div>
+
+        <!-- Seção Dupla: Produto e Valores -->
+        <div class="secao-dupla">
+            <div class="coluna">
+                <div class="coluna-titulo">e) Denominação do produto a exportar e código NCM e/ou NALADI/SH</div>
+                <strong>NCM:</strong> 8481.80.94<br>
+                <strong>NALADI:</strong> 8481.80.94<br>
+                <strong>Produto:</strong> VALVULA DE BLOQUEIO PASSAGEM RETA, GLOBO, PO-100
+            </div>
+            <div class="coluna">
+                <div class="coluna-titulo">f) Valor US$ FOB (valor de venda do produto a Exportar)</div>
+                Mínimo: US$ 600,00<br>
+                Máximo: US$ 1.000,00<br>
+                <strong>Unidade de medida:</strong> UNIDADE
+            </div>
+        </div>
+
+        <!-- Processo Produtivo -->
+        <div class="bloco-unico">
+            <div class="bloco-titulo">g) Descrição Detalhada do Processo Produtivo (como partir da matéria-prima e chegar ao produto a ser exportado):</div>
+            O processo produtivo desta válvula de bloqueio inicia-se com a fundição do corpo em aço carbono, seguida pela usinagem de alta precisão para conformação do castelo inclinado e sedes. Após o tratamento superficial para resistência à amônia, realiza-se a montagem dos componentes internos e, por fim, testes hidrostáticos de estanqueidade.
+        </div>
+
+        <!-- Elementos Demonstrativos -->
+        <div class="bloco-titulo" style="font-size: 11px;">h) Elementos demonstrativos dos componentes do produto:</div>
+
+        <!-- Tabela 1 -->
+        <div class="titulo-subtabela">1. Materiais originários do Estado Parte produtor:</div>
+        <table class="tabela-componentes">
+            <thead>
+                <tr>
+                    <th>NCM</th>
+                    <th>NALADI</th>
+                    <th>Descrição dos Materiais</th>
+                    <th>Nome Fornecedor/Fabricante</th>
+                    <th>CNPJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>8481.80.94</td>
+                    <td>8481.80.94</td>
+                    <td>VALVULA DE BLOQUEIO PASSAGEM RETA, GLOBO, PO-100</td>
+                    <td>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA</td>
+                    <td>82.391.988/0001-21</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabela 2 -->
+        <div class="titulo-subtabela">2. Materiais originários de outros Estados Partes:</div>
+        <table class="tabela-componentes">
+            <thead>
+                <tr>
+                    <th>NCM</th>
+                    <th>NALADI</th>
+                    <th>PAÍS</th>
+                    <th>VALOR US$/CIF</th>
+                    <th>Part. %</th>
+                    <th>Fornecedor / Fabricante</th>
+                    <th>CNPJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #666; font-style: italic;">PREJUDICADO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabela 3 -->
+        <div class="titulo-subtabela">3. Materiais Não Originários:</div>
+        <table class="tabela-componentes">
+            <thead>
+                <tr>
+                    <th>NCM</th>
+                    <th>NALADI</th>
+                    <th>PAÍS</th>
+                    <th>VALOR US$/CIF</th>
+                    <th>Part. %</th>
+                    <th>Fornecedor / Fabricante</th>
+                    <th>CNPJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #666; font-style: italic;">PREJUDICADO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabela 4 -->
+        <table class="tabela-componentes">
+            <thead>
+                <tr>
+                    <th colspan="7">4. Materiais de terceiros países que tenham cumprido com a PTC:</th>
+                </tr>
+                <tr>
+                    <th>NCM</th>
+                    <th>Valor CIF (USD)</th>
+                    <th>% Part.</th>
+                    <th>Qtd Utilizada</th>
+                    <th>Cód. Identificador CCPTC</th>
+                    <th>Fornecedor / Fabricante</th>
+                    <th>CNPJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #666; font-style: italic;">PREJUDICADO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="font-size: 11px; font-weight: bold; margin-bottom: 15px;">Norma de Origem: A</div>
+
+        <!-- Termo de Compromisso Juramentado -->
+        <div class="declaracao-final">
+            DECLARAMOS PARA TODOS OS FINS DE DIREITO, QUE O TEOR INTEIRO DESTE DOCUMENTO É VERDADEIRO, SENDO FIEL A DESCRIÇÃO DO PRODUTO A SER EXPORTADO, SUBMETENDO-SE ÀS PENALIDADES LEGAIS POR OMISSÃO OU FALSA INFORMAÇÃO DA DECLARAÇÃO, DEFINIDAS NA LEGISLAÇÃO BRASILEIRA.
+        </div>
+
+        <!-- Assinaturas Produtor/Exportador -->
+        <div class="assinaturas-layout">
+            <div class="bloco-assinatura">
+                <div class="linha-pessoal">
+                    RAUL A. GONZALEZ<br>
+                    <span style="font-weight: normal; font-size: 10px;">Representante Legal do Produtor</span>
+                </div>
+            </div>
+            <div class="bloco-assinatura">
+                <div class="linha-pessoal">
+                    RAUL A. GONZALEZ<br>
+                    <span style="font-weight: normal; font-size: 10px;">Representante Legal do Exportador</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validação do Despachante / Autoridade -->
+        <div style="margin-top: 30px; border-top: 1px dashed #000; padding-top: 15px; font-size: 11px; line-height: 1.4;">
+            <p>DE ACORDO COM AS INFORMAÇÕES PRESTADAS PELO SOLICITANTE, DECLARO PARA OS DEVIDOS FINS QUE O PRODUTO CONTIDO NESSA DECLARAÇÃO JURAMENTADA DE ORIGEM CUMPRE COM O REGIME DE ORIGEM DO MERCOSUL VIGENTE.</p>
+            
+            <div class="assinaturas-layout" style="margin-top: 15px;">
+                <div>
+                    <strong>Local:</strong> FOZ DO IGUAÇU – PR - BRASIL<br>
+                    <strong>Data:</strong> 15 de abril de 2026
+                </div>
+                <div style="text-align: center; width: 45%;">
+                    <div class="linha-pessoal" style="margin-top: 25px;">
+                        RAUL ANTONIO GONZALEZ<br>
+                        <span style="font-weight: normal; font-size: 10px;">DESPACHANTE ADUANEIRO<br>CPF: 336.505.609-25</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
 </html>
