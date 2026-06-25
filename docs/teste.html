@@ -2,77 +2,159 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Documento Estruturado Profissional</title>
+    <title>Documento Estruturado - 13 Tabelas</title>
     <style>
+        /* Configurações da Página */
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
+            color: #000000;
         }
 
-        /* Todas as tabelas terão exatamente a mesma largura,
-           fazendo com que fiquem perfeitamente alinhadas nas laterais */
+        /* Título Centralizado */
+        .titulo-principal {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Descrição abaixo do título */
+        .descricao-documento {
+            text-align: justify;
+            font-size: 14px;
+            margin-bottom: 30px; /* Espaço antes de começarem as tabelas */
+            line-height: 1.5;
+        }
+
+        /* Configuração Universal das Tabelas */
         table {
             width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            margin-bottom: 30px; /* Espaço entre um bloco e outro */
+            border-collapse: collapse; /* Une as bordas internas */
+            background-color: #ffffff;
+            margin-bottom: 0; /* Garante que fiquem coladas */
         }
 
+        /* Aplica a borda de 3px em todas as células */
         th, td {
-            border: 1px solid #333;
+            border: 3px solid #000000;
             padding: 12px;
             vertical-align: top;
+            background-color: #ffffff;
         }
 
-        /* --- CONFIGURAÇÃO DO BLOCO 1 (Proporção 40/60) --- */
-        .col-40 { width: 40%; background-color: #f9f9f9; }
-        .col-60 { width: 60%; }
-
-        /* --- CONFIGURAÇÃO DO BLOCO 2 (Célula Lateral Alta) --- */
-        .celula-lateral {
-            background-color: #e6f2ff;
-            font-weight: bold;
-            width: 30%;
-            text-align: center;
-            vertical-align: middle; /* Centraliza o texto verticalmente */
+        /* Regra de ouro para não duplicar a borda na junção das tabelas */
+        table + table {
+            margin-top: -3px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Documento de Avaliação</h1>
-    <p>Estrutura modular recomendada para sistemas automatizados.</p>
+    <div class="titulo-principal">TÍTULO DO DOCUMENTO</div>
+    <div class="descricao-documento">
+        Esta é a descrição inicial do documento. Este espaço está posicionado antes do início das tabelas estruturadas e serve para contextualizar as informações que serão preenchidas automaticamente pelo sistema logo abaixo.
+    </div>
 
     <table>
         <tr>
-            <td class="col-40"><strong>Requisito / Critério (40%):</strong></td>
-            <td class="col-60">Conteúdo ou descrição detalhada preenchida pelo sistema aqui (60%).</td>
+            <td>T1_L1_C1</td>
+            <td>T1_L1_C2</td>
+        </tr>
+        <tr>
+            <td>T1_L2_C1</td>
+            <td>T1_L2_C2</td>
+        </tr>
+        <tr>
+            <td>T1_L3_C1</td>
+            <td>T1_L3_C2</td>
         </tr>
     </table>
 
+    <table>
+        <tr><td>T2_L1_C1</td></tr>
+        <tr><td>T2_L2_C1</td></tr>
+        <tr><td>T2_L3_C1</td></tr>
+    </table>
 
     <table>
-        <tbody>
-            <tr>
-                <td rowspan="4" class="celula-lateral">
-                    Histórico de<br>Modificações<br>(Ocupa 4 linhas)
-                </td>
-                <td><strong>Versão 1.0:</strong> Criação do documento.</td>
-            </tr>
-            
-            <tr>
-                <td><strong>Versão 1.1:</strong> Ajuste de layout das tabelas.</td>
-            </tr>
-            
-            <tr>
-                <td><strong>Versão 1.2:</strong> Inclusão das tags de automação.</td>
-            </tr>
-            
-            <tr>
-                <td><strong>Versão 2.0:</strong> Homologação do sistema.</td>
-            </tr>
-        </tbody>
+        <tr>
+            <td>T3_L1_C1</td>
+            <td>T3_L1_C2</td>
+            <td>T3_L1_C3</td>
+            <td>T3_L1_C4</td>
+            <td>T3_L1_C5</td>
+        </tr>
+        <tr>
+            <td>T3_L2_C1</td>
+            <td>T3_L2_C2</td>
+            <td>T3_L2_C3</td>
+            <td>T3_L2_C4</td>
+            <td>T3_L2_C5</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr><td>T4_L1_C1</td></tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>T5_L1_C1</td><td>T5_L1_C2</td><td>T5_L1_C3</td><td>T5_L1_C4</td><td>T5_L1_C5</td><td>T5_L1_C6</td><td>T5_L1_C7</td>
+        </tr>
+        <tr>
+            <td>T5_L2_C1</td><td>T5_L2_C2</td><td>T5_L2_C3</td><td>T5_L2_C4</td><td>T5_L2_C5</td><td>T5_L2_C6</td><td>T5_L2_C7</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr><td>T6_L1_C1</td></tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>T7_L1_C1</td><td>T7_L1_C2</td><td>T7_L1_C3</td><td>T7_L1_C4</td><td>T7_L1_C5</td><td>T7_L1_C6</td><td>T7_L1_C7</td>
+        </tr>
+        <tr>
+            <td>T7_L2_C1</td><td>T7_L2_C2</td><td>T7_L2_C3</td><td>T7_L2_C4</td><td>T7_L2_C5</td><td>T7_L2_C6</td><td>T7_L2_C7</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr><td>T8_L1_C1</td></tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>T9_L1_C1</td><td>T9_L1_C2</td><td>T9_L1_C3</td><td>T9_L1_C4</td><td>T9_L1_C5</td><td>T9_L1_C6</td><td>T9_L1_C7</td>
+        </tr>
+        <tr>
+            <td>T9_L2_C1</td><td>T9_L2_C2</td><td>T9_L2_C3</td><td>T9_L2_C4</td><td>T9_L2_C5</td><td>T9_L2_C6</td><td>T9_L2_C7</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr><td>T10_L1_C1</td></tr>
+        <tr><td>T10_L2_C1</td></tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>T11_L1_C1</td>
+            <td>T11_L1_C2</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr><td>T12_L1_C1</td></tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>T13_L1_C1</td>
+            <td>T13_L1_C2</td>
+        </tr>
     </table>
 
 </body>
