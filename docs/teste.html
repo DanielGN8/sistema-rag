@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Minha Primeira Tabela Estruturada</title>
+    <style>
+        /* O CSS abaixo serve para deixar o documento bonito e organizar os espaços */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        /* Estilização dos Títulos */
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        p.subtitulo {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Estilização da Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Faz as bordas ficarem unidas e finas */
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #999; /* Cria a borda preta/cinza ao redor de cada célula */
+            padding: 10px;          /* Espaço interno para o texto não colar na borda */
+            vertical-align: top;    /* Alinha o texto no topo da célula */
+            width: 50%;             /* Garante que as duas colunas tenham o mesmo tamanho (50% cada) */
+        }
+
+        /* Classe especial para a linha que precisa de mais espaço */
+        .linha-alta {
+            /* Definimos uma altura mínima. 120 pixels é excelente para simular 
+               o espaço visual de cerca de 6 linhas de texto recuadas */
+            height: 120px; 
+            background-color: #fdfdfd; /* Uma cor levemente diferente para destacar */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Título do Documento</h1>
+    <p class="subtitulo">Este é o subtítulo com informações complementares</p>
+
+    <table>
+        <tbody>
+            
+            <tr>
+                <td><strong>Coluna 1 (Linha 1):</strong> Dado simples aqui.</td>
+                <td><strong>Coluna 2 (Linha 1):</strong> Outro dado aqui.</td>
+            </tr>
+
+            <tr class="linha-alta">
+                <td>
+                    <strong>Coluna 1 (Linha 2):</strong><br>
+                    Este espaço ficou mais alto.<br>
+                    O sistema automatizado pode preencher várias informações aqui.<br>
+                    Linha 4...<br>
+                    Linha 5...<br>
+                    Linha 6.
+                </td>
+                <td>
+                    <strong>Coluna 2 (Linha 2):</strong><br>
+                    Espaço livre equivalente do lado direito também.
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>
