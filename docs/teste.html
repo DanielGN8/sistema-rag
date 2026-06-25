@@ -2,79 +2,76 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Minha Primeira Tabela Estruturada</title>
+    <title>Documento Estruturado Profissional</title>
     <style>
-        /* O CSS abaixo serve para deixar o documento bonito e organizar os espaços */
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
         }
 
-        /* Estilização dos Títulos */
-        h1 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-        p.subtitulo {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        /* Estilização da Tabela */
+        /* Todas as tabelas terão exatamente a mesma largura,
+           fazendo com que fiquem perfeitamente alinhadas nas laterais */
         table {
             width: 100%;
-            border-collapse: collapse; /* Faz as bordas ficarem unidas e finas */
+            border-collapse: collapse;
             background-color: #fff;
+            margin-bottom: 30px; /* Espaço entre um bloco e outro */
         }
 
         th, td {
-            border: 1px solid #999; /* Cria a borda preta/cinza ao redor de cada célula */
-            padding: 10px;          /* Espaço interno para o texto não colar na borda */
-            vertical-align: top;    /* Alinha o texto no topo da célula */
-            width: 50%;             /* Garante que as duas colunas tenham o mesmo tamanho (50% cada) */
+            border: 1px solid #333;
+            padding: 12px;
+            vertical-align: top;
         }
 
-        /* Classe especial para a linha que precisa de mais espaço */
-        .linha-alta {
-            /* Definimos uma altura mínima. 120 pixels é excelente para simular 
-               o espaço visual de cerca de 6 linhas de texto recuadas */
-            height: 120px; 
-            background-color: #fdfdfd; /* Uma cor levemente diferente para destacar */
+        /* --- CONFIGURAÇÃO DO BLOCO 1 (Proporção 40/60) --- */
+        .col-40 { width: 40%; background-color: #f9f9f9; }
+        .col-60 { width: 60%; }
+
+        /* --- CONFIGURAÇÃO DO BLOCO 2 (Célula Lateral Alta) --- */
+        .celula-lateral {
+            background-color: #e6f2ff;
+            font-weight: bold;
+            width: 30%;
+            text-align: center;
+            vertical-align: middle; /* Centraliza o texto verticalmente */
         }
     </style>
 </head>
 <body>
 
-    <h1>Título do Documento</h1>
-    <p class="subtitulo">Este é o subtítulo com informações complementares</p>
+    <h1>Documento de Avaliação</h1>
+    <p>Estrutura modular recomendada para sistemas automatizados.</p>
+
+    <table>
+        <tr>
+            <td class="col-40"><strong>Requisito / Critério (40%):</strong></td>
+            <td class="col-60">Conteúdo ou descrição detalhada preenchida pelo sistema aqui (60%).</td>
+        </tr>
+    </table>
+
 
     <table>
         <tbody>
+            <tr>
+                <td rowspan="4" class="celula-lateral">
+                    Histórico de<br>Modificações<br>(Ocupa 4 linhas)
+                </td>
+                <td><strong>Versão 1.0:</strong> Criação do documento.</td>
+            </tr>
             
             <tr>
-                <td><strong>Coluna 1 (Linha 1):</strong> Dado simples aqui.</td>
-                <td><strong>Coluna 2 (Linha 1):</strong> Outro dado aqui.</td>
+                <td><strong>Versão 1.1:</strong> Ajuste de layout das tabelas.</td>
             </tr>
-
-            <tr class="linha-alta">
-                <td>
-                    <strong>Coluna 1 (Linha 2):</strong><br>
-                    Este espaço ficou mais alto.<br>
-                    O sistema automatizado pode preencher várias informações aqui.<br>
-                    Linha 4...<br>
-                    Linha 5...<br>
-                    Linha 6.<br>
-                    Linhas 3q423424 32 42 4324 22v2<br>
-                    KKKKKKKKKKKKKKKKKK
-                </td>
-                <td>
-                    <strong>Coluna 2 (Linha 2):</strong><br>
-                    Espaço livre equivalente do lado direito também.
-                </td>
+            
+            <tr>
+                <td><strong>Versão 1.2:</strong> Inclusão das tags de automação.</td>
             </tr>
-
+            
+            <tr>
+                <td><strong>Versão 2.0:</strong> Homologação do sistema.</td>
+            </tr>
         </tbody>
     </table>
 
