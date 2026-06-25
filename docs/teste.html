@@ -2,14 +2,29 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Documento Estruturado - 13 Tabelas</title>
+    <title>Documento Estruturado - Padrão A4</title>
     <style>
-        /* Configurações da Página */
+        /* CONFIGURAÇÃO PARA EXIBIÇÃO NA TELA (Navegador) */
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Fundo cinza na tela para destacar a folha */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* O container simula a folha A4 exata na tela */
+        .folha-a4 {
             background-color: #ffffff;
-            color: #000000;
+            width: 19cm; /* 21cm (A4) - 2cm (margens laterais) */
+            min-height: 24.9cm; /* 29.7cm (A4) - 4.8cm (margens sup/inf) */
+            padding-top: 2.4cm;
+            padding-bottom: 2.4cm;
+            padding-left: 1cm;
+            padding-right: 1cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra suave apenas na tela */
+            box-sizing: content-box; /* Garante que o padding não mude o tamanho total */
         }
 
         /* Título Centralizado */
@@ -24,19 +39,18 @@
         .descricao-documento {
             text-align: justify;
             font-size: 14px;
-            margin-bottom: 30px; /* Espaço antes de começarem as tabelas */
+            margin-bottom: 30px;
             line-height: 1.5;
         }
 
-        /* Configuração Universal das Tabelas */
+        /* Configuração das Tabelas coladas */
         table {
             width: 100%;
-            border-collapse: collapse; /* Une as bordas internas */
+            border-collapse: collapse;
             background-color: #ffffff;
-            margin-bottom: 0; /* Garante que fiquem coladas */
+            margin-bottom: 0;
         }
 
-        /* Aplica a borda de 3px em todas as células */
         th, td {
             border: 3px solid #000000;
             padding: 12px;
@@ -44,118 +58,105 @@
             background-color: #ffffff;
         }
 
-        /* Regra de ouro para não duplicar a borda na junção das tabelas */
         table + table {
             margin-top: -3px;
+        }
+
+        /* CONFIGURAÇÃO EXCLUSIVA PARA IMPRESSÃO / PDF */
+        @media print {
+            @page {
+                /* Define o tamanho da folha e as margens físicas na impressora */
+                size: A4;
+                margin-top: 2.4cm;
+                margin-bottom: 2.4cm;
+                margin-left: 1cm;
+                margin-right: 1cm;
+            }
+            
+            body {
+                background-color: #ffffff;
+            }
+
+            .folha-a4 {
+                width: 100%; /* Na impressão, ele assume o tamanho ditado pela @page */
+                padding: 0;  /* Zera o padding para não duplicar com as margens da página */
+                box-shadow: none;
+                min-height: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="titulo-principal">TÍTULO DO DOCUMENTO</div>
-    <div class="descricao-documento">
-        Esta é a descrição inicial do documento. Este espaço está posicionado antes do início das tabelas estruturadas e serve para contextualizar as informações que serão preenchidas automaticamente pelo sistema logo abaixo.
+    <div class="folha-a4">
+
+        <div class="titulo-principal">TÍTULO DO DOCUMENTO</div>
+        <div class="descricao-documento">
+            Esta é a descrição inicial do documento. Este espaço está posicionado antes do início das tabelas estruturadas e serve para contextualizar as informações que serão preenchidas automaticamente pelo sistema logo abaixo.
+        </div>
+
+        <table>
+            <tr><td>T1_L1_C1</td><td>T1_L1_C2</td></tr>
+            <tr><td>T1_L2_C1</td><td>T1_L2_C2</td></tr>
+            <tr><td>T1_L3_C1</td><td>T1_L3_C2</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T2_L1_C1</td></tr>
+            <tr><td>T2_L2_C1</td></tr>
+            <tr><td>T2_L3_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T3_L1_C1</td><td>T3_L1_C2</td><td>T3_L1_C3</td><td>T3_L1_C4</td><td>T3_L1_C5</td></tr>
+            <tr><td>T3_L2_C1</td><td>T3_L2_C2</td><td>T3_L2_C3</td><td>T3_L2_C4</td><td>T3_L2_C5</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T4_L1_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T5_L1_C1</td><td>T5_L1_C2</td><td>T5_L1_C3</td><td>T5_L1_C4</td><td>T5_L1_C5</td><td>T5_L1_C6</td><td>T5_L1_C7</td></tr>
+            <tr><td>T5_L2_C1</td><td>T5_L2_C2</td><td>T5_L2_C3</td><td>T5_L2_C4</td><td>T5_L2_C5</td><td>T5_L2_C6</td><td>T5_L2_C7</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T6_L1_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T7_L1_C1</td><td>T7_L1_C2</td><td>T7_L1_C3</td><td>T7_L1_C4</td><td>T7_L1_C5</td><td>T7_L1_C6</td><td>T7_L1_C7</td></tr>
+            <tr><td>T7_L2_C1</td><td>T7_L2_C2</td><td>T7_L2_C3</td><td>T7_L2_C4</td><td>T7_L2_C5</td><td>T7_L2_C6</td><td>T7_L2_C7</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T8_L1_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T9_L1_C1</td><td>T9_L1_C2</td><td>T9_L1_C3</td><td>T9_L1_C4</td><td>T9_L1_C5</td><td>T9_L1_C6</td><td>T9_L1_C7</td></tr>
+            <tr><td>T9_L2_C1</td><td>T9_L2_C2</td><td>T9_L2_C3</td><td>T9_L2_C4</td><td>T9_L2_C5</td><td>T9_L2_C6</td><td>T9_L2_C7</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T10_L1_C1</td></tr>
+            <tr><td>T10_L2_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T11_L1_C1</td><td>T11_L1_C2</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T12_L1_C1</td></tr>
+        </table>
+
+        <table>
+            <tr><td>T13_L1_C1</td><td>T13_L1_C2</td></tr>
+        </table>
+
     </div>
-
-    <table>
-        <tr>
-            <td>T1_L1_C1</td>
-            <td>T1_L1_C2</td>
-        </tr>
-        <tr>
-            <td>T1_L2_C1</td>
-            <td>T1_L2_C2</td>
-        </tr>
-        <tr>
-            <td>T1_L3_C1</td>
-            <td>T1_L3_C2</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T2_L1_C1</td></tr>
-        <tr><td>T2_L2_C1</td></tr>
-        <tr><td>T2_L3_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T3_L1_C1</td>
-            <td>T3_L1_C2</td>
-            <td>T3_L1_C3</td>
-            <td>T3_L1_C4</td>
-            <td>T3_L1_C5</td>
-        </tr>
-        <tr>
-            <td>T3_L2_C1</td>
-            <td>T3_L2_C2</td>
-            <td>T3_L2_C3</td>
-            <td>T3_L2_C4</td>
-            <td>T3_L2_C5</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T4_L1_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T5_L1_C1</td><td>T5_L1_C2</td><td>T5_L1_C3</td><td>T5_L1_C4</td><td>T5_L1_C5</td><td>T5_L1_C6</td><td>T5_L1_C7</td>
-        </tr>
-        <tr>
-            <td>T5_L2_C1</td><td>T5_L2_C2</td><td>T5_L2_C3</td><td>T5_L2_C4</td><td>T5_L2_C5</td><td>T5_L2_C6</td><td>T5_L2_C7</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T6_L1_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T7_L1_C1</td><td>T7_L1_C2</td><td>T7_L1_C3</td><td>T7_L1_C4</td><td>T7_L1_C5</td><td>T7_L1_C6</td><td>T7_L1_C7</td>
-        </tr>
-        <tr>
-            <td>T7_L2_C1</td><td>T7_L2_C2</td><td>T7_L2_C3</td><td>T7_L2_C4</td><td>T7_L2_C5</td><td>T7_L2_C6</td><td>T7_L2_C7</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T8_L1_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T9_L1_C1</td><td>T9_L1_C2</td><td>T9_L1_C3</td><td>T9_L1_C4</td><td>T9_L1_C5</td><td>T9_L1_C6</td><td>T9_L1_C7</td>
-        </tr>
-        <tr>
-            <td>T9_L2_C1</td><td>T9_L2_C2</td><td>T9_L2_C3</td><td>T9_L2_C4</td><td>T9_L2_C5</td><td>T9_L2_C6</td><td>T9_L2_C7</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T10_L1_C1</td></tr>
-        <tr><td>T10_L2_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T11_L1_C1</td>
-            <td>T11_L1_C2</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr><td>T12_L1_C1</td></tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>T13_L1_C1</td>
-            <td>T13_L1_C2</td>
-        </tr>
-    </table>
 
 </body>
 </html>
