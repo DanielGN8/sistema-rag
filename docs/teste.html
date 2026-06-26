@@ -19,7 +19,7 @@
             background-color: #ffffff;
             width: 19cm; /* 21cm (A4) - 2cm (margens laterais) */
             min-height: 24.9cm; /* 29.7cm (A4) - 4.8cm (margens sup/inf) */
-            padding-top: 2.4cm;
+            padding-top: 2cm;
             padding-bottom: 2.4cm;
             padding-left: 1cm;
             padding-right: 1cm;
@@ -63,16 +63,28 @@
             margin-top: -1px;
         }
 
-        .teste {
-            color: solid #0000ff;
+        .negrito {
+            color: #000000;
+            font-weight: bold;
         }
 
+        .titulos {
+            font-style: italic;
+        }
+
+        .tabela-meio-a-meio td { 
+            width: 50%; 
+        }
+
+
+
         /* CONFIGURAÇÃO EXCLUSIVA PARA IMPRESSÃO / PDF */
+
         @media print {
             @page {
                 /* Define o tamanho da folha e as margens físicas na impressora */
                 size: A4;
-                margin-top: 2.4cm;
+                margin-top: 2cm;
                 margin-bottom: 2.4cm;
                 margin-left: 1cm;
                 margin-right: 1cm;
@@ -94,24 +106,41 @@
 <body>
 
     <div class="folha-a4">
-
+        <!-- ==========================================
+            Titulo e sub-titulo
+        ========================================== -->
         <div class="titulo-principal">DECLARAÇÃO JURAMENTADA DE ORIGEM</div>
         <div class="descricao-documento">
             De acordo com as determinações do Decreto nº 12.058, de 13 de junho de 2024, que dispõe sobre a execução do Ducentésimo Décimo Oitavo Protocolo Adicional ao Acordo de Complementação Econômica nº 18 (218PA-ACE18), declaramos que produzimos:
         </div>
-
-        <table>
-            <tr><td>Número DJO: <span class="teste">123/2026</span></td><td>Data de Apresentação: <span class="teste">06/07/2035</span></td></tr>
-            <tr><td>T1_L2_C1</td><td>T1_L2_C2</td></tr>
-            <tr><td>T1_L3_C1</td><td>T1_L3_C2</td></tr>
+        <!-- ==========================================
+            TABELA 01: NUMERO DJO, DATA, A), B), C), D), E), F)
+        ========================================== -->
+        <table class="tabela-meio-a-meio">
+            <tr>
+                <td>Número DJO: <span class="negrito">123/2026</span></td>
+                <td>Data de Apresentação: <span class="negrito">06/07/2035</span></td>
+            </tr>
+            <tr>
+                <td><span class="titulos">a) Razão Social Produtor (nome, CNPJ Inscrição Estadual, E-mail, telefone)</span><br>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA<br>CNPJ: <span class="negrito">82.391.988/0001-21</span>, I.E.:<span class="negrito">4220918586</span><br>TEL: <span class="negrito">45 – 3528-9095</span>, e-mail: <span class="negrito">renann.com@hotmail.com</span><br><span class="titulos">b) Domicílio Legal e Endereço da Planta Industrial:</span><br><span class="negrito">Rua Assis Brasil, 1008, Foz do Iguaçu , PR, 422091-85 </span></td>
+                <td><span class="titulos">c) Razão Social do Exportador (nome, CNPJ Inscrição Estadual, E-mail, telefone)</span><br>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA<br>CNPJ: <span class="negrito">82.391.988/0001-21</span>, I.E.:<span class="negrito">4220918586</span><br>TEL: <span class="negrito">45 – 3528-9095</span>, e-mail: <span class="negrito">renann.com@hotmail.com</span><br><span class="titulos">b) Domicílio Legal e Endereço da Planta Industrial:</span><br><span class="negrito">Rua Assis Brasil, 1008, Foz do Iguaçu , PR, 422091-85 </span></td>
+            </tr>
+            <tr>
+                <td><span class="titulos">e) Denominação do produto a exportar e código NCM e/ou NALADI/SH</span><br>N.C.M.: <span class="negrito">8481.80.94</span>, NALADI: <span class="negrito">8481.80.94</span><br>Produto:<span class="negrito">VALVULA DE BLOQUEIO PASSAGEM RETA, GLOBO, PO-100 para maquinas muito loucas</span></td>
+                <td><span class="titulos">f) Valor US$ FOB (valor de venda do produto a Exportar)</span><br>Mínimo: <span class="negrito">US$ 600,00</span><br>Máximo: <span class="negrito">US$ 1.000,00</span><br>Unidade de Medida: <span class="negrito">UN</span></td>
+            </tr>
         </table>
-
+        <!-- ==========================================
+            TABELA 02: g), h), 1.
+        ========================================== -->
         <table>
-            <tr><td>T2_L1_C1</td></tr>
-            <tr><td>T2_L2_C1</td></tr>
-            <tr><td>T2_L3_C1</td></tr>
+            <tr><td><span class="titulos">g) Descrição Detalhada do Processo Produtivo (como partir da matéria-prima e chegar ao produto a ser exportado)</span><br><span class="negrito">processo produtivo desta válvula de bloqueio inicia-se com a fundição do corpo em aço carbono, seguida pela usinagem de alta precisão para conformação do castelo inclinado e sedes. Após o tratamento superficial para resistência à amônia, realiza-se a montagem dos componentes internos e, por fim, testes hidrostáticos de estanqueidade</span></td></tr>
+            <tr><td><span class="titulos">h) Elementos demonstrativos dos componentes do produto</span><br>.</td></tr>
+            <tr><td><span class="titulos">1. Materiais originários do Estado Parte produtor</span></td></tr>
         </table>
-
+        <!-- ==========================================
+            TABELA 03: 1.NCM, 1.NALADI, 1.Descrição dos Materiais, 1. Nome Fornecedor/Fabricante, 1. CNPJ, LINHA ABAIXO RESPOSTAS 1.
+        ========================================== -->
         <table>
             <tr><td>T3_L1_C1</td><td>T3_L1_C2</td><td>T3_L1_C3</td><td>T3_L1_C4</td><td>T3_L1_C5</td></tr>
             <tr><td>T3_L2_C1</td><td>T3_L2_C2</td><td>T3_L2_C3</td><td>T3_L2_C4</td><td>T3_L2_C5</td></tr>
