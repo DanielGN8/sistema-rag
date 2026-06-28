@@ -76,13 +76,15 @@ async function salvarFabricante(e) {
 
     const id = document.getElementById('fabricante-id-oculto').value;
     const payload = {
-        fabricante: document.getElementById('trans-nome').value.trim(),
-        trans_documento: document.getElementById('trans-doc').value.trim(),
-        trans_codigo: document.getElementById('trans-codigo').value.trim(),
-        trans_cidade_estado: document.getElementById('trans-cidade-estado').value.trim(),
-        trans_endereco: document.getElementById('trans-endereco').value.trim(),
-        representante_transporte: document.getElementById('rep-nome').value.trim(),
-        representante_doc: document.getElementById('rep-doc').value.trim()
+        fabricante: document.getElementById('fab-nome').value.trim(),
+        fab_cnpj: document.getElementById('fab-cnpj').value.trim(),
+        fab_endereco: document.getElementById('fab-endereco').value.trim(),
+        fab_cidade_estado: document.getElementById('fab-cidade-estado').value.trim(),
+        fab_inscricao_estadual: document.getElementById('fab-ie').value.trim(),
+        fab_telefone: document.getElementById('fab-tel').value.trim(),
+        fab_email: document.getElementById('fab-email').value.trim(),
+        fab_representante: document.getElementById('fab-rep-nome').value.trim(),
+        fab_rep_doc: document.getElementById('fab-rep-doc').value.trim(),
     };
 
     let resposta;
@@ -114,9 +116,7 @@ function filtrarFabricantes() {
 
     const filtrados = listaFabricantesLocal.filter(reg => {
         return (reg.fabricante && reg.fabricante.toLowerCase().includes(termo)) ||
-               (reg.trans_documento && reg.trans_documento.toLowerCase().includes(termo)) ||
-               (reg.trans_codigo && reg.trans_codigo.toLowerCase().includes(termo)) ||
-               (reg.representante_transporte && reg.representante_transporte.toLowerCase().includes(termo));
+               (reg.fab_cnpj && reg.fab_cnpj.toLowerCase().includes(termo)) ||
     });
 
     renderizarTabelaFabricantes(filtrados);
@@ -128,10 +128,10 @@ function prepararEdicaoFabricante(id) {
     if (!trans) return;
 
     document.getElementById('fabricante-id-oculto').value = trans.id;
-    document.getElementById('trans-nome').value = trans.fabricante;
-    document.getElementById('trans-doc').value = trans.trans_documento;
-    document.getElementById('trans-codigo').value = trans.trans_codigo;
-    document.getElementById('trans-cidade-estado').value = trans.trans_cidade_estado;
+    document.getElementById('fab-nome').value = trans.fabricante;
+    document.getElementById('fab-cnpj').value = trans.trans_documento;
+    document.getElementById('fab-ie').value = trans.trans_codigo;
+    document.getElementById('fab-cidade-estado').value = trans.trans_cidade_estado;
     document.getElementById('trans-endereco').value = trans.trans_endereco;
     document.getElementById('rep-nome').value = trans.representante_transporte;
     document.getElementById('rep-doc').value = trans.representante_doc;
@@ -149,10 +149,10 @@ function duplicarFabricante(id) {
     if (!trans) return;
 
     document.getElementById('fabricante-id-oculto').value = '';
-    document.getElementById('trans-nome').value = trans.fabricante + " (CÓPIA)";
-    document.getElementById('trans-doc').value = trans.trans_documento;
-    document.getElementById('trans-codigo').value = trans.trans_codigo;
-    document.getElementById('trans-cidade-estado').value = trans.trans_cidade_estado;
+    document.getElementById('fab-nome').value = trans.fabricante + " (CÓPIA)";
+    document.getElementById('fab-cnpj').value = trans.trans_documento;
+    document.getElementById('fab-ie').value = trans.trans_codigo;
+    document.getElementById('fab-cidade-estado').value = trans.trans_cidade_estado;
     document.getElementById('trans-endereco').value = trans.trans_endereco;
     document.getElementById('rep-nome').value = trans.representante_transporte;
     document.getElementById('rep-doc').value = trans.representante_doc;
