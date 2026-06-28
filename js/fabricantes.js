@@ -124,52 +124,56 @@ function filtrarFabricantes() {
 
 // 5. CARREGAR DADOS PARA EDIÇÃO
 function prepararEdicaoFabricante(id) {
-    const trans = listaFabricantesLocal.find(reg => reg.id === id);
-    if (!trans) return;
+    const fab = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!fab) return;
 
-    document.getElementById('fabricante-id-oculto').value = trans.id;
-    document.getElementById('fab-nome').value = trans.fabricante;
-    document.getElementById('fab-cnpj').value = trans.trans_documento;
-    document.getElementById('fab-ie').value = trans.trans_codigo;
-    document.getElementById('fab-cidade-estado').value = trans.trans_cidade_estado;
-    document.getElementById('trans-endereco').value = trans.trans_endereco;
-    document.getElementById('rep-nome').value = trans.representante_transporte;
-    document.getElementById('rep-doc').value = trans.representante_doc;
+    document.getElementById('fabricante-id-oculto').value = fab.id;
+    document.getElementById('fab-nome').value = fab.fabricante;
+    document.getElementById('fab-cnpj').value = fab.fab_cnpj;
+    document.getElementById('fab-ie').value = fab.fab_inscricao_estadual;
+    document.getElementById('fab-cidade-estado').value = fab.fab_cidade_estado;
+    document.getElementById('fab-endereco').value = fab.fab_endereco;
+    document.getElementById('fab-tel').value = fab.fab_telefone;
+    document.getElementById('fab-email').value = fab.fab_email;
+    document.getElementById('fab-rep-nome').value = fab.fab_representante;
+    document.getElementById('fab-rep-doc').value = fab.fab_rep_doc;
 
-    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Fabricante: ${trans.fabricante}`;
+    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Fabricante: ${fab.fabricante}`;
     document.getElementById('btn-salvar-fabricante').textContent = "Atualizar Fabricante";
-    document.getElementById('btn-cancelar-trans-edicao').style.display = "inline-block";
+    document.getElementById('btn-cancelar-fab-edicao').style.display = "inline-block";
     
     document.getElementById('titulo-form-fabricante').scrollIntoView({ behavior: 'smooth' });
 }
 
 // 6. DUPLICAR FABRICANTE (Útil se houver filiais com o mesmo representante/CNPJ base)
 function duplicarFabricante(id) {
-    const trans = listaFabricantesLocal.find(reg => reg.id === id);
-    if (!trans) return;
+    const fab = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!fab) return;
 
     document.getElementById('fabricante-id-oculto').value = '';
-    document.getElementById('fab-nome').value = trans.fabricante + " (CÓPIA)";
-    document.getElementById('fab-cnpj').value = trans.trans_documento;
-    document.getElementById('fab-ie').value = trans.trans_codigo;
-    document.getElementById('fab-cidade-estado').value = trans.trans_cidade_estado;
-    document.getElementById('trans-endereco').value = trans.trans_endereco;
-    document.getElementById('rep-nome').value = trans.representante_transporte;
-    document.getElementById('rep-doc').value = trans.representante_doc;
+    document.getElementById('fab-nome').value = fab.fabricante + " (CÓPIA)";
+    document.getElementById('fab-cnpj').value = fab.fab_cnpj;
+    document.getElementById('fab-ie').value = fab.fab_inscricao_estadual;
+    document.getElementById('fab-cidade-estado').value = fab.fab_cidade_estado;
+    document.getElementById('fab-endereco').value = fab.fab_endereco;
+    document.getElementById('fab-tel').value = fab.fab_telefone;
+    document.getElementById('fab-email').value = fab.fab_email;
+    document.getElementById('fab-rep-nome').value = fab.fab_representante;
+    document.getElementById('fab-rep-doc').value = fab.fab_rep_doc;
 
     document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-copy"></i> Salvando Cópia da Fabricante`;
     document.getElementById('btn-salvar-fabricante').textContent = "Salvar Cópia";
-    document.getElementById('btn-cancelar-trans-edicao').style.display = "inline-block";
+    document.getElementById('btn-cancelar-fab-edicao').style.display = "inline-block";
     
     document.getElementById('titulo-form-fabricante').scrollIntoView({ behavior: 'smooth' });
 }
 
 // 7. EXCLUIR FABRICANTE
 async function excluirFabricante(id) {
-    const trans = listaFabricantesLocal.find(reg => reg.id === id);
-    if (!trans) return;
+    const fab = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!fab) return;
 
-    if (!confirm(`Tem certeza de que deseja excluir a fabricante "${trans.fabricante}"?`)) {
+    if (!confirm(`Tem certeza de que deseja excluir a fabricante "${fab.fabricante}"?`)) {
         return;
     }
 
@@ -192,5 +196,5 @@ function limparFormularioFabricante() {
     document.getElementById('fabricante-id-oculto').value = '';
     document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-truck-ramp-box"></i> Cadastrar Nova Fabricante`;
     document.getElementById('btn-salvar-fabricante').textContent = "Salvar Fabricante";
-    document.getElementById('btn-cancelar-trans-edicao').style.display = "none";
+    document.getElementById('btn-cancelar-fab-edicao').style.display = "none";
 }
