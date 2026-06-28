@@ -913,15 +913,15 @@
            TELAS: CADASTRO DE FABRICANTES
            ========================================== -->
         <div id="cadastro-fabricantes" class="tela-cadastro" style="display: none;">
-<button class="btn-voltar" onclick="voltarAoPainelDados()">
+            <button class="btn-voltar" onclick="voltarAoPainelDados()">
                 <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
             </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-industry"></i> Cadastrar Novo Fabricante</h3>
+                <h3 id="titulo-form-fabricante"><i class="fa-solid fa-industry"></i> Cadastrar Novo Fabricante</h3>
                 <input type="hidden" id="transportadora-id-oculto">
 
-                <form id="form-transportadora" class="form-grupo">
+                <form id="form-fabricante" class="form-grupo">
                     <div class="campo-input campo-largo">
                         <label>Razão Social / Nome do Fabricante <span style="color: red;">*</span></label>
                         <input type="text" id="trans-nome" class="input-moderno" placeholder="Ex: Transportes Internacionais Aliança Ltda" required>
@@ -965,7 +965,7 @@
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-transportadora" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Fabricante</button>
+                        <button type="submit" id="btn-salvar-fabricante" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Fabricante</button>
                         <button type="button" id="btn-cancelar-trans-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioTransportadora()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
@@ -973,23 +973,23 @@
 
             <div class="barra-pesquisa-container">
                 <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-                <input type="text" id="busca-transportadora" class="input-moderno" placeholder="Pesquisar por nome, documento, código ou representante..." oninput="filtrarTransportadoras()">
+                <input type="text" id="busca-fabricante" class="input-moderno" placeholder="Pesquisar por nome, documento, código ou representante..." oninput="filtrarFabricantes()">
             </div>
 
-            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Transportadoras Cadastradas</h3>
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Fabricantes Cadastradas</h3>
             <div class="tabela-container">
                 <table class="tabela-moderna">
                     <thead>
                         <tr>
                             <th>Razão Social</th>
-                            <th>Documento</th>
-                            <th>Código ATIT</th>
+                            <th>CNPJ</th>
+                            <th>I.E.</th>
                             <th>Localidade</th>
                             <th>Representante</th>
                             <th style="text-align: center; width: 160px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-transportadoras-corpo"></tbody>
+                    <tbody id="tabela-fabricantes-corpo"></tbody>
                 </table>
             </div>
         </div>
