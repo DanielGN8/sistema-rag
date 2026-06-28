@@ -913,7 +913,77 @@
            TELAS: CADASTRO DE FABRICANTES
            ========================================== -->
         <div id="cadastro-fabricantes" class="tela-cadastro" style="display: none;">
-   Opa
+<button class="btn-voltar" onclick="voltarAoPainelDados()">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para Dados
+            </button>
+            
+            <div class="cartao-cadastro">
+                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-building-flag"></i> Cadastrar Nova Transportadora</h3>
+                <input type="hidden" id="transportadora-id-oculto">
+
+                <form id="form-transportadora" class="form-grupo">
+                    <div class="campo-input campo-largo">
+                        <label>Razão Social / Nome da Transportadora <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-nome" class="input-moderno" placeholder="Ex: Transportes Internacionais Aliança Ltda" required>
+                    </div>
+                    <div class="campo-input">
+                        <label>CNPJ / RUT / Documento <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-doc" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
+                    </div>
+                    <div class="campo-input">
+                        <label>Código de Registro / Código ATIT <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-codigo" class="input-moderno" placeholder="Ex: TR-12345/BR" required>
+                    </div>
+                    <div class="campo-input">
+                        <label>Cidade / Estado / País <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-cidade-estado" class="input-moderno" placeholder="Ex: Foz do Iguaçu / PR" required>
+                    </div>
+                    <div class="campo-input campo-largo">
+                        <label>Endereço Completo <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-endereco" class="input-moderno" placeholder="Ex: Av. das Cataratas, 4500 - Vila Yolanda" required>
+                    </div>
+
+                    <div class="campo-largo" style="margin-top: 16px; border-top: 1px dashed #e2e8f0; padding-top: 20px;">
+                        <h4 style="color: #475569; margin-bottom: 12px; font-size: 15px;"><i class="fa-solid fa-user-shield"></i> Representante Legal para o Transporte</h4>
+                    </div>
+                    
+                    <div class="campo-input">
+                        <label>Nome do Representante <span style="color: red;">*</span></label>
+                        <input type="text" id="rep-nome" class="input-moderno" placeholder="Ex: Ricardo Mendes" required>
+                    </div>
+                    <div class="campo-input">
+                        <label>Documento do Representante (CPF/RG) <span style="color: red;">*</span></label>
+                        <input type="text" id="rep-doc" class="input-moderno" placeholder="Ex: 123.456.789-00" required>
+                    </div>
+                    
+                    <div class="campo-largo secao-botoes-form">
+                        <button type="submit" id="btn-salvar-transportadora" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Transportadora</button>
+                        <button type="button" id="btn-cancelar-trans-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioTransportadora()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="barra-pesquisa-container">
+                <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+                <input type="text" id="busca-transportadora" class="input-moderno" placeholder="Pesquisar por nome, documento, código ou representante..." oninput="filtrarTransportadoras()">
+            </div>
+
+            <h3 style="color: #475569; margin-bottom: 16px;"><i class="fa-solid fa-list"></i> Transportadoras Cadastradas</h3>
+            <div class="tabela-container">
+                <table class="tabela-moderna">
+                    <thead>
+                        <tr>
+                            <th>Razão Social</th>
+                            <th>Documento</th>
+                            <th>Código ATIT</th>
+                            <th>Localidade</th>
+                            <th>Representante</th>
+                            <th style="text-align: center; width: 160px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-transportadoras-corpo"></tbody>
+                </table>
+            </div>
         </div>
         <!-- ==========================================
            TELAS EM DESENVOLVIMENTO (CRT, MIC, EDICAO)
