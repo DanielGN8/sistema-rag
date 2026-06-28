@@ -918,25 +918,33 @@
             </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-building-flag"></i> Cadastrar Nova Transportadora</h3>
+                <h3 id="titulo-form-transportadora"><i class="fa-solid fa-industry"></i> Cadastrar Novo Fabricante</h3>
                 <input type="hidden" id="transportadora-id-oculto">
 
                 <form id="form-transportadora" class="form-grupo">
                     <div class="campo-input campo-largo">
-                        <label>Razão Social / Nome da Transportadora <span style="color: red;">*</span></label>
+                        <label>Razão Social / Nome do Fabricante <span style="color: red;">*</span></label>
                         <input type="text" id="trans-nome" class="input-moderno" placeholder="Ex: Transportes Internacionais Aliança Ltda" required>
                     </div>
                     <div class="campo-input">
-                        <label>CNPJ / RUT / Documento <span style="color: red;">*</span></label>
+                        <label>CNPJ Fabricante <span style="color: red;">*</span></label>
                         <input type="text" id="trans-doc" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
                     <div class="campo-input">
-                        <label>Código de Registro / Código ATIT <span style="color: red;">*</span></label>
+                        <label>Inscrição Estadual <span style="color: red;">*</span></label>
                         <input type="text" id="trans-codigo" class="input-moderno" placeholder="Ex: TR-12345/BR" required>
                     </div>
                     <div class="campo-input">
-                        <label>Cidade / Estado / País <span style="color: red;">*</span></label>
+                        <label>Cidade - Estado <span style="color: red;">*</span></label>
                         <input type="text" id="trans-cidade-estado" class="input-moderno" placeholder="Ex: Foz do Iguaçu / PR" required>
+                    </div>
+                     <div class="campo-input">
+                        <label>Telefone <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-doc" class="input-moderno" placeholder="Ex: (45) 91234-5678" required>
+                    </div>
+                    <div class="campo-input">
+                        <label>E-mail <span style="color: red;">*</span></label>
+                        <input type="text" id="trans-codigo" class="input-moderno" placeholder="Ex: emailaqui@empresa.com.br" required>
                     </div>
                     <div class="campo-input campo-largo">
                         <label>Endereço Completo <span style="color: red;">*</span></label>
@@ -957,7 +965,7 @@
                     </div>
                     
                     <div class="campo-largo secao-botoes-form">
-                        <button type="submit" id="btn-salvar-transportadora" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Transportadora</button>
+                        <button type="submit" id="btn-salvar-transportadora" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i> Salvar Fabricante</button>
                         <button type="button" id="btn-cancelar-trans-edicao" class="btn-sistema btn-vermelho" style="display:none;" onclick="limparFormularioTransportadora()"><i class="fa-solid fa-circle-xmark"></i> Cancelar</button>
                     </div>
                 </form>
