@@ -116,7 +116,7 @@ function filtrarFabricantes() {
 
     const filtrados = listaFabricantesLocal.filter(reg => {
         return (reg.fabricante && reg.fabricante.toLowerCase().includes(termo)) ||
-               (reg.fab_cnpj && reg.fab_cnpj.toLowerCase().includes(termo)) ||
+               (reg.fab_cnpj && reg.fab_cnpj.toLowerCase().includes(termo)) 
     });
 
     renderizarTabelaFabricantes(filtrados);
