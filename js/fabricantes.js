@@ -14,12 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Força a atualização da lista sempre que o painel de fabricantes for exibido
+const funcaoMostrarTelaCadastroOriginalParaFab = mostrarTelaCadastro;
+mostrarTelaCadastro = function(idCadastro) {
+    funcaoMostrarTelaCadastroOriginalParaFab(idCadastro);
+    if (idCadastro === 'cadastro-fabricantes') {
+        buscarFabricantesBanco();
+    }
+}
+
 // 1. BUSCAR FABRICANTES DO BANCO DE DADOS
 async function buscarFabricantesBanco() {
     console.log("Buscando lista de fabricantes no Supabase...");
-    if (!tabelaFabricantesCorpo) return;
-    
-    tabelaFabricantesCorpo.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando fabricantes...</td></tr>`;
+    tabelaFabricantesCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando fabricantes...</td></tr>`;
 
     const { data: fabricantes, error } = await supabaseClient
         .from('fabricantes')
@@ -27,175 +34,142 @@ async function buscarFabricantesBanco() {
         .order('id', { ascending: false });
 
     if (error) {
-        console.error('Erro ao buscar fabricantes:', error);
-        tabelaFabricantesCorpo.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#b91c1c;"><i class="fa-solid fa-circle-exclamation"></i> Erro ao carregar dados do banco.</td></tr>`;
+        console.error('Erro ao buscar fabricantes:', error.message);
+        alert('Erro ao carregar lista de fabricantes.');
         return;
     }
 
-    listaFabricantesLocal = fabricantes || [];
+    listaFabricantesLocal = fabricantes;
     renderizarTabelaFabricantes(listaFabricantesLocal);
 }
 
-// 2. RENDERIZAR TABELA DE FABRICANTES
-function renderizarTabelaFabricantes(lista) {
-    if (!tabelaFabricantesCorpo) return;
+// 2. RENDERIZAR TABELA NA TELA
+function renderizarTabelaFabricantes(dados) {
+    tabelaFabricantesCorpo.innerHTML = '';
 
-    if (lista.length === 0) {
-        tabelaFabricantesCorpo.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b; padding: 20px;">Nenhum fabricante encontrado.</td></tr>`;
+    if (dados.length === 0) {
+        tabelaFabricantesCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Nenhuma fabricante cadastrada.</td></tr>`;
         return;
     }
 
-    tabelaFabricantesCorpo.innerHTML = '';
-
-    lista.forEach(reg => {
+    dados.forEach(registro => {
         const tr = document.createElement('tr');
-        
-        // Formata a localização (Cidade - Estado)
-        const localizacao = [reg.cidade, reg.estado].filter(Boolean).join(' - ') || 'Não informado';
-
         tr.innerHTML = `
-            <td style="font-weight: 600; color: #1e293b;">${reg.fabricante || 'Sem Nome'}</td>
-            <td style="color: #475569;">${reg.cnpj || 'Não cadastrado'}</td>
-            <td style="color: #475569;">${localizacao}</td>
-            <td style="color: #475569;">${reg.pais || 'Brasil'}</td>
-            <td>
-                <div style="display: flex; gap: 8px; justify-content: center;">
-                    <button class="btn-acao btn-acao-azul" onclick="editarFabricante(${reg.id})" title="Editar Fabricante">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button class="btn-acao btn-acao-laranja" onclick="duplicarFabricante(${reg.id})" title="Duplicar / Salvar Cópia">
-                        <i class="fa-solid fa-copy"></i>
-                    </button>
-                    <button class="btn-acao btn-acao-vermelho" onclick="excluirFabricante(${reg.id})" title="Excluir Fabricante">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
+            <td style="font-weight: 600; color: #0f172a;">${registro.fabricante}</td>
+            <td>${registro.fab_cnpj}</td>
+            <td><span style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:600; font-size:12px;">${registro.fab_inscricao_estadual}</span></td>
+            <td>${registro.fab_cidade_estado}</td>
+            <td style="font-size:13px; color:#475569;"><i class="fa-solid fa-user-tie" style="font-size:11px;"></i> ${registro.fab_representante}</td>
+            <td style="text-align: center;">
+                <button class="btn-acao editar" onclick="prepararEdicaoFabricante(${registro.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-acao duplicar" onclick="duplicarFabricante(${registro.id})" title="Duplicar"><i class="fa-solid fa-copy"></i></button>
+                <button class="btn-acao excluir" onclick="excluirFabricante(${registro.id})" title="Excluir"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         `;
         tabelaFabricantesCorpo.appendChild(tr);
     });
 }
 
-// 3. FILTRAR FABRICANTES (BUSCA EM TEMPO REAL)
-function filtrarFabricantesLocal() {
+// 3. SALVAR OU ATUALIZAR FABRICANTE
+async function salvarFabricante(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('fabricante-id-oculto').value;
+    const payload = {
+        fabricante: document.getElementById('trans-nome').value.trim(),
+        trans_documento: document.getElementById('trans-doc').value.trim(),
+        trans_codigo: document.getElementById('trans-codigo').value.trim(),
+        trans_cidade_estado: document.getElementById('trans-cidade-estado').value.trim(),
+        trans_endereco: document.getElementById('trans-endereco').value.trim(),
+        representante_transporte: document.getElementById('rep-nome').value.trim(),
+        representante_doc: document.getElementById('rep-doc').value.trim()
+    };
+
+    let resposta;
+
+    if (id) {
+        resposta = await supabaseClient.from('fabricantes').update([payload]).eq('id', id).select();
+    } else {
+        resposta = await supabaseClient.from('fabricantes').insert([payload]).select();
+    }
+
+    if (resposta.error) {
+        console.error('Erro ao salvar fabricante:', resposta.error);
+        alert('Erro ao processar dados da fabricante: ' + resposta.error.message);
+    } else {
+        alert(id ? 'Fabricante atualizada com sucesso!' : 'Fabricante cadastrada com sucesso!');
+        limparFormularioFabricante();
+        buscarFabricantesBanco();
+    }
+}
+
+// 4. PESQUISAR / FILTRAR LOCALMENTE
+function filtrarFabricantes() {
     const termo = inputBuscaFabricante.value.toLowerCase().trim();
+    
     if (!termo) {
         renderizarTabelaFabricantes(listaFabricantesLocal);
         return;
     }
 
     const filtrados = listaFabricantesLocal.filter(reg => {
-        const nome = (reg.fabricante || '').toLowerCase();
-        const cnpj = (reg.cnpj || '').toLowerCase();
-        const cidade = (reg.cidade || '').toLowerCase();
-        return nome.includes(termo) || cnpj.includes(termo) || cidade.includes(termo);
+        return (reg.fabricante && reg.fabricante.toLowerCase().includes(termo)) ||
+               (reg.trans_documento && reg.trans_documento.toLowerCase().includes(termo)) ||
+               (reg.trans_codigo && reg.trans_codigo.toLowerCase().includes(termo)) ||
+               (reg.representante_transporte && reg.representante_transporte.toLowerCase().includes(termo));
     });
 
     renderizarTabelaFabricantes(filtrados);
 }
 
-// 4. SALVAR / ATUALIZAR FABRICANTE
-async function salvarFabricante(e) {
-    e.preventDefault();
+// 5. CARREGAR DADOS PARA EDIÇÃO
+function prepararEdicaoFabricante(id) {
+    const trans = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!trans) return;
 
-    const idOculto = document.getElementById('fabricante-id-oculto').value;
-    const nome = document.getElementById('fabricante-nome').value.trim();
-    const cnpj = document.getElementById('fabricante-cnpj').value.trim();
-    const endereco = document.getElementById('fabricante-endereco').value.trim();
-    const cidade = document.getElementById('fabricante-cidade').value.trim();
-    const estado = document.getElementById('fabricante-estado').value.trim();
-    const pais = document.getElementById('fabricante-pais').value.trim();
+    document.getElementById('fabricante-id-oculto').value = trans.id;
+    document.getElementById('trans-nome').value = trans.fabricante;
+    document.getElementById('trans-doc').value = trans.trans_documento;
+    document.getElementById('trans-codigo').value = trans.trans_codigo;
+    document.getElementById('trans-cidade-estado').value = trans.trans_cidade_estado;
+    document.getElementById('trans-endereco').value = trans.trans_endereco;
+    document.getElementById('rep-nome').value = trans.representante_transporte;
+    document.getElementById('rep-doc').value = trans.representante_doc;
 
-    if (!nome) {
-        alert('O nome do fabricante é obrigatório.');
-        return;
-    }
-
-    // Monta o objeto com as colunas exatas do banco do Supabase
-    const payload = {
-        fabricante: nome,
-        cnpj: cnpj,
-        endereco: endereco,
-        cidade: cidade,
-        estado: estado,
-        pais: pais
-    };
-
-    let erroBanco = null;
-
-    if (idOculto) {
-        // Modo de Edição
-        const { error } = await supabaseClient
-            .from('fabricantes')
-            .update(payload)
-            .eq('id', idOculto);
-        erroBanco = error;
-    } else {
-        // Modo de Inserção de Novo Registro
-        const { error } = await supabaseClient
-            .from('fabricantes')
-            .insert([payload]);
-        erroBanco = error;
-    }
-
-    if (erroBanco) {
-        console.error('Erro ao salvar fabricante:', erroBanco);
-        alert('Erro ao salvar dados do fabricante: ' + erroBanco.message);
-    } else {
-        alert(idOculto ? 'Fabricante atualizado com sucesso!' : 'Fabricante cadastrado com sucesso!');
-        limparFormularioFabricante();
-        buscarFabricantesBanco();
-    }
-}
-
-// 5. PREPARAR EDIÇÃO
-function editarFabricante(id) {
-    const reg = listaFabricantesLocal.find(item => item.id === id);
-    if (!reg) return;
-
-    document.getElementById('fabricante-id-oculto').value = reg.id;
-    document.getElementById('fabricante-nome').value = reg.fabricante || '';
-    document.getElementById('fabricante-cnpj').value = reg.cnpj || '';
-    document.getElementById('fabricante-endereco').value = reg.endereco || '';
-    document.getElementById('fabricante-cidade').value = reg.cidade || '';
-    document.getElementById('fabricante-estado').value = reg.estado || '';
-    document.getElementById('fabricante-pais').value = reg.pais || 'Brasil';
-
-    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-pen"></i> Editando Fabricante: ${reg.fabricante}`;
-    document.getElementById('btn-salvar-fabricante').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Atualizar Fabricante`;
-    document.getElementById('btn-cancelar-fab-edicao').style.display = "inline-block";
+    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Fabricante: ${trans.fabricante}`;
+    document.getElementById('btn-salvar-fabricante').textContent = "Atualizar Fabricante";
+    document.getElementById('btn-cancelar-trans-edicao').style.display = "inline-block";
     
     document.getElementById('titulo-form-fabricante').scrollIntoView({ behavior: 'smooth' });
 }
 
-// 6. PREPARAR DUPLICAÇÃO (SALVAR CÓPIA)
+// 6. DUPLICAR FABRICANTE (Útil se houver filiais com o mesmo representante/CNPJ base)
 function duplicarFabricante(id) {
-    const reg = listaFabricantesLocal.find(item => item.id === id);
-    if (!reg) return;
+    const trans = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!trans) return;
 
-    // Limpa o ID oculto para criar um registro totalmente novo no banco
     document.getElementById('fabricante-id-oculto').value = '';
-    
-    document.getElementById('fabricante-nome').value = (reg.fabricante || '') + ' (Cópia)';
-    document.getElementById('fabricante-cnpj').value = reg.cnpj || '';
-    document.getElementById('fabricante-endereco').value = reg.endereco || '';
-    document.getElementById('fabricante-cidade').value = reg.cidade || '';
-    document.getElementById('fabricante-estado').value = reg.estado || '';
-    document.getElementById('fabricante-pais').value = reg.pais || 'Brasil';
+    document.getElementById('trans-nome').value = trans.fabricante + " (CÓPIA)";
+    document.getElementById('trans-doc').value = trans.trans_documento;
+    document.getElementById('trans-codigo').value = trans.trans_codigo;
+    document.getElementById('trans-cidade-estado').value = trans.trans_cidade_estado;
+    document.getElementById('trans-endereco').value = trans.trans_endereco;
+    document.getElementById('rep-nome').value = trans.representante_transporte;
+    document.getElementById('rep-doc').value = trans.representante_doc;
 
-    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-copy"></i> Salvando Cópia do Fabricante`;
-    document.getElementById('btn-salvar-fabricante').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Salvar Cópia`;
-    document.getElementById('btn-cancelar-fab-edicao').style.display = "inline-block";
+    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-copy"></i> Salvando Cópia da Fabricante`;
+    document.getElementById('btn-salvar-fabricante').textContent = "Salvar Cópia";
+    document.getElementById('btn-cancelar-trans-edicao').style.display = "inline-block";
     
     document.getElementById('titulo-form-fabricante').scrollIntoView({ behavior: 'smooth' });
 }
 
 // 7. EXCLUIR FABRICANTE
 async function excluirFabricante(id) {
-    const reg = listaFabricantesLocal.find(item => item.id === id);
-    if (!reg) return;
+    const trans = listaFabricantesLocal.find(reg => reg.id === id);
+    if (!trans) return;
 
-    if (!confirm(`Tem certeza de que deseja excluir o fabricante "${reg.fabricante}"?`)) {
+    if (!confirm(`Tem certeza de que deseja excluir a fabricante "${trans.fabricante}"?`)) {
         return;
     }
 
@@ -206,18 +180,17 @@ async function excluirFabricante(id) {
 
     if (error) {
         console.error('Erro ao excluir fabricante:', error);
-        alert('Não foi possível deletar o fabricante: ' + error.message);
+        alert('Não foi possível deletar a fabricante: ' + error.message);
     } else {
-        alert('Fabricante removido com sucesso.');
+        alert('Fabricante removida com sucesso.');
         buscarFabricantesBanco();
     }
 }
 
-// 8. LIMPAR FORMULÁRIO
 function limparFormularioFabricante() {
-    if (formFabricante) formFabricante.reset();
+    formFabricante.reset();
     document.getElementById('fabricante-id-oculto').value = '';
-    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> Cadastrar Novo Fabricante`;
-    document.getElementById('btn-salvar-fabricante').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Salvar Fabricante`;
-    document.getElementById('btn-cancelar-fab-edicao').style.display = "none";
+    document.getElementById('titulo-form-fabricante').innerHTML = `<i class="fa-solid fa-truck-ramp-box"></i> Cadastrar Nova Fabricante`;
+    document.getElementById('btn-salvar-fabricante').textContent = "Salvar Fabricante";
+    document.getElementById('btn-cancelar-trans-edicao').style.display = "none";
 }
