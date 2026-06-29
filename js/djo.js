@@ -1,310 +1,572 @@
-// ==========================================================================
-// MÓDULO: DECLARAÇÃO JURAMENTADA DE ORIGEM (DJO)
-// Arquivo: js/djo.js
-// ==========================================================================
+// ==========================================
+// MÓDULO: DJO - DECLARAÇÃO JURAMENTADA DE ORIGEM
+// ==========================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa os escutadores e cargas assim que o DOM estiver pronto
-    inicializarModuloDJO();
-});
+// ==========================================
+// MODAL DE BUSCA DE ITEM
+// ==========================================
 
-function inicializarModuloDJO() {
-    // 1. Ouvintes do Modal de Busca de Itens
-    const btnAbrirBusca = document.getElementById('btn-abrir-busca-item-djo');
-    const btnFecharBuscaX = document.getElementById('btn-fechar-modal-item-djo');
-    const btnCancelarBusca = document.getElementById('btn-cancelar-modal-item-djo');
-    const inputPesquisa = document.getElementById('input-pesquisa-modal-djo');
+let itensBuscados = []; // Cache dos resultados de busca
 
-    if (btnAbrirBusca) btnAbrirBusca.addEventListener('click', abrirModalBuscaItem);
-    if (btnFecharBuscaX) btnFecharBuscaX.addEventListener('click', fecharModalBuscaItem);
-    if (btnCancelarBusca) btnCancelarBusca.addEventListener('click', fecharModalBuscaItem);
-    
-    if (inputPesquisa) {
-        // Busca em tempo real (Debounce simples para evitar requisições excessivas)
-        let timeoutBusca = null;
-        inputPesquisa.addEventListener('input', (e) => {
-            clearTimeout(timeoutBusca);
-            timeoutBusca = setTimeout(() => {
-                buscarItensNoSupabase(e.target.value.trim());
-            }, 300);
-        });
-    }
-
-    // 2. Carga Inicial de Dados
-    carregarExportadoresDJO();
-
-    // 3. Ouvinte do Formulário de Submissão
-    const formDJO = document.getElementById('form-emitir-djo');
-    if (formDJO) {
-        formDJO.addEventListener('submit', processarEmissaoDJO);
-    }
-}
-
-// ==========================================================================
-// FUNCIONALIDADE 1: PESQUISA AVANÇADA DE ITENS (MODAL + SUPABASE)
-// ==========================================================================
-
+// Abre o modal de busca de item
 function abrirModalBuscaItem() {
-    const modal = document.getElementById('modal-busca-item-djo');
-    if (modal) {
-        modal.classList.remove('hidden');
-        // Limpa buscas anteriores ao abrir
-        document.getElementById('input-pesquisa-modal-djo').value = '';
-        document.getElementById('djo-modal-placeholder').classList.remove('hidden');
-        document.getElementById('tabela-resultados-modal-djo').classList.add('hidden');
-        document.getElementById('input-pesquisa-modal-djo').focus();
+    // Cria o overlay + modal se ainda não existir
+    if (!document.getElementById('modal-busca-item')) {
+        criarModalBuscaItem();
     }
+
+    const modal = document.getElementById('modal-busca-item');
+    modal.style.display = 'flex';
+
+    // Pequena pausa para acionar a animação de entrada
+    setTimeout(() => {
+        modal.classList.add('ativo');
+    }, 10);
+
+    // Limpa estado anterior
+    document.getElementById('modal-busca-input').value = '';
+    document.getElementById('modal-busca-resultados').innerHTML = `
+        <div class="modal-busca-placeholder">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <p>Digite ao menos 2 caracteres para pesquisar</p>
+        </div>`;
+    
+    // Foca no campo de busca automaticamente
+    setTimeout(() => {
+        document.getElementById('modal-busca-input').focus();
+    }, 150);
 }
 
+// Fecha o modal de busca de item
 function fecharModalBuscaItem() {
-    const modal = document.getElementById('modal-busca-item-djo');
-    if (modal) modal.classList.add('hidden');
+    const modal = document.getElementById('modal-busca-item');
+    if (!modal) return;
+    modal.classList.remove('ativo');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 250);
 }
 
-/**
- * Realiza a consulta na tabela "itens" utilizando filtros lógicos (OR)
- */
-async function buscarItensNoSupabase(termo) {
-    const placeholder = document.getElementById('djo-modal-placeholder');
-    const tabela = document.getElementById('tabela-resultados-modal-djo');
-    const corpoTabela = document.getElementById('corpo-resultados-modal-djo');
+// Cria a estrutura HTML do modal dinamicamente e injeta no body
+function criarModalBuscaItem() {
+    const modal = document.createElement('div');
+    modal.id = 'modal-busca-item';
+    modal.className = 'modal-busca-overlay';
 
-    if (!termo || termo.length < 2) {
-        placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">📋</p>
-                                 <p style="margin: 0; font-size: 14px;">Digite pelo menos 2 caracteres para pesquisar...</p>`;
-        placeholder.classList.remove('hidden');
-        tabela.classList.add('hidden');
-        return;
-    }
+    modal.innerHTML = `
+        <div class="modal-busca-card">
 
-    try {
-        // Busca com base nas colunas fornecidas na sua modelagem de banco
-        const { data, error } = await supabaseClient
-            .from('itens')
-            .select('*')
-            .or(`item.ilike.%${termo}%,ncm.ilike.%${termo}%,cod_fabricante.ilike.%${termo}%,fabricante.ilike.%${termo}%`)
-            .limit(20);
+            <div class="modal-busca-header">
+                <div>
+                    <h3><i class="fa-solid fa-boxes-stacked"></i> Buscar Item / Produto</h3>
+                    <p>Pesquise pelo nome, NCM, código ou fabricante</p>
+                </div>
+                <button class="modal-busca-fechar" id="btn-fechar-modal-busca" title="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-        if (error) throw error;
+            <div class="modal-busca-corpo">
+                <div class="modal-busca-campo-wrapper">
+                    <i class="fa-solid fa-magnifying-glass modal-busca-icone-input"></i>
+                    <input
+                        type="text"
+                        id="modal-busca-input"
+                        class="modal-busca-input"
+                        placeholder="Ex: parafuso, 7318.15, BR-001, Brasmetal..."
+                        autocomplete="off"
+                    />
+                    <span id="modal-busca-spinner" class="modal-busca-spinner" style="display:none;">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    </span>
+                </div>
 
-        corpoTabela.innerHTML = '';
+                <div class="modal-busca-filtros">
+                    <span class="modal-busca-filtro-label">Filtrar por:</span>
+                    <label class="modal-busca-chip">
+                        <input type="checkbox" value="item" checked> Nome
+                    </label>
+                    <label class="modal-busca-chip">
+                        <input type="checkbox" value="ncm" checked> NCM
+                    </label>
+                    <label class="modal-busca-chip">
+                        <input type="checkbox" value="codigo_fabricante" checked> Cód. Fabricante
+                    </label>
+                    <label class="modal-busca-chip">
+                        <input type="checkbox" value="fabricante" checked> Fabricante
+                    </label>
+                </div>
 
-        if (!data || data.length === 0) {
-            placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">🔍</p>
-                                     <p style="margin: 0; font-size: 14px; color: #b91c1c;">Nenhum item encontrado para "${termo}".</p>`;
-            placeholder.classList.remove('hidden');
-            tabela.classList.add('hidden');
+                <div id="modal-busca-resultados" class="modal-busca-resultados">
+                    <div class="modal-busca-placeholder">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <p>Digite ao menos 2 caracteres para pesquisar</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // ---- Event Listeners ----
+
+    // Fechar ao clicar no X
+    modal.querySelector('#btn-fechar-modal-busca').addEventListener('click', fecharModalBuscaItem);
+
+    // Fechar ao clicar no fundo escurecido
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) fecharModalBuscaItem();
+    });
+
+    // Fechar com ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') fecharModalBuscaItem();
+    });
+
+    // Busca com debounce ao digitar
+    let debounceTimer;
+    modal.querySelector('#modal-busca-input').addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        const termo = e.target.value.trim();
+
+        if (termo.length < 2) {
+            document.getElementById('modal-busca-resultados').innerHTML = `
+                <div class="modal-busca-placeholder">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <p>Digite ao menos 2 caracteres para pesquisar</p>
+                </div>`;
             return;
         }
 
-        // Alimenta as linhas da tabela de resultados
-        data.forEach(registro => {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #e2e8f0';
-            tr.style.cursor = 'pointer';
-            
-            // Efeito hover dinâmico por JS
-            tr.onmouseenter = () => tr.style.backgroundColor = '#f1f5f9';
-            tr.onmouseleave = () => tr.style.backgroundColor = 'transparent';
-
-            tr.innerHTML = `
-                <td style="padding: 12px; font-weight: 500; color: #1e293b;">${registro.item || ''}</td>
-                <td style="padding: 12px; color: #475569;">${registro.ncm || ''}</td>
-                <td style="padding: 12px; color: #475569;">${registro.fabricante || 'Não Informado'}</td>
-                <td style="padding: 12px; text-align: center;">
-                    <button type="button" class="btn-selecionar-item-modal" 
-                            style="background-color: #0f766e; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
-                        Selecionar
-                    </button>
-                </td>
-            `;
-
-            // Evento ao selecionar o item definitivo
-            tr.querySelector('.btn-selecionar-item-modal').addEventListener('click', () => {
-                vincularItemAoFormulario(registro);
-            });
-
-            corpoTabela.appendChild(tr);
-        });
-
-        placeholder.classList.add('hidden');
-        tabela.classList.remove('hidden');
-
-    } catch (err) {
-        console.error('Erro na pesquisa de itens:', err);
-        placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">❌</p>
-                                 <p style="margin: 0; font-size: 14px; color: #b91c1c;">Erro ao conectar com o banco de dados.</p>`;
-    }
+        debounceTimer = setTimeout(() => {
+            buscarItensNoSupabase(termo);
+        }, 350);
+    });
 }
 
-function vincularItemAoFormulario(itemObjeto) {
-    // Alimenta os inputs visíveis e ocultos da página principal
-    document.getElementById('djo-item-selecionado').value = itemObjeto.item || '';
-    document.getElementById('djo-item-id').value = itemObjeto.id || '';
-    document.getElementById('djo-item-ncm').value = itemObjeto.ncm || '';
-    
-    // Armazena o objeto completo temporariamente no dataset para uso no submit posterior
-    document.getElementById('form-emitir-djo').dataset.itemCompleto = JSON.stringify(itemObjeto);
+// Executa a busca no Supabase com base no termo e filtros selecionados
+async function buscarItensNoSupabase(termo) {
+    const spinner = document.getElementById('modal-busca-spinner');
+    const resultadosDiv = document.getElementById('modal-busca-resultados');
 
-    fecharModalBuscaItem();
-    alert('Sucesso: Item vinculado com sucesso à declaração!');
-}
+    // Descobre quais filtros estão marcados
+    const checkboxes = document.querySelectorAll('.modal-busca-chip input[type="checkbox"]:checked');
+    const colunasFiltradas = Array.from(checkboxes).map(cb => cb.value);
 
-
-// ==========================================================================
-// FUNCIONALIDADE 2: ALIMENTAR SELECT DE EXPORTADORES (SUPABASE)
-// ==========================================================================
-
-async function carregarExportadoresDJO() {
-    const selectExportador = document.getElementById('djo-exportador');
-    if (!selectExportador) return;
-
-    try {
-        // Busca os exportadores cadastrados ordenados por Razão Social / Nome
-        const { data, error } = await supabaseClient
-            .from('exportadores')
-            .select('id, razao_social, cnpj') 
-            .order('razao_social', { ascending: true });
-
-        if (error) throw error;
-
-        // Mantém a opção padrão e limpa os antigos
-        selectExportador.innerHTML = '<option value="" disabled selected>Selecione um exportador...</option>';
-
-        data.forEach(exp => {
-            const opt = document.createElement('option');
-            opt.value = exp.id;
-            opt.textContent = `${exp.razao_social} (${exp.cnpj || 'Sem ID Fiscal'})`;
-            selectExportador.appendChild(opt);
-        });
-
-    } catch (err) {
-        console.error('Erro ao carregar exportadores:', err);
-        selectExportador.innerHTML = '<option value="" disabled>Erro ao carregar registros do banco</option>';
-    }
-}
-
-
-// ==========================================================================
-// FUNCIONALIDADE 3: MAPEAMENTO DE CAMPOS E EMISSÃO DO DOCUMENTO (HTML / TEMPLATE)
-// ==========================================================================
-
-async function processarEmissaoDJO(e) {
-    e.preventDefault();
-
-    // Captura os elementos e os IDs selecionados
-    const exportadorId = document.getElementById('djo-exportador').value;
-    const itemId = document.getElementById('djo-item-id').value;
-
-    if (!itemId) {
-        alert('Erro: Você precisa pesquisar e selecionar um item na lupa antes de prosseguir.');
+    if (colunasFiltradas.length === 0) {
+        resultadosDiv.innerHTML = `<div class="modal-busca-placeholder"><i class="fa-solid fa-filter"></i><p>Selecione ao menos um filtro</p></div>`;
         return;
     }
 
+    spinner.style.display = 'inline-block';
+    resultadosDiv.innerHTML = '';
+
     try {
-        // Busca detalhada dos dados do Exportador completo diretamente no Supabase para preencher o documento
-        const { data: exportadorCompleto, error: errExp } = await supabaseClient
-            .from('exportadores')
-            .select('*')
-            .eq('id', exportadorId)
-            .single();
+        // Monta a query com OR entre os campos selecionados
+        const filtroOr = colunasFiltradas
+            .map(col => `${col}.ilike.%${termo}%`)
+            .join(',');
 
-        if (errExp) throw errExp;
+        const { data, error } = await supabaseClient
+            .from('itens')
+            .select('id, item, ncm, unidade, tipo_item, codigo_fabricante, fabricante')
+            .or(filtroOr)
+            .order('item', { ascending: true })
+            .limit(50);
 
-        // Recupera os dados guardados do item selecionado
-        const itemCompleto = JSON.parse(document.getElementById('form-emitir-djo').dataset.itemCompleto);
+        if (error) throw error;
 
-        // Captura das entradas manuais da página
-        const numeroDoc = document.getElementById('djo-numero').value.trim();
-        const dataDocInput = document.getElementById('djo-data').value; // YYYY-MM-DD
-        const valorMinimo = parseFloat(document.getElementById('djo-valor-minimo').value).toFixed(2);
-        const valorMaximo = parseFloat(document.getElementById('djo-valor-maximo').value).toFixed(2);
-        const exportadorEhProdutor = document.getElementById('djo-exportador-produtor').checked;
-
-        // Formatação simples de data para padrão BR/Mercosul (DD/MM/AAAA)
-        let dataDocFormatada = dataDocInput;
-        if (dataDocInput) {
-            const [ano, mes, dia] = dataDocInput.split('-');
-            dataDocFormatada = `${dia}/${mes}/${ano}`;
-        }
-
-        // ==================================================================
-        // 🚨 CENTRAL DE MAPEAMENTO E SUBSTUIÇÃO DE CHAVES (EDITÁVEL AQUI)
-        // Mapeie aqui: "Chave Exata no djo.html": "Valor capturado ou do banco"
-        // ==================================================================
-        const dicionarioSubstituicao = {
-            "{{numeroDoc}}": numeroDoc,
-            "{{dataDoc}}": dataDocFormatada,
-            "{{valoresMinMax}}": `MINIMO: US$ ${valorMinimo} / MAXIMO: US$ ${valorMaximo}`,
-            
-            // Dados vindo da tabela 'exportadores' do Supabase
-            "{{exportadorRazaoSocial}}": exportadorCompleto.razao_social || '',
-            "{{exportadorEndereco}}": exportadorCompleto.endereco || '',
-            "{{exportadorCidadeEstado}}": `${exportadorCompleto.cidade || ''} - ${exportadorCompleto.estado || ''}`,
-            "{{exportadorPais}}": exportadorCompleto.pais || 'BRASIL',
-            "{{exportadorTelefoneEmail}}": `${exportadorCompleto.telefone || ''} / ${exportadorCompleto.email || ''}`,
-            "{{exportadorRepresentante}}": exportadorCompleto.representante_legal || 'REPRESENTANTE LEGAL',
-            
-            // Lógica dinâmica baseada no Checkbox "Exportador também é produtor?"
-            "{{produtorRazaoSocial}}": exportadorEhProdutor ? exportadorCompleto.razao_social : (itemCompleto.fabricante || 'O MESMO'),
-            "{{produtorEndereco}}": exportadorEhProdutor ? exportadorCompleto.endereco : 'CONFORME REGISTRO DO FABRICANTE',
-            "{{produtorRepresentante}}": exportadorEhProdutor ? exportadorCompleto.representante_legal : 'GERENTE OPERACIONAL',
-
-            // Dados vindo da tabela 'itens' do Supabase
-            "{{itemNcm}}": itemCompleto.ncm || '',
-            "{{itemNome}}": itemCompleto.item || '',
-            "{{itemDescricaoDetalhada}}": `${itemCompleto.item || ''} - FABRICANTE: ${itemCompleto.fabricante || 'NÃO DEFINIDO'}. PROCESSO: ${itemCompleto.processo_produtivo || 'PADRÃO DE ORIGEM MERCOSUL.'}`,
-            "{{itemCodFabricante}}": itemCompleto.cod_fabricante || 'N/A'
-        };
-
-        // Dispara a geração física do documento unificado
-        gerarVisualizacaoDJO(dicionarioSubstituicao);
+        itensBuscados = data;
+        renderizarResultados(data, termo);
 
     } catch (err) {
-        console.error('Erro ao gerar a DJO:', err);
-        alert('Erro: Falha ao compilar dados para o documento. Verifique o console.');
+        console.error('Erro ao buscar itens:', err);
+        resultadosDiv.innerHTML = `
+            <div class="modal-busca-placeholder erro">
+                <i class="fa-solid fa-circle-xmark"></i>
+                <p>Erro ao buscar no banco de dados. Tente novamente.</p>
+            </div>`;
+    } finally {
+        spinner.style.display = 'none';
     }
 }
 
-/**
- * Baixa o modelo bruto do djo.html, realiza as substituições e abre a janela de impressão
- */
-async function gerarVisualizacaoDJO(mapaDeDados) {
-    try {
-        // Url base do seu template hospedado
-        const urlTemplate = "https://danielgn8.github.io/sistema-rag/docs/djo.html";
-        
-        // Faz o download do esqueleto bruto do documento
-        const resposta = await fetch(urlTemplate);
-        if (!resposta.ok) throw new Error('Não foi possível obter o modelo base HTML.');
-        
-        let htmlFinal = await resposta.text();
+// Renderiza a lista de resultados no modal
+function renderizarResultados(itens, termo) {
+    const resultadosDiv = document.getElementById('modal-busca-resultados');
 
-        // Passa por cada chave do dicionário editável substituindo todas as ocorrências globais
-        for (const [chave, valor] of Object.entries(mapaDeDados)) {
-            // Cria uma expressão regular para substituir todas as chaves equivalentes encontradas
-            const regex = new RegExp(chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
-            htmlFinal = htmlFinal.replace(regex, valor);
-        }
-
-        // Cria uma nova janela limpa no navegador para renderizar o documento montado
-        const janelaImpressao = window.open('', '_blank', 'width=900,height=900');
-        
-        if (janelaImpressao) {
-            janelaImpressao.document.open();
-            janelaImpressao.document.write(htmlFinal);
-            janelaImpressao.document.close();
-            
-            // Aguarda o carregamento leve dos estilos e dispara o print do sistema automaticamente
-            janelaImpressao.onload = function() {
-                janelaImpressao.print();
-            };
-        } else {
-            alert('Aviso: Bloqueador de pop-ups ativo! Permita a abertura para visualizar o documento.');
-        }
-
-    } catch (erro) {
-        console.error('Falha no motor de renderização HTML:', erro);
-        alert('Erro ao processar template do arquivo base.');
+    if (!itens || itens.length === 0) {
+        resultadosDiv.innerHTML = `
+            <div class="modal-busca-placeholder">
+                <i class="fa-solid fa-box-open"></i>
+                <p>Nenhum item encontrado para "<strong>${termo}</strong>"</p>
+            </div>`;
+        return;
     }
+
+    // Função auxiliar para destacar o termo encontrado em negrito
+    function destacar(texto, termo) {
+        if (!texto) return '—';
+        const regex = new RegExp(`(${termo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return texto.replace(regex, '<mark>$1</mark>');
+    }
+
+    const html = itens.map(item => `
+        <div class="modal-busca-item-card" data-id="${item.id}">
+            <div class="modal-busca-item-nome">${destacar(item.item, termo)}</div>
+            <div class="modal-busca-item-detalhes">
+                <span class="modal-busca-badge ncm" title="NCM">
+                    <i class="fa-solid fa-tag"></i> ${item.ncm || '—'}
+                </span>
+                <span class="modal-busca-badge fabricante" title="Fabricante">
+                    <i class="fa-solid fa-industry"></i> ${destacar(item.fabricante, termo) || '—'}
+                </span>
+                <span class="modal-busca-badge codigo" title="Código do Fabricante">
+                    <i class="fa-solid fa-barcode"></i> ${destacar(item.codigo_fabricante, termo) || '—'}
+                </span>
+                <span class="modal-busca-badge tipo" title="Tipo">
+                    <i class="fa-solid fa-layer-group"></i> ${item.tipo_item || '—'}
+                </span>
+            </div>
+            <button class="modal-busca-btn-selecionar" onclick="selecionarItemDJO(${item.id})">
+                <i class="fa-solid fa-circle-check"></i> Selecionar Item
+            </button>
+        </div>
+    `).join('');
+
+    resultadosDiv.innerHTML = `
+        <p class="modal-busca-contagem">${itens.length} item(ns) encontrado(s)</p>
+        ${html}
+    `;
+}
+
+// Preenche os campos do formulário DJO com o item selecionado e fecha o modal
+function selecionarItemDJO(itemId) {
+    const item = itensBuscados.find(i => i.id === itemId);
+    if (!item) return;
+
+    // Preenche os campos visíveis e ocultos do formulário
+    document.getElementById('djo-item-selecionado').value = item.item;
+    document.getElementById('djo-item-id').value = item.id;
+    document.getElementById('djo-item-ncm').value = item.ncm || '';
+
+    fecharModalBuscaItem();
+}
+
+// ==========================================
+// INICIALIZAÇÃO DOS EVENTOS DO MÓDULO DJO
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Botão da lupa para abrir o modal de busca
+    const btnLupa = document.getElementById('btn-abrir-busca-item-djo');
+    if (btnLupa) {
+        btnLupa.addEventListener('click', abrirModalBuscaItem);
+    }
+
+    // Injetar os estilos do modal no <head> (evita depender de um CSS externo)
+    injetarEstilosModalBusca();
+});
+
+// ==========================================
+// ESTILOS CSS DO MODAL (INJETADOS VIA JS)
+// ==========================================
+
+function injetarEstilosModalBusca() {
+    const style = document.createElement('style');
+    style.id = 'estilos-modal-busca-item';
+    style.textContent = `
+        /* === OVERLAY === */
+        .modal-busca-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .modal-busca-overlay.ativo {
+            opacity: 1;
+        }
+
+        /* === CARD PRINCIPAL === */
+        .modal-busca-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 680px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(16px);
+            transition: transform 0.25s ease;
+        }
+        .modal-busca-overlay.ativo .modal-busca-card {
+            transform: translateY(0);
+        }
+
+        /* === HEADER === */
+        .modal-busca-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 22px 24px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+        .modal-busca-header h3 {
+            margin: 0 0 4px;
+            color: #1e3a8a;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .modal-busca-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+        .modal-busca-fechar {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+        .modal-busca-fechar:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* === CORPO === */
+        .modal-busca-corpo {
+            display: flex;
+            flex-direction: column;
+            padding: 18px 24px;
+            gap: 14px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* === CAMPO DE INPUT === */
+        .modal-busca-campo-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .modal-busca-icone-input {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 15px;
+            pointer-events: none;
+        }
+        .modal-busca-input {
+            width: 100%;
+            padding: 13px 44px 13px 42px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #1e293b;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .modal-busca-input:focus {
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
+        }
+        .modal-busca-spinner {
+            position: absolute;
+            right: 14px;
+            color: #1e3a8a;
+            font-size: 15px;
+        }
+
+        /* === FILTROS (CHIPS) === */
+        .modal-busca-filtros {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .modal-busca-filtro-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 2px;
+        }
+        .modal-busca-chip {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+        .modal-busca-chip:has(input:checked) {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            color: #1e3a8a;
+        }
+        .modal-busca-chip input {
+            accent-color: #1e3a8a;
+            width: 13px;
+            height: 13px;
+            cursor: pointer;
+        }
+
+        /* === ÁREA DE RESULTADOS === */
+        .modal-busca-resultados {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+        .modal-busca-contagem {
+            margin: 0 0 4px;
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* === PLACEHOLDER (ESTADO VAZIO/ERRO) === */
+        .modal-busca-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 40px 20px;
+            color: #94a3b8;
+            text-align: center;
+        }
+        .modal-busca-placeholder i {
+            font-size: 28px;
+        }
+        .modal-busca-placeholder p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .modal-busca-placeholder.erro {
+            color: #ef4444;
+        }
+
+        /* === CARD DE ITEM RESULTADO === */
+        .modal-busca-item-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .modal-busca-item-card:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 2px 8px rgba(30,58,138,0.08);
+        }
+        .modal-busca-item-nome {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+        .modal-busca-item-nome mark {
+            background: #fef08a;
+            color: #1e293b;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+        .modal-busca-item-detalhes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* === BADGES DE INFO === */
+        .modal-busca-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .modal-busca-badge.ncm         { background: #ecfdf5; color: #065f46; }
+        .modal-busca-badge.fabricante  { background: #eff6ff; color: #1e40af; }
+        .modal-busca-badge.codigo      { background: #faf5ff; color: #6b21a8; }
+        .modal-busca-badge.tipo        { background: #fff7ed; color: #c2410c; }
+
+        /* === BOTÃO SELECIONAR === */
+        .modal-busca-btn-selecionar {
+            align-self: flex-end;
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .modal-busca-btn-selecionar:hover {
+            background: #0f766e;
+        }
+        .modal-busca-btn-selecionar:active {
+            transform: scale(0.97);
+        }
+
+        /* === SCROLLBAR PERSONALIZADA === */
+        .modal-busca-resultados::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-busca-resultados::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        .modal-busca-resultados::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .modal-busca-resultados::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    `;
+    document.head.appendChild(style);
 }
