@@ -256,6 +256,43 @@ function selecionarItemDJO(itemId) {
 }
 
 // ==========================================
+// EXPORTADORES - CARREGA OPÇÕES DO SUPABASE
+// ==========================================
+
+async function carregarExportadores() {
+    const select = document.getElementById('djo-exportador');
+    if (!select) return;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('exportadores')
+            .select('id, exportador')
+            .order('exportador', { ascending: true });
+
+        if (error) throw error;
+
+        // Limpa opções antigas (mantém só o placeholder)
+        select.innerHTML = '<option value="" disabled selected>Selecione um exportador...</option>';
+
+        if (!data || data.length === 0) {
+            select.innerHTML += '<option disabled>Nenhum exportador cadastrado</option>';
+            return;
+        }
+
+        data.forEach(exp => {
+            const option = document.createElement('option');
+            option.value = exp.id;
+            option.textContent = exp.exportador;
+            select.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar exportadores:', err);
+        select.innerHTML = '<option disabled>Erro ao carregar exportadores</option>';
+    }
+}
+
+// ==========================================
 // INICIALIZAÇÃO DOS EVENTOS DO MÓDULO DJO
 // ==========================================
 
@@ -266,6 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLupa) {
         btnLupa.addEventListener('click', abrirModalBuscaItem);
     }
+
+    // Carrega os exportadores no select assim que a tela estiver pronta
+    carregarExportadores();
 
     // Injetar os estilos do modal no <head> (evita depender de um CSS externo)
     injetarEstilosModalBusca();
