@@ -1058,80 +1058,71 @@
                 <span>Módulo funcional para Itens com a <strong>Norma de Origem A</strong></span>
             </div>
 
-            <!-- ETAPA 1: BUSCA E SELEÇÃO DE ITEM -->
-            <div class="cartao-cadastro">
-                <h3><i class="fa-solid fa-magnifying-glass"></i> Etapa 1 — Selecionar Item</h3>
-                <p style="color: #64748b; font-size: 14px; margin: 8px 0 20px 0;">Pesquise pelo nome do item, NCM, código ou fabricante.</p>
-
-                <div class="barra-pesquisa-container">
-                    <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-                    <input type="text" id="busca-item-djo" class="input-moderno"
-                        placeholder="Digite o nome, NCM, código do fabricante ou fabricante..."
-                        oninput="pesquisarItemDJO(this.value)">
-                </div>
-
-                <div id="djo-resultados-container" style="margin-top: 8px;">
-                    <p class="djo-hint"><i class="fa-solid fa-circle-info"></i> Digite pelo menos 2 caracteres para buscar.</p>
-                </div>
-            </div>
-
-            <!-- ITEM SELECIONADO (aparece após a seleção) -->
-            <div id="djo-item-selecionado-card" style="display: none;" class="cartao-cadastro">
-                <h3><i class="fa-solid fa-circle-check" style="color: #0d9488;"></i> Item Selecionado</h3>
-                <div id="djo-item-selecionado-info" class="djo-item-info-grid"></div>
-                <button class="btn-sistema btn-vermelho" style="margin-top: 16px; font-size: 13px; padding: 8px 14px;" onclick="limparSelecaoDJO()">
-                    <i class="fa-solid fa-xmark"></i> Trocar Item
+<!-- Formulário Principal de Emissão -->
+    <form id="form-emitir-djo" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+        
+        <!-- CAMPO SELEÇÃO DO ITEM COM LUPA (Ocupa as duas colunas) -->
+        <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-weight: 600; color: #4a5568; font-size: 14px;">Item/Produto da Declaração:</label>
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <input type="text" id="djo-item-selecionado" placeholder="Nenhum item selecionado. Clique na lupa para buscar..." readonly 
+                       style="flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #f8fafc; cursor: not-allowed; font-weight: 500; color: #334155;">
+                <button type="button" id="btn-abrir-busca-item-djo" style="background-color: #1e3a8a; color: white; border: none; padding: 0 18px; border-radius: 8px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center;" title="Pesquisar Item no Banco de Dados">
+                    🔍
                 </button>
             </div>
+            <!-- Inputs ocultos para salvar os IDs e dados complementares para o JavaScript -->
+            <input type="hidden" id="djo-item-id">
+            <input type="hidden" id="djo-item-ncm">
+        </div>
 
-            <!-- ETAPA 2: CAMPOS OBRIGATÓRIOS (aparece após a seleção) -->
-            <div id="djo-campos-obrigatorios" style="display: none;" class="cartao-cadastro">
-                <h3><i class="fa-solid fa-pen-to-square"></i> Etapa 2 — Dados do Documento</h3>
-                <p style="color: #64748b; font-size: 14px; margin: 8px 0 20px 0;">Preencha os campos obrigatórios antes de gerar a DJO.</p>
+        <!-- Número do Documento -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label for="djo-numero" style="font-weight: 600; color: #4a5568; font-size: 14px;">Número do Documento:</label>
+            <input type="text" id="djo-numero" required placeholder="Ex: DJO-2026-001" 
+                   style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
+        </div>
 
-                <div class="form-grupo">
+        <!-- Data -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label for="djo-data" style="font-weight: 600; color: #4a5568; font-size: 14px;">Data de Emissão:</label>
+            <input type="date" id="djo-data" required 
+                   style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
+        </div>
 
-                    <!-- NÚMERO DJO -->
-                    <div class="campo-input">
-                        <label>Número DJO <span style="color: red;">*</span></label>
-                        <input type="text" id="djo-numero" class="input-moderno" placeholder="Ex: 001/2025">
-                    </div>
+        <!-- Valor Mínimo -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label for="djo-valor-minimo" style="font-weight: 600; color: #4a5568; font-size: 14px;">Valor Mínimo (US$):</label>
+            <input type="number" id="djo-valor-minimo" step="0.01" min="0" required placeholder="0.00" 
+                   style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
+        </div>
 
-                    <!-- DATA -->
-                    <div class="campo-input">
-                        <label>Data do Documento <span style="color: red;">*</span></label>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label class="djo-checkbox-label">
-                                <input type="checkbox" id="djo-usar-data-hoje" checked onchange="toggleDataDJO()">
-                                Usar data de hoje automaticamente
-                            </label>
-                            <input type="date" id="djo-data-manual" class="input-moderno" disabled
-                                style="opacity: 0.45; cursor: not-allowed;">
-                        </div>
-                    </div>
+        <!-- Valor Máximo -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label for="djo-valor-maximo" style="font-weight: 600; color: #4a5568; font-size: 14px;">Valor Máximo (US$):</label>
+            <input type="number" id="djo-valor-maximo" step="0.01" min="0" required placeholder="0.00" 
+                   style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
+        </div>
 
-                    <!-- OPÇÃO EXPORTADOR = PRODUTOR -->
-                    <div class="campo-input campo-largo">
-                        <label>Configuração do Documento</label>
-                        <label class="djo-checkbox-label">
-                            <input type="checkbox" id="djo-exportador-produtor" checked>
-                            Exportador também será o Produtor
-                        </label>
-                        <p style="color: #94a3b8; font-size: 12px; margin-top: 6px;">
-                            <i class="fa-solid fa-circle-info"></i>
-                            Quando marcado, o campo "Produtor" no documento será preenchido com os dados do Exportador.
-                        </p>
-                    </div>
+        <!-- Checkbox: Exportador também é o produtor? (Ocupa as duas colunas) -->
+        <div style="grid-column: span 2; background-color: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #cbd5e1; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="djo-exportador-produtor" style="width: 18px; height: 18px; cursor: pointer; accent-color: #1e3a8a;">
+            <label for="djo-exportador-produtor" style="font-weight: 600; color: #334155; font-size: 14px; cursor: pointer; margin: 0; width: 100%;">
+                O Exportador também é o Fabricante/Produtor desta mercadoria?
+            </label>
+        </div>
 
-                    <!-- BOTÃO GERAR -->
-                    <div class="campo-largo secao-botoes-form">
-                        <button type="button" class="btn-sistema btn-azul" onclick="gerarDJO()" style="padding: 12px 28px; font-size: 15px;">
-                            <i class="fa-solid fa-file-export"></i> Gerar DJO
-                        </button>
-                    </div>
+        <!-- Botão Submit de Emissão (Ocupa as duas colunas) -->
+        <div style="grid-column: span 2; margin-top: 10px;">
+            <button type="submit" style="width: 100%; background-color: #0d9488; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                Gerar Documento da Declaração Juramentada
+            </button>
+        </div>
+    </form>
 
-                </div>
-            </div>
+
+
+            
         </div>
 
         <!-- ==========================================
