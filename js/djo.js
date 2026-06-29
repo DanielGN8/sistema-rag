@@ -1,319 +1,310 @@
-// ==========================================
+// ==========================================================================
 // MÓDULO: DECLARAÇÃO JURAMENTADA DE ORIGEM (DJO)
-// ==========================================
+// Arquivo: js/djo.js
+// ==========================================================================
 
-// Item atualmente selecionado para gerar a DJO
-let itemSelecionadoDJO = null;
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializa os escutadores e cargas assim que o DOM estiver pronto
+    inicializarModuloDJO();
+});
 
-// Debounce timer para não disparar busca a cada tecla
-let timerBuscaDJO = null;
+function inicializarModuloDJO() {
+    // 1. Ouvintes do Modal de Busca de Itens
+    const btnAbrirBusca = document.getElementById('btn-abrir-busca-item-djo');
+    const btnFecharBuscaX = document.getElementById('btn-fechar-modal-item-djo');
+    const btnCancelarBusca = document.getElementById('btn-cancelar-modal-item-djo');
+    const inputPesquisa = document.getElementById('input-pesquisa-modal-djo');
 
-// ==========================================
-// BUSCA DE ITENS
-// ==========================================
-
-// Dispara a busca com um pequeno delay para não sobrecarregar o Supabase
-function pesquisarItemDJO(termo) {
-    clearTimeout(timerBuscaDJO);
-
-    const container = document.getElementById('djo-resultados-container');
-
-    if (!termo || termo.trim().length < 2) {
-        container.innerHTML = '<p class="djo-hint"><i class="fa-solid fa-circle-info"></i> Digite pelo menos 2 caracteres para buscar.</p>';
-        return;
+    if (btnAbrirBusca) btnAbrirBusca.addEventListener('click', abrirModalBuscaItem);
+    if (btnFecharBuscaX) btnFecharBuscaX.addEventListener('click', fecharModalBuscaItem);
+    if (btnCancelarBusca) btnCancelarBusca.addEventListener('click', fecharModalBuscaItem);
+    
+    if (inputPesquisa) {
+        // Busca em tempo real (Debounce simples para evitar requisições excessivas)
+        let timeoutBusca = null;
+        inputPesquisa.addEventListener('input', (e) => {
+            clearTimeout(timeoutBusca);
+            timeoutBusca = setTimeout(() => {
+                buscarItensNoSupabase(e.target.value.trim());
+            }, 300);
+        });
     }
 
-    container.innerHTML = '<p class="djo-hint"><i class="fa-solid fa-spinner fa-spin"></i> Buscando...</p>';
+    // 2. Carga Inicial de Dados
+    carregarExportadoresDJO();
 
-    timerBuscaDJO = setTimeout(() => executarBuscaDJO(termo.trim()), 400);
+    // 3. Ouvinte do Formulário de Submissão
+    const formDJO = document.getElementById('form-emitir-djo');
+    if (formDJO) {
+        formDJO.addEventListener('submit', processarEmissaoDJO);
+    }
 }
 
-async function executarBuscaDJO(termo) {
-    const container = document.getElementById('djo-resultados-container');
+// ==========================================================================
+// FUNCIONALIDADE 1: PESQUISA AVANÇADA DE ITENS (MODAL + SUPABASE)
+// ==========================================================================
+
+function abrirModalBuscaItem() {
+    const modal = document.getElementById('modal-busca-item-djo');
+    if (modal) {
+        modal.classList.remove('hidden');
+        // Limpa buscas anteriores ao abrir
+        document.getElementById('input-pesquisa-modal-djo').value = '';
+        document.getElementById('djo-modal-placeholder').classList.remove('hidden');
+        document.getElementById('tabela-resultados-modal-djo').classList.add('hidden');
+        document.getElementById('input-pesquisa-modal-djo').focus();
+    }
+}
+
+function fecharModalBuscaItem() {
+    const modal = document.getElementById('modal-busca-item-djo');
+    if (modal) modal.classList.add('hidden');
+}
+
+/**
+ * Realiza a consulta na tabela "itens" utilizando filtros lógicos (OR)
+ */
+async function buscarItensNoSupabase(termo) {
+    const placeholder = document.getElementById('djo-modal-placeholder');
+    const tabela = document.getElementById('tabela-resultados-modal-djo');
+    const corpoTabela = document.getElementById('corpo-resultados-modal-djo');
+
+    if (!termo || termo.length < 2) {
+        placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">📋</p>
+                                 <p style="margin: 0; font-size: 14px;">Digite pelo menos 2 caracteres para pesquisar...</p>`;
+        placeholder.classList.remove('hidden');
+        tabela.classList.add('hidden');
+        return;
+    }
 
     try {
+        // Busca com base nas colunas fornecidas na sua modelagem de banco
         const { data, error } = await supabaseClient
             .from('itens')
-            .select('id, item, unidade, ncm, tipo_item, processo_prod, codigo_fabricante, fabricante')
-            .or(
-                `item.ilike.%${termo}%,` +
-                `ncm.ilike.%${termo}%,` +
-                `codigo_fabricante.ilike.%${termo}%,` +
-                `fabricante.ilike.%${termo}%`
-            )
-            .order('item', { ascending: true })
-            .limit(50);
+            .select('*')
+            .or(`item.ilike.%${termo}%,ncm.ilike.%${termo}%,cod_fabricante.ilike.%${termo}%,fabricante.ilike.%${termo}%`)
+            .limit(20);
 
-        if (error) {
-            console.error('Erro ao buscar itens:', error);
-            container.innerHTML = '<p class="djo-hint djo-hint-erro"><i class="fa-solid fa-circle-xmark"></i> Erro ao buscar itens. Tente novamente.</p>';
-            return;
-        }
+        if (error) throw error;
+
+        corpoTabela.innerHTML = '';
 
         if (!data || data.length === 0) {
-            container.innerHTML = '<p class="djo-hint"><i class="fa-solid fa-circle-exclamation"></i> Nenhum item encontrado para "<strong>' + termo + '</strong>".</p>';
+            placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">🔍</p>
+                                     <p style="margin: 0; font-size: 14px; color: #b91c1c;">Nenhum item encontrado para "${termo}".</p>`;
+            placeholder.classList.remove('hidden');
+            tabela.classList.add('hidden');
             return;
         }
 
-        renderizarResultadosDJO(data);
+        // Alimenta as linhas da tabela de resultados
+        data.forEach(registro => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #e2e8f0';
+            tr.style.cursor = 'pointer';
+            
+            // Efeito hover dinâmico por JS
+            tr.onmouseenter = () => tr.style.backgroundColor = '#f1f5f9';
+            tr.onmouseleave = () => tr.style.backgroundColor = 'transparent';
+
+            tr.innerHTML = `
+                <td style="padding: 12px; font-weight: 500; color: #1e293b;">${registro.item || ''}</td>
+                <td style="padding: 12px; color: #475569;">${registro.ncm || ''}</td>
+                <td style="padding: 12px; color: #475569;">${registro.fabricante || 'Não Informado'}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <button type="button" class="btn-selecionar-item-modal" 
+                            style="background-color: #0f766e; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                        Selecionar
+                    </button>
+                </td>
+            `;
+
+            // Evento ao selecionar o item definitivo
+            tr.querySelector('.btn-selecionar-item-modal').addEventListener('click', () => {
+                vincularItemAoFormulario(registro);
+            });
+
+            corpoTabela.appendChild(tr);
+        });
+
+        placeholder.classList.add('hidden');
+        tabela.classList.remove('hidden');
 
     } catch (err) {
-        console.error('Erro na busca DJO:', err);
-        container.innerHTML = '<p class="djo-hint djo-hint-erro"><i class="fa-solid fa-circle-xmark"></i> Erro ao conectar ao servidor.</p>';
+        console.error('Erro na pesquisa de itens:', err);
+        placeholder.innerHTML = `<p style="font-size: 32px; margin-bottom: 10px;">❌</p>
+                                 <p style="margin: 0; font-size: 14px; color: #b91c1c;">Erro ao conectar com o banco de dados.</p>`;
     }
 }
 
-// Cache dos resultados da última busca (evita embutir JSON em onclick)
-let cacheBuscaDJO = [];
+function vincularItemAoFormulario(itemObjeto) {
+    // Alimenta os inputs visíveis e ocultos da página principal
+    document.getElementById('djo-item-selecionado').value = itemObjeto.item || '';
+    document.getElementById('djo-item-id').value = itemObjeto.id || '';
+    document.getElementById('djo-item-ncm').value = itemObjeto.ncm || '';
+    
+    // Armazena o objeto completo temporariamente no dataset para uso no submit posterior
+    document.getElementById('form-emitir-djo').dataset.itemCompleto = JSON.stringify(itemObjeto);
 
-// Renderiza a tabela de resultados da busca
-function renderizarResultadosDJO(itens) {
-    cacheBuscaDJO = itens; // guarda no cache para o onclick usar pelo índice
-    const container = document.getElementById('djo-resultados-container');
-
-    const linhas = itens.map((item, idx) => `
-        <tr class="djo-linha-resultado" onclick="selecionarItemDJO(${idx})">
-            <td>${item.item || '—'}</td>
-            <td>${item.codigo_fabricante || '—'}</td>
-            <td>${item.fabricante || '—'}</td>
-            <td>${item.ncm || '—'}</td>
-            <td>${item.unidade || '—'}</td>
-        </tr>
-    `).join('');
-
-    container.innerHTML = `
-        <p style="font-size: 13px; color: #64748b; margin-bottom: 10px;">
-            <i class="fa-solid fa-list"></i> ${itens.length} resultado(s) encontrado(s). Clique em um item para selecioná-lo.
-        </p>
-        <div class="tabela-container">
-            <table class="tabela-moderna">
-                <thead>
-                    <tr>
-                        <th>Item / Descrição</th>
-                        <th>Cód. Fabricante</th>
-                        <th>Fabricante</th>
-                        <th>NCM</th>
-                        <th>Unidade</th>
-                    </tr>
-                </thead>
-                <tbody>${linhas}</tbody>
-            </table>
-        </div>
-    `;
+    fecharModalBuscaItem();
+    alert('Sucesso: Item vinculado com sucesso à declaração!');
 }
 
-// ==========================================
-// SELEÇÃO DO ITEM
-// ==========================================
 
-function selecionarItemDJO(idx) {
-    const item = cacheBuscaDJO[idx];
-    if (!item) return;
-    itemSelecionadoDJO = item;
+// ==========================================================================
+// FUNCIONALIDADE 2: ALIMENTAR SELECT DE EXPORTADORES (SUPABASE)
+// ==========================================================================
 
-    // Esconde os resultados e limpa a busca
-    document.getElementById('djo-resultados-container').innerHTML =
-        '<p class="djo-hint djo-hint-sucesso"><i class="fa-solid fa-circle-check"></i> Item selecionado com sucesso.</p>';
-    document.getElementById('busca-item-djo').value = '';
-    document.getElementById('busca-item-djo').disabled = true;
+async function carregarExportadoresDJO() {
+    const selectExportador = document.getElementById('djo-exportador');
+    if (!selectExportador) return;
 
-    // Monta o card de item selecionado
-    const infoEl = document.getElementById('djo-item-selecionado-info');
-    infoEl.innerHTML = `
-        <div class="djo-info-campo">
-            <label>Item / Descrição</label>
-            <p>${item.item || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>Código do Fabricante</label>
-            <p>${item.codigo_fabricante || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>Fabricante</label>
-            <p>${item.fabricante || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>NCM</label>
-            <p>${item.ncm || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>Unidade</label>
-            <p>${item.unidade || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>Tipo do Item</label>
-            <p>${item.tipo_item || '—'}</p>
-        </div>
-        <div class="djo-info-campo">
-            <label>Processo de Produção</label>
-            <p>${item.processo_prod || '—'}</p>
-        </div>
-    `;
+    try {
+        // Busca os exportadores cadastrados ordenados por Razão Social / Nome
+        const { data, error } = await supabaseClient
+            .from('exportadores')
+            .select('id, razao_social, cnpj') 
+            .order('razao_social', { ascending: true });
 
-    // Exibe o card e o bloco de campos obrigatórios
-    document.getElementById('djo-item-selecionado-card').style.display = 'block';
-    document.getElementById('djo-campos-obrigatorios').style.display = 'block';
+        if (error) throw error;
 
-    // Rola suavemente até a próxima etapa
-    document.getElementById('djo-item-selecionado-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+        // Mantém a opção padrão e limpa os antigos
+        selectExportador.innerHTML = '<option value="" disabled selected>Selecione um exportador...</option>';
 
-// Reseta a seleção e volta ao estado inicial
-function limparSelecaoDJO() {
-    itemSelecionadoDJO = null;
+        data.forEach(exp => {
+            const opt = document.createElement('option');
+            opt.value = exp.id;
+            opt.textContent = `${exp.razao_social} (${exp.cnpj || 'Sem ID Fiscal'})`;
+            selectExportador.appendChild(opt);
+        });
 
-    document.getElementById('djo-item-selecionado-card').style.display = 'none';
-    document.getElementById('djo-campos-obrigatorios').style.display = 'none';
-    document.getElementById('djo-item-selecionado-info').innerHTML = '';
-
-    const busca = document.getElementById('busca-item-djo');
-    busca.value = '';
-    busca.disabled = false;
-    busca.focus();
-
-    document.getElementById('djo-resultados-container').innerHTML =
-        '<p class="djo-hint"><i class="fa-solid fa-circle-info"></i> Digite pelo menos 2 caracteres para buscar.</p>';
-}
-
-// ==========================================
-// CAMPOS OBRIGATÓRIOS
-// ==========================================
-
-// Ativa/desativa o campo de data manual conforme o checkbox
-function toggleDataDJO() {
-    const usarHoje = document.getElementById('djo-usar-data-hoje').checked;
-    const campoData = document.getElementById('djo-data-manual');
-
-    campoData.disabled = usarHoje;
-    campoData.style.opacity = usarHoje ? '0.45' : '1';
-    campoData.style.cursor = usarHoje ? 'not-allowed' : 'text';
-
-    if (!usarHoje) {
-        campoData.focus();
-    } else {
-        campoData.value = '';
+    } catch (err) {
+        console.error('Erro ao carregar exportadores:', err);
+        selectExportador.innerHTML = '<option value="" disabled>Erro ao carregar registros do banco</option>';
     }
 }
 
-// Retorna a data formatada para o documento (DD/MM/YYYY)
-function obterDataDJO() {
-    const usarHoje = document.getElementById('djo-usar-data-hoje').checked;
 
-    if (usarHoje) {
-        const hoje = new Date();
-        return hoje.toLocaleDateString('pt-BR');
-    }
+// ==========================================================================
+// FUNCIONALIDADE 3: MAPEAMENTO DE CAMPOS E EMISSÃO DO DOCUMENTO (HTML / TEMPLATE)
+// ==========================================================================
 
-    const campoData = document.getElementById('djo-data-manual');
-    if (!campoData.value) return null;
+async function processarEmissaoDJO(e) {
+    e.preventDefault();
 
-    const [ano, mes, dia] = campoData.value.split('-');
-    return `${dia}/${mes}/${ano}`;
-}
+    // Captura os elementos e os IDs selecionados
+    const exportadorId = document.getElementById('djo-exportador').value;
+    const itemId = document.getElementById('djo-item-id').value;
 
-// ==========================================
-// GERAÇÃO DA DJO
-// ==========================================
-
-function gerarDJO() {
-    // — Validações —
-    if (!itemSelecionadoDJO) {
-        alert('Selecione um item antes de gerar a DJO.');
+    if (!itemId) {
+        alert('Erro: Você precisa pesquisar e selecionar um item na lupa antes de prosseguir.');
         return;
     }
 
-    const numeroDJO = document.getElementById('djo-numero').value.trim();
-    if (!numeroDJO) {
-        alert('Preencha o Número da DJO antes de continuar.');
-        document.getElementById('djo-numero').focus();
-        return;
+    try {
+        // Busca detalhada dos dados do Exportador completo diretamente no Supabase para preencher o documento
+        const { data: exportadorCompleto, error: errExp } = await supabaseClient
+            .from('exportadores')
+            .select('*')
+            .eq('id', exportadorId)
+            .single();
+
+        if (errExp) throw errExp;
+
+        // Recupera os dados guardados do item selecionado
+        const itemCompleto = JSON.parse(document.getElementById('form-emitir-djo').dataset.itemCompleto);
+
+        // Captura das entradas manuais da página
+        const numeroDoc = document.getElementById('djo-numero').value.trim();
+        const dataDocInput = document.getElementById('djo-data').value; // YYYY-MM-DD
+        const valorMinimo = parseFloat(document.getElementById('djo-valor-minimo').value).toFixed(2);
+        const valorMaximo = parseFloat(document.getElementById('djo-valor-maximo').value).toFixed(2);
+        const exportadorEhProdutor = document.getElementById('djo-exportador-produtor').checked;
+
+        // Formatação simples de data para padrão BR/Mercosul (DD/MM/AAAA)
+        let dataDocFormatada = dataDocInput;
+        if (dataDocInput) {
+            const [ano, mes, dia] = dataDocInput.split('-');
+            dataDocFormatada = `${dia}/${mes}/${ano}`;
+        }
+
+        // ==================================================================
+        // 🚨 CENTRAL DE MAPEAMENTO E SUBSTUIÇÃO DE CHAVES (EDITÁVEL AQUI)
+        // Mapeie aqui: "Chave Exata no djo.html": "Valor capturado ou do banco"
+        // ==================================================================
+        const dicionarioSubstituicao = {
+            "{{numeroDoc}}": numeroDoc,
+            "{{dataDoc}}": dataDocFormatada,
+            "{{valoresMinMax}}": `MINIMO: US$ ${valorMinimo} / MAXIMO: US$ ${valorMaximo}`,
+            
+            // Dados vindo da tabela 'exportadores' do Supabase
+            "{{exportadorRazaoSocial}}": exportadorCompleto.razao_social || '',
+            "{{exportadorEndereco}}": exportadorCompleto.endereco || '',
+            "{{exportadorCidadeEstado}}": `${exportadorCompleto.cidade || ''} - ${exportadorCompleto.estado || ''}`,
+            "{{exportadorPais}}": exportadorCompleto.pais || 'BRASIL',
+            "{{exportadorTelefoneEmail}}": `${exportadorCompleto.telefone || ''} / ${exportadorCompleto.email || ''}`,
+            "{{exportadorRepresentante}}": exportadorCompleto.representante_legal || 'REPRESENTANTE LEGAL',
+            
+            // Lógica dinâmica baseada no Checkbox "Exportador também é produtor?"
+            "{{produtorRazaoSocial}}": exportadorEhProdutor ? exportadorCompleto.razao_social : (itemCompleto.fabricante || 'O MESMO'),
+            "{{produtorEndereco}}": exportadorEhProdutor ? exportadorCompleto.endereco : 'CONFORME REGISTRO DO FABRICANTE',
+            "{{produtorRepresentante}}": exportadorEhProdutor ? exportadorCompleto.representante_legal : 'GERENTE OPERACIONAL',
+
+            // Dados vindo da tabela 'itens' do Supabase
+            "{{itemNcm}}": itemCompleto.ncm || '',
+            "{{itemNome}}": itemCompleto.item || '',
+            "{{itemDescricaoDetalhada}}": `${itemCompleto.item || ''} - FABRICANTE: ${itemCompleto.fabricante || 'NÃO DEFINIDO'}. PROCESSO: ${itemCompleto.processo_produtivo || 'PADRÃO DE ORIGEM MERCOSUL.'}`,
+            "{{itemCodFabricante}}": itemCompleto.cod_fabricante || 'N/A'
+        };
+
+        // Dispara a geração física do documento unificado
+        gerarVisualizacaoDJO(dicionarioSubstituicao);
+
+    } catch (err) {
+        console.error('Erro ao gerar a DJO:', err);
+        alert('Erro: Falha ao compilar dados para o documento. Verifique o console.');
     }
-
-    const dataDJO = obterDataDJO();
-    if (!dataDJO) {
-        alert('Informe a data do documento ou marque "Usar data de hoje".');
-        document.getElementById('djo-data-manual').focus();
-        return;
-    }
-
-    const exportadorEProdutor = document.getElementById('djo-exportador-produtor').checked;
-
-    // — Monta o pacote de dados para o documento —
-    const dadosDJO = {
-        item: itemSelecionadoDJO,
-        numeroDJO,
-        data: dataDJO,
-        exportadorEProdutor,
-    };
-
-    // — Abre o documento em nova aba —
-    abrirDocumentoDJO(dadosDJO);
 }
 
-// Gera e abre o HTML do documento em uma nova aba
-function abrirDocumentoDJO(dados) {
-    const { item, numeroDJO, data, exportadorEProdutor } = dados;
+/**
+ * Baixa o modelo bruto do djo.html, realiza as substituições e abre a janela de impressão
+ */
+async function gerarVisualizacaoDJO(mapaDeDados) {
+    try {
+        // Url base do seu template hospedado
+        const urlTemplate = "https://danielgn8.github.io/sistema-rag/docs/djo.html";
+        
+        // Faz o download do esqueleto bruto do documento
+        const resposta = await fetch(urlTemplate);
+        if (!resposta.ok) throw new Error('Não foi possível obter o modelo base HTML.');
+        
+        let htmlFinal = await resposta.text();
 
-    const html = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>DJO Nº ${numeroDJO}</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Times New Roman', serif; font-size: 12pt; color: #000; background: #fff; padding: 30px; }
-        h1 { font-size: 16pt; text-align: center; margin-bottom: 4px; }
-        .subtitulo { text-align: center; font-size: 11pt; margin-bottom: 24px; }
-        .numero-djo { text-align: center; font-weight: bold; font-size: 13pt; margin-bottom: 24px; }
-        .secao { margin-bottom: 18px; }
-        .secao label { font-weight: bold; display: block; margin-bottom: 2px; }
-        .campo-doc { border-bottom: 1px solid #000; min-height: 22px; padding: 2px 4px; margin-bottom: 10px; }
-        .rodape { margin-top: 40px; font-size: 10pt; text-align: center; color: #555; border-top: 1px solid #ccc; padding-top: 12px; }
-        @media print { body { padding: 10mm; } .rodape { position: fixed; bottom: 0; width: 100%; } }
-    </style>
-</head>
-<body>
-    <h1>DECLARAÇÃO JURAMENTADA DE ORIGEM</h1>
-    <div class="subtitulo">Acordo de Livre Comércio Mercosul — Norma de Origem A</div>
-    <div class="numero-djo">Nº ${numeroDJO} &nbsp;|&nbsp; ${data}</div>
+        // Passa por cada chave do dicionário editável substituindo todas as ocorrências globais
+        for (const [chave, valor] of Object.entries(mapaDeDados)) {
+            // Cria uma expressão regular para substituir todas as chaves equivalentes encontradas
+            const regex = new RegExp(chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+            htmlFinal = htmlFinal.replace(regex, valor);
+        }
 
-    <div class="secao">
-        <label>Item / Produto:</label>
-        <div class="campo-doc">${item.item || ''}</div>
-    </div>
+        // Cria uma nova janela limpa no navegador para renderizar o documento montado
+        const janelaImpressao = window.open('', '_blank', 'width=900,height=900');
+        
+        if (janelaImpressao) {
+            janelaImpressao.document.open();
+            janelaImpressao.document.write(htmlFinal);
+            janelaImpressao.document.close();
+            
+            // Aguarda o carregamento leve dos estilos e dispara o print do sistema automaticamente
+            janelaImpressao.onload = function() {
+                janelaImpressao.print();
+            };
+        } else {
+            alert('Aviso: Bloqueador de pop-ups ativo! Permita a abertura para visualizar o documento.');
+        }
 
-    <div class="secao">
-        <label>Código do Fabricante:</label>
-        <div class="campo-doc">${item.codigo_fabricante || ''}</div>
-    </div>
-
-    <div class="secao">
-        <label>Fabricante:</label>
-        <div class="campo-doc">${item.fabricante || ''}</div>
-    </div>
-
-    ${exportadorEProdutor ? '<div class="secao"><label>Produtor:</label><div class="campo-doc">(Mesmo que o Exportador)</div></div>' : '<div class="secao"><label>Produtor:</label><div class="campo-doc"></div></div>'}
-
-    <div class="secao">
-        <label>NCM:</label>
-        <div class="campo-doc">${item.ncm || ''}</div>
-    </div>
-
-    <div class="secao">
-        <label>Unidade:</label>
-        <div class="campo-doc">${item.unidade || ''}</div>
-    </div>
-
-    <div class="secao">
-        <label>Processo de Produção:</label>
-        <div class="campo-doc">${item.processo_prod || ''}</div>
-    </div>
-
-    <div class="rodape">Documento gerado em ${data} — Sistema RAG Despachos</div>
-</body>
-</html>`;
-
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+    } catch (erro) {
+        console.error('Falha no motor de renderização HTML:', erro);
+        alert('Erro ao processar template do arquivo base.');
+    }
 }
