@@ -123,18 +123,18 @@
             </tr>
             <tr>
                 <td><span class="titulos">a) Razão Social Produtor (nome, CNPJ Inscrição Estadual, E-mail, telefone)</span><br>{{produtorNome}}<br>CNPJ: <span class="negrito">{{produtorCNPJ}}</span>, I.E.:<span class="negrito">{{produtorIE}}</span><br>TEL: <span class="negrito">{{produtorTel}}</span>, e-mail: <span class="negrito">{{produtorEmail}}</span><br><span class="titulos">b) Domicílio Legal e Endereço da Planta Industrial:</span><br><span class="negrito">{{produtorEnd}}, {{produtorCidade}}</span></td>
-                <td><span class="titulos">c) Razão Social do Exportador (nome, CNPJ Inscrição Estadual, E-mail, telefone)</span><br>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA<br>CNPJ: <span class="negrito">82.391.988/0001-21</span>, I.E.:<span class="negrito">4220918586</span><br>TEL: <span class="negrito">45 – 3528-9095</span>, e-mail: <span class="negrito">renann.com@hotmail.com</span><br><span class="titulos">b) Domicílio Legal e Endereço da Planta Industrial:</span><br><span class="negrito">Rua Assis Brasil, 1008, Foz do Iguaçu , PR, 422091-85 </span></td>
+                <td><span class="titulos">c) Razão Social do Exportador (nome, CNPJ Inscrição Estadual, E-mail, telefone)</span><br>{{exportadorNome}}<br>CNPJ: <span class="negrito">{{exportadorCNPJ}}</span>, I.E.:<span class="negrito">{{exportadorIE}}</span><br>TEL: <span class="negrito">{{exportadorTel}}</span>, e-mail: <span class="negrito">{{exportadorEmail}}</span><br><span class="titulos">b) Domicílio Legal e Endereço da Planta Industrial:</span><br><span class="negrito">{{exportadorEnd}}, {{exportadorCidade}}</span></td>
             </tr>
             <tr>
-                <td><span class="titulos">e) Denominação do produto a exportar e código NCM e/ou NALADI/SH</span><br>N.C.M.: <span class="negrito">8481.80.94</span>, NALADI: <span class="negrito">8481.80.94</span><br>Produto:<span class="negrito">VALVULA DE BLOQUEIO PASSAGEM RETA, GLOBO, PO-100 para maquinas muito loucas</span></td>
-                <td><span class="titulos">f) Valor US$ FOB (valor de venda do produto a Exportar)</span><br>Mínimo: <span class="negrito">US$ 600,00</span><br>Máximo: <span class="negrito">US$ 1.000,00</span><br>Unidade de Medida: <span class="negrito">UN</span></td>
+                <td><span class="titulos">e) Denominação do produto a exportar e código NCM e/ou NALADI/SH</span><br>N.C.M.: <span class="negrito">{{ncm}}</span>, NALADI: <span class="negrito">{{naladi}}</span><br>Produto:<span class="negrito">{{item}}</span></td>
+                <td><span class="titulos">f) Valor US$ FOB (valor de venda do produto a Exportar)</span><br>Mínimo: <span class="negrito">US$ {{valorMin}}</span><br>Máximo: <span class="negrito">US$ {{valorMax}}</span><br>Unidade de Medida: <span class="negrito">{{itemUN}}</span></td>
             </tr>
         </table>
         <!-- ==========================================
             TABELA 02: g), h), 1.
         ========================================== -->
         <table>
-            <tr><td><span class="titulos">g) Descrição Detalhada do Processo Produtivo (como partir da matéria-prima e chegar ao produto a ser exportado)</span><br><span class="negrito">processo produtivo desta válvula de bloqueio inicia-se com a fundição do corpo em aço carbono, seguida pela usinagem de alta precisão para conformação do castelo inclinado e sedes. Após o tratamento superficial para resistência à amônia, realiza-se a montagem dos componentes internos e, por fim, testes hidrostáticos de estanqueidade</span></td></tr>
+            <tr><td><span class="titulos">g) Descrição Detalhada do Processo Produtivo (como partir da matéria-prima e chegar ao produto a ser exportado)</span><br><span class="negrito">{{processoProdutivo}}</span></td></tr>
             <tr><td><span class="titulos">h) Elementos demonstrativos dos componentes do produto</span><br>&nbsp;</td></tr>
             <tr><td><span class="titulos">1. Materiais originários do Estado Parte produtor:</span></td></tr>
         </table>
@@ -143,7 +143,7 @@
         ========================================== -->
         <table>
             <tr><td style="font-size: 9pt; font-style: italic">NCM</td><td style="font-size: 9pt; font-style: italic">NALADI</td><td style="font-size: 9pt; font-style: italic">Descrição dos Materiais</td><td style="font-size: 9pt; font-style: italic">Nome Fornecedor/Fabricante</td><td style="font-size: 9pt; font-style: italic">CNPJ</td></tr>
-            <tr><td>8481.80.94</td><td>8481.80.94</td><td>VALVULA DE BLOQUEIO PASSAGEM RETA, GLOBO, PO-100</td><td>TABRIOSHI PRODUTOS AGROPECUARIOS LTDA</td><td> 82.391.988/0001-21 </td></tr>
+            <tr><td>{{ncm}}</td><td>{{naladi}}</td><td>{{item}}</td><td>{{produtorNome}}</td><td>{{produtorCNPJ}}</td></tr>
         </table>
         <!-- ==========================================
             TABELA 04: 2.
@@ -196,8 +196,8 @@
         ========================================== -->
         <table class="tabela-meio-a-meio">
             <tr>
-                <td><span class="titulos negrito">Produtor</span><br><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic">RAUL A. GONZALEZ – REPRESENTANTE LEGAL</div></td>
-                <td><span class="titulos negrito">Exportador</span><br><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic">RAUL A. GONZALEZ – REPRESENTANTE LEGAL</div></td>
+                <td><span class="titulos negrito">Produtor</span><br><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic">{{produtorRepresentante}} – REPRESENTANTE LEGAL</div></td>
+                <td><span class="titulos negrito">Exportador</span><br><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic">{{exportadorRepresentante}} – REPRESENTANTE LEGAL</div></td>
             </tr>
         </table>
         <!-- ==========================================
@@ -210,11 +210,12 @@
             TABELA 13: Local, Data e Assinatura Despachante
         ========================================== -->
         <table class="tabela-meio-a-meio">
-            <tr><td><br><br>Local:<span class="negrito">FOZ DO IGUAÇU – PR - BRASIL</span><br>Data: <span class="negrito">15 de abril de 2026</span></td><td><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic; line-height: 1.3;">
-            RAUL ANTONIO GONZALEZ<br>
+            <tr><td><br><br>Local:<span class="negrito">FOZ DO IGUAÇU – PR - BRASIL</span><br>Data: <span class="negrito">{{dataDoc}}</span></td>
+            <td><br><br><br><br><div style="text-align: center; font-size: 9pt; font-style: italic; line-height: 1.3;">
+            {{exportadorRepresentante}}<br>
             DESPACHANTE ADUANEIRO<br>
-            CPF: 336.505.609-25
-        </div></td></tr>
+            {{exportadorDoc}}
+            </div></td></tr>
         </table>
 
     </div>
