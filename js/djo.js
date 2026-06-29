@@ -293,6 +293,123 @@ async function carregarExportadores() {
 }
 
 // ==========================================
+// GERAÇÃO DO DOCUMENTO DJO
+// ==========================================
+
+async function gerarDocumentoDJO(e) {
+    e.preventDefault();
+
+    // --- 1. COLETA DOS CAMPOS DO FORMULÁRIO ---
+    const itemId        = document.getElementById('djo-item-id').value;
+    const itemNome      = document.getElementById('djo-item-selecionado').value.trim();
+    const exportadorId  = document.getElementById('djo-exportador').value;
+    const exportadorNome = document.getElementById('djo-exportador').selectedOptions[0]?.text || '';
+    const numDoc        = document.getElementById('djo-numero').value.trim();
+    const dataDoc       = formatarData(document.getElementById('djo-data').value);
+    const valorMin      = formatarValor(document.getElementById('djo-valor-minimo').value);
+    const valorMax      = formatarValor(document.getElementById('djo-valor-maximo').value);
+    const exportadorEProdutor = document.getElementById('djo-exportador-produtor').checked;
+
+    // Validação básica
+    if (!itemId || !exportadorId || !numDoc || !dataDoc || !valorMin || !valorMax) {
+        alert('Por favor, preencha todos os campos obrigatórios antes de gerar o documento.');
+        return;
+    }
+
+    try {
+        // --- 2. BUSCA DADOS COMPLEMENTARES NO SUPABASE ---
+
+        // Busca colunas extras do exportador selecionado
+        const { data: dadosExp, error: errExp } = await supabaseClient
+            .from('exportadores')
+            .select('exportador, exp_cnpj')
+            .eq('id', exportadorId)
+            .single();
+
+        if (errExp) throw new Error('Erro ao buscar dados do exportador.');
+
+        // Busca colunas extras do item selecionado
+        const { data: dadosItem, error: errItem } = await supabaseClient
+            .from('itens')
+            .select('ncm, processo_prod, unidade')
+            .eq('id', itemId)
+            .single();
+
+        if (errItem) throw new Error('Erro ao buscar dados do item.');
+
+        // --- 3. MONTA O DICIONÁRIO DE SUBSTITUIÇÕES ---
+
+        const ncm           = dadosItem.ncm          || '';
+        const processoProd  = dadosItem.processo_prod || '';
+        const itemUN        = dadosItem.unidade       || '';
+
+        // NALADI: por enquanto igual ao NCM (campo a desenvolver depois)
+        const naladi = ncm;
+
+        // Exportador
+        const exportadorCNPJ = dadosExp.exp_cnpj || '';
+
+        // Produtor: se checkbox marcado, usa dados do exportador; senão, mantém a chave original
+        const produtorNome = exportadorEProdutor ? exportadorNome : '{{produtorNome}}';
+        const produtorCNPJ = exportadorEProdutor ? exportadorCNPJ : '{{produtorCNPJ}}';
+
+        const substituicoes = {
+            '{{numDoc}}'               : numDoc,
+            '{{dataDoc}}'              : dataDoc,
+            '{{exportadorNome}}'       : exportadorNome,
+            '{{exportadorCNPJ}}'       : exportadorCNPJ,
+            '{{item}}'                 : itemNome,
+            '{{valorMin}}'             : valorMin,
+            '{{valorMax}}'             : valorMax,
+            '{{ncm}}'                  : ncm,
+            '{{naladi}}'               : naladi,
+            '{{processoProdutivo}}'    : processoProd,
+            '{{itemUN}}'               : itemUN,
+            '{{produtorNome}}'         : produtorNome,
+            '{{produtorCNPJ}}'         : produtorCNPJ,
+        };
+
+        // --- 4. BUSCA O TEMPLATE HTML E APLICA AS SUBSTITUIÇÕES ---
+
+        const resposta = await fetch('https://danielgn8.github.io/sistema-rag/docs/djo.html');
+        if (!resposta.ok) throw new Error('Não foi possível carregar o template do documento.');
+
+        let htmlDoc = await resposta.text();
+
+        // Substitui todas as ocorrências de cada chave
+        for (const [chave, valor] of Object.entries(substituicoes)) {
+            // Escapa caracteres especiais de regex e substitui globalmente
+            const regex = new RegExp(chave.replace(/[{}]/g, '\\$&'), 'g');
+            htmlDoc = htmlDoc.replace(regex, valor);
+        }
+
+        // --- 5. ABRE O DOCUMENTO GERADO EM UMA NOVA ABA ---
+
+        const novaAba = window.open('', '_blank');
+        novaAba.document.open();
+        novaAba.document.write(htmlDoc);
+        novaAba.document.close();
+
+    } catch (err) {
+        console.error('Erro ao gerar DJO:', err);
+        alert('Erro ao gerar o documento: ' + err.message);
+    }
+}
+
+// Formata a data de YYYY-MM-DD para DD/MM/YYYY
+function formatarData(valorData) {
+    if (!valorData) return '';
+    const [ano, mes, dia] = valorData.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+// Formata número para 2 casas decimais com vírgula (padrão BR)
+function formatarValor(valor) {
+    if (valor === '' || valor === null || valor === undefined) return '';
+    return parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ==========================================
 // INICIALIZAÇÃO DOS EVENTOS DO MÓDULO DJO
 // ==========================================
 
@@ -302,6 +419,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLupa = document.getElementById('btn-abrir-busca-item-djo');
     if (btnLupa) {
         btnLupa.addEventListener('click', abrirModalBuscaItem);
+    }
+
+    // Listener do formulário de emissão da DJO
+    const formDJO = document.getElementById('form-emitir-djo');
+    if (formDJO) {
+        formDJO.addEventListener('submit', gerarDocumentoDJO);
     }
 
     // Carrega os exportadores no select assim que a tela estiver pronta
