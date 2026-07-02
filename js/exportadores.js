@@ -78,7 +78,10 @@ async function salvarExportador(e) {
         exportador: document.getElementById('exp-nome').value.trim(),
         exp_cnpj: document.getElementById('exp-cnpj').value.trim(),
         exp_cidade_estado: document.getElementById('exp-cidade-estado').value.trim(),
-        exp_endereco: document.getElementById('exp-endereco').value.trim()
+        exp_endereco: document.getElementById('exp-endereco').value.trim(),
+        exp_telefone: document.getElementById('exp-tel').value.trim(),
+        exp_email: document.getElementById('exp-email').value.trim(),
+        exp_inscricao_estadual: document.getElementById('exp-ie').value.trim()
     };
 
     let resposta;
@@ -128,6 +131,9 @@ function prepararEdicaoExportador(id) {
     document.getElementById('exp-cnpj').value = exp.exp_cnpj;
     document.getElementById('exp-cidade-estado').value = exp.exp_cidade_estado;
     document.getElementById('exp-endereco').value = exp.exp_endereco;
+    document.getElementById('exp-ie').value = exp.exp_inscricao_estadual;
+    document.getElementById('exp-email').value = exp.exp_email;
+    document.getElementById('exp-tel').value = exp.exp_telefone;
 
     document.getElementById('titulo-form-exportador').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Exportador: ${exp.exportador}`;
     document.getElementById('btn-salvar-exportador').textContent = "Atualizar Exportador";
@@ -146,6 +152,9 @@ function duplicarExportador(id) {
     document.getElementById('exp-cnpj').value = exp.exp_cnpj;
     document.getElementById('exp-cidade-estado').value = exp.exp_cidade_estado;
     document.getElementById('exp-endereco').value = exp.exp_endereco;
+    document.getElementById('exp-ie').value = exp.exp_inscricao_estadual;
+    document.getElementById('exp-email').value = exp.exp_email;
+    document.getElementById('exp-tel').value = exp.exp_telefone;
 
     document.getElementById('titulo-form-exportador').innerHTML = `<i class="fa-solid fa-copy"></i> Salvando Cópia do Exportador`;
     document.getElementById('btn-salvar-exportador').textContent = "Salvar Cópia";
