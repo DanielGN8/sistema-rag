@@ -8,6 +8,10 @@
 
 let itensBuscados = []; // Cache dos resultados de busca
 
+// Caches dos despachantes carregados em cada select em cascata
+let cacheRepFabricante = [];
+let cacheDespachanteRAG = [];
+
 // Abre o modal de busca de item
 function abrirModalBuscaItem() {
     // Cria o overlay + modal se ainda não existir
@@ -251,6 +255,10 @@ function selecionarItemDJO(itemId) {
     document.getElementById('djo-item-selecionado').value = item.item;
     document.getElementById('djo-item-id').value = item.id;
     document.getElementById('djo-item-ncm').value = item.ncm || '';
+    document.getElementById('djo-item-fabricante').value = item.fabricante || '';
+
+    // Atualiza em cascata o select "Representante Fabricante" com base no fabricante do item
+    carregarRepresentantesFabricante(item.fabricante || '');
 
     fecharModalBuscaItem();
 }
@@ -293,6 +301,98 @@ async function carregarExportadores() {
 }
 
 // ==========================================
+// REPRESENTANTES (CAMPOS EM CASCATA) - CARREGA OPÇÕES DO SUPABASE
+// ==========================================
+
+// Representante Fabricante: despachantes cujo 'rep_vinculos' contém o nome do fabricante do item selecionado
+async function carregarRepresentantesFabricante(nomeFabricante) {
+    const select = document.getElementById('djo-representante-fabricante');
+    if (!select) return;
+
+    if (!nomeFabricante) {
+        select.innerHTML = '<option value="" disabled selected>Selecione um item primeiro...</option>';
+        cacheRepFabricante = [];
+        return;
+    }
+
+    select.innerHTML = '<option value="" disabled selected>Carregando...</option>';
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('despachantes')
+            .select('id, nome_despachante, documento, rep_vinculos')
+            .ilike('rep_vinculos', `%${nomeFabricante}%`)
+            .order('nome_despachante', { ascending: true });
+
+        if (error) throw error;
+
+        cacheRepFabricante = data || [];
+        select.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+
+        if (cacheRepFabricante.length === 0) {
+            select.innerHTML += '<option disabled>Nenhum despachante vinculado a este fabricante</option>';
+            return;
+        }
+
+        cacheRepFabricante.forEach(d => {
+            const option = document.createElement('option');
+            option.value = d.id;
+            option.textContent = d.nome_despachante;
+            select.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar Representante Fabricante:', err);
+        select.innerHTML = '<option disabled>Erro ao carregar</option>';
+    }
+}
+
+// Despachante RAG: despachantes com 'despachante_pergunta' = 'Sim' E vinculados (via 'rep_vinculos')
+// ao exportador selecionado no campo "Exportador". Este único despachante representa o exportador.
+async function carregarDespachanteRAG(nomeExportador) {
+    const select = document.getElementById('djo-despachante-rag');
+    if (!select) return;
+
+    if (!nomeExportador) {
+        select.innerHTML = '<option value="" disabled selected>Selecione um exportador primeiro...</option>';
+        cacheDespachanteRAG = [];
+        return;
+    }
+
+    select.innerHTML = '<option value="" disabled selected>Carregando...</option>';
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('despachantes')
+            .select('id, nome_despachante, documento, rep_vinculos')
+            .eq('despachante_pergunta', 'Sim')
+            .ilike('rep_vinculos', `%${nomeExportador}%`)
+            .order('nome_despachante', { ascending: true });
+
+        if (error) throw error;
+
+        cacheDespachanteRAG = data || [];
+        select.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+
+        if (cacheDespachanteRAG.length === 0) {
+            select.innerHTML += '<option disabled>Nenhum despachante RAG vinculado a este exportador</option>';
+            return;
+        }
+
+        cacheDespachanteRAG.forEach(d => {
+            const option = document.createElement('option');
+            option.value = d.id;
+            option.textContent = d.nome_despachante;
+            select.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar Despachante RAG:', err);
+        select.innerHTML = '<option disabled>Erro ao carregar</option>';
+    }
+}
+
+// ==========================================
 // GERAÇÃO DO DOCUMENTO DJO
 // ==========================================
 
@@ -310,8 +410,15 @@ async function gerarDocumentoDJO(e) {
     const valorMax      = formatarValor(document.getElementById('djo-valor-maximo').value);
     const exportadorEProdutor = document.getElementById('djo-exportador-produtor').checked;
 
+    const repFabricanteId = document.getElementById('djo-representante-fabricante').value;
+    const despachanteRAGId = document.getElementById('djo-despachante-rag').value;
+
     // Validação básica
-    if (!itemId || !exportadorId || !numDoc || !dataDoc || !valorMin || !valorMax) {
+    // "Representante Fabricante" só é obrigatório quando o exportador NÃO é o produtor
+    // (quando marcado, o campo fica bloqueado e usa o mesmo valor do Despachante RAG)
+    if (!itemId || !exportadorId || !numDoc || !dataDoc || !valorMin || !valorMax
+        || !despachanteRAGId
+        || (!exportadorEProdutor && !repFabricanteId)) {
         alert('Por favor, preencha todos os campos obrigatórios antes de gerar o documento.');
         return;
     }
@@ -353,6 +460,24 @@ async function gerarDocumentoDJO(e) {
                 dadosFab = fabEncontrado; // fica null se não encontrar nenhuma linha
             }
         }
+
+        // --- 2.2 BUSCA OS DADOS DOS DESPACHANTES ESCOLHIDOS NOS SELECTS EM CASCATA ---
+        // (já estão em cache, pois foram carregados quando cada select foi populado)
+        const dadosRepFabricante  = cacheRepFabricante.find(d => String(d.id) === String(repFabricanteId));
+        const dadosDespachanteRAG = cacheDespachanteRAG.find(d => String(d.id) === String(despachanteRAGId));
+
+        // O mesmo despachante agora representa tanto o "exportador" quanto o "Despachante RAG"
+        const nomeDespachanteRAG = dadosDespachanteRAG ? dadosDespachanteRAG.nome_despachante : null;
+        const nomeRepExportador  = nomeDespachanteRAG; // é a mesma pessoa/registro
+
+        // Se o exportador também é o produtor, o Representante Fabricante fica bloqueado
+        // no formulário e usa o mesmo nome do Despachante RAG (mesma lógica das outras chaves)
+        const nomeRepFabricante = exportadorEProdutor
+            ? nomeDespachanteRAG
+            : (dadosRepFabricante ? dadosRepFabricante.nome_despachante : null);
+
+        // exportadorDoc: coluna 'documento' do despachante escolhido (Despachante RAG / representante do exportador)
+        const exportadorDoc = dadosDespachanteRAG ? dadosDespachanteRAG.documento : null;
 
         // --- 3. MONTA O DICIONÁRIO DE SUBSTITUIÇÕES ---
 
@@ -396,6 +521,14 @@ async function gerarDocumentoDJO(e) {
 
         adicionarSeExistir('{{produtorNome}}',   produtorNome);
         adicionarSeExistir('{{produtorCNPJ}}',   produtorCNPJ);
+
+        // Campos de assinatura/representantes
+        // OBS: "{{despachanteRepresentante}}" e "{{exportadorRepresentante}}" agora vêm do MESMO
+        // despachante escolhido no campo único "Despachante RAG" (que já representa o exportador).
+        adicionarSeExistir('{{produtorRepresentante}}',    nomeRepFabricante);
+        adicionarSeExistir('{{exportadorRepresentante}}',  nomeRepExportador);
+        adicionarSeExistir('{{despachanteRepresentante}}', nomeDespachanteRAG);
+        adicionarSeExistir('{{exportadorDoc}}',            exportadorDoc);
 
         // As variáveis abaixo só têm fonte de dados quando o fabricante é usado (não há
         // colunas equivalentes de IE/Tel/Email/Endereço/Cidade cadastradas para o exportador).
@@ -469,6 +602,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carrega os exportadores no select assim que a tela estiver pronta
     carregarExportadores();
+
+    // Cascata: ao trocar o exportador selecionado, recarrega o select "Despachante RAG"
+    // (agora ele já representa o exportador, filtrado por despachante_pergunta = 'Sim' + rep_vinculos)
+    const selectExportador = document.getElementById('djo-exportador');
+    if (selectExportador) {
+        selectExportador.addEventListener('change', () => {
+            const nomeExportadorAtual = selectExportador.selectedOptions[0]?.text || '';
+            carregarDespachanteRAG(nomeExportadorAtual);
+        });
+    }
+
+    // Bloqueia o "Representante Fabricante" quando o exportador também é o produtor
+    const checkboxExportadorProdutor = document.getElementById('djo-exportador-produtor');
+    const selectRepFabricante = document.getElementById('djo-representante-fabricante');
+    if (checkboxExportadorProdutor && selectRepFabricante) {
+        checkboxExportadorProdutor.addEventListener('change', () => {
+            selectRepFabricante.disabled = checkboxExportadorProdutor.checked;
+            selectRepFabricante.style.backgroundColor = checkboxExportadorProdutor.checked ? '#f1f5f9' : '#ffffff';
+            selectRepFabricante.style.cursor = checkboxExportadorProdutor.checked ? 'not-allowed' : 'pointer';
+            selectRepFabricante.title = checkboxExportadorProdutor.checked
+                ? 'Bloqueado: vai usar o mesmo nome do Despachante RAG'
+                : '';
+        });
+    }
 
     // Injetar os estilos do modal no <head> (evita depender de um CSS externo)
     injetarEstilosModalBusca();
