@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -1102,6 +1102,7 @@
                     </div>
                     <input type="hidden" id="djo-item-id">
                     <input type="hidden" id="djo-item-ncm">
+                    <input type="hidden" id="djo-item-fabricante">
                 </div>
 
                 <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
@@ -1142,6 +1143,21 @@
                     </label>
                 </div>
 
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label for="djo-representante-fabricante" style="font-weight: 600; color: #4a5568; font-size: 14px;">Representante Fabricante:</label>
+                    <select id="djo-representante-fabricante" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background-color: #ffffff; color: #334155; cursor: pointer; outline: none;">
+                        <option value="" disabled selected>Selecione um item primeiro...</option>
+                    </select>
+                </div>
+
+                <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+                    <label for="djo-despachante-rag" style="font-weight: 600; color: #4a5568; font-size: 14px;">Despachante RAG:</label>
+                    <select id="djo-despachante-rag" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background-color: #ffffff; color: #334155; cursor: pointer; outline: none;">
+                        <option value="" disabled selected>Selecione...</option>
+                    </select>
+                </div>
+
+                
                 <div style="grid-column: span 2; margin-top: 10px;">
                     <button type="submit" style="width: 100%; background-color: #0d9488; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         Gerar Documento da Declaração Juramentada
@@ -1150,6 +1166,9 @@
             </form>
         </div>
 
+    
+
+        
         <!-- ==========================================
            TELA: CONSULTA NCM
            ========================================== -->
