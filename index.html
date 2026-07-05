@@ -797,8 +797,6 @@
                         <label>Descrição Pessoa <span style="color: red;">*</span></label>
                         <input type="text" id="pessoa-descricao" class="input-moderno" placeholder="Ex: Representante ABC Transportes" required>
                     </div>
-
-
                     
                     <div class="campo-largo secao-botoes-form">
                         <button type="submit" id="btn-salvar-despachante" class="btn-sistema btn-verde-agua"><i class="fa-solid fa-floppy-disk"></i>Salvar</button>
@@ -807,6 +805,14 @@
                 </form>
             </div>
 
+                <!-- ===== BOTÃO VINCULAR PESSOAS ===== -->
+            <div class="secao-vincular-pessoas">
+                <button type="button" id="btn-vincular-pessoas" class="btn-vincular-elegante" onclick="abrirModalVinculos()">
+                    <i class="fa-solid fa-link"></i> Vincular Pessoas
+                </button>
+            </div>
+            
+                <!-- ===== BARRA DE PESQUISA PESSOAS ===== -->
             <div class="barra-pesquisa-container">
                 <i class="fa-solid fa-magnifying-glass icone-busca"></i>
                 <input type="text" id="busca-despachante" class="input-moderno" placeholder="Pesquisar por nome, documento ou registro..." oninput="filtrarDespachantes()">
