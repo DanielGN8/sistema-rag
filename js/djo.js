@@ -1,5 +1,5 @@
 // ==========================================
-// MÓDULO: DJO - DECLARAÇÃO JURAMENTADA DE ORIGEM OPA
+// MÓDULO: DJO - DECLARAÇÃO JURAMENTADA DE ORIGEM
 // ==========================================
 
 // ==========================================
