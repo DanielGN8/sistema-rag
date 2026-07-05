@@ -761,7 +761,7 @@
         </div>
 
         <!-- ==========================================
-           TELA: CADASTRO DE DESPACHANTES
+           TELA: CADASTRO DE PESSOAS/DESPACHANTES
            ========================================== -->
         <div id="cadastro-despachantes" class="tela-cadastro-final sub-pagina" style="display: none;">
             <button class="btn-voltar" onclick="voltarAoPainelDados()">
@@ -769,11 +769,11 @@
             </button>
             
             <div class="cartao-cadastro">
-                <h3 id="titulo-form-despachante"><i class="fa-solid fa-user-tie"></i> Cadastrar Novo Despachante</h3>
+                <h3 id="titulo-form-despachante"><i class="fa-solid fa-user-tie"></i> Cadastrar Nova Pessoa</h3>
                 <input type="hidden" id="despachante-id-oculto">
 
                 <form id="form-despachante" class="form-grupo">
-                    <div class="campo-input campo-largo">
+                    <div class="campo-input campo-largo" style="margin-top: 10pt;">
                         <label>Nome do Despachante <span style="color: red;">*</span></label>
                         <input type="text" id="desp-nome" class="input-moderno" placeholder="Ex: Carlos Alberto de Souza" required>
                     </div>
@@ -782,7 +782,15 @@
                         <input type="text" id="desp-documento" class="input-moderno" placeholder="Ex: 00.000.000/0001-00" required>
                     </div>
                     <div class="campo-input">
-                        <label>Registro Profissional / Matrícula <span style="color: red;">*</span></label>
+                        <label>Despachante? <span style="color: red;">*</span></label>
+                            <select id="is-despachante" class="input-moderno" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                            </select>
+                    </div>
+                    <div class="campo-input">
+                        <label>Registro Profissional para Despachantes</label>
                         <input type="text" id="desp-registro" class="input-moderno" placeholder="Ex: DESP-PR-4562" required>
                     </div>
                     
@@ -1144,11 +1152,7 @@
         <p style="color: #64748b;">Pesquise o código NCM para visualizar a descrição cadastrada na base de dados.</p>
     </div>
 
-    <!-- ==========================================
-         CARD INFORMATIVO - EDIÇÃO MANUAL
-         Atualize os 3 campos abaixo (texto dentro das tags <p>) toda vez
-         que uma nova tabela de NCMs for subida no Supabase.
-         ========================================== -->
+            <!-- CARD INFORMATIVO - EDIÇÃO MANUAL, Atualize os 3 campos abaixo (texto dentro das tags <p>) toda vez que uma nova tabela de NCMs for subida no Supabase. -->
     <div class="card-info-atualizacao">
         <div class="info-atualizacao-cabecalho">
             <i class="fa-solid fa-circle-info"></i>
