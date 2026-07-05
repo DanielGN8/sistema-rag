@@ -328,14 +328,31 @@ async function gerarDocumentoDJO(e) {
 
         if (errExp) throw new Error('Erro ao buscar dados do exportador.');
 
-        // Busca colunas extras do item selecionado
+        // Busca colunas extras do item selecionado (inclui o nome do fabricante gravado no item)
         const { data: dadosItem, error: errItem } = await supabaseClient
             .from('itens')
-            .select('ncm, processo_prod, unidade')
+            .select('ncm, processo_prod, unidade, fabricante')
             .eq('id', itemId)
             .single();
 
         if (errItem) throw new Error('Erro ao buscar dados do item.');
+
+        // --- 2.1 BUSCA OS DADOS DO FABRICANTE (só é necessário quando o exportador NÃO é o produtor) ---
+        // Usa maybeSingle() em vez de single() para não gerar erro quando o fabricante não é encontrado
+        let dadosFab = null;
+        if (!exportadorEProdutor && dadosItem.fabricante) {
+            const { data: fabEncontrado, error: errFab } = await supabaseClient
+                .from('fabricantes')
+                .select('fabricante, fab_cnpj, fab_inscricao_estadual, fab_telefone, fab_email, fab_endereco, fab_cidade_estado')
+                .eq('fabricante', dadosItem.fabricante)
+                .maybeSingle();
+
+            if (errFab) {
+                console.error('Erro ao buscar fabricante:', errFab);
+            } else {
+                dadosFab = fabEncontrado; // fica null se não encontrar nenhuma linha
+            }
+        }
 
         // --- 3. MONTA O DICIONÁRIO DE SUBSTITUIÇÕES ---
 
@@ -349,9 +366,10 @@ async function gerarDocumentoDJO(e) {
         // Exportador
         const exportadorCNPJ = dadosExp.exp_cnpj || '';
 
-        // Produtor: se checkbox marcado, usa dados do exportador; senão, mantém a chave original
-        const produtorNome = exportadorEProdutor ? exportadorNome : '{{produtorNome}}';
-        const produtorCNPJ = exportadorEProdutor ? exportadorCNPJ : '{{produtorCNPJ}}';
+        // Produtor: se checkbox marcado, usa dados do exportador (lógica já existente).
+        // Se não marcado, usa os dados do fabricante encontrado na tabela 'fabricantes'.
+        const produtorNome = exportadorEProdutor ? exportadorNome : (dadosFab ? dadosFab.fabricante : null);
+        const produtorCNPJ = exportadorEProdutor ? exportadorCNPJ : (dadosFab ? dadosFab.fab_cnpj : null);
 
         const substituicoes = {
             '{{numDoc}}'               : numDoc,
@@ -365,9 +383,31 @@ async function gerarDocumentoDJO(e) {
             '{{naladi}}'               : naladi,
             '{{processoProdutivo}}'    : processoProd,
             '{{itemUN}}'               : itemUN,
-            '{{produtorNome}}'         : produtorNome,
-            '{{produtorCNPJ}}'         : produtorCNPJ,
         };
+
+        // Só adiciona a chave ao dicionário quando existe um valor real.
+        // Se a chave não entrar aqui, ela permanece escrita literalmente no documento (ex: "{{produtorCNPJ}}"),
+        // que é exatamente o comportamento pedido para quando o fabricante não é encontrado.
+        function adicionarSeExistir(chave, valor) {
+            if (valor !== null && valor !== undefined && valor !== '') {
+                substituicoes[chave] = valor;
+            }
+        }
+
+        adicionarSeExistir('{{produtorNome}}',   produtorNome);
+        adicionarSeExistir('{{produtorCNPJ}}',   produtorCNPJ);
+
+        // As variáveis abaixo só têm fonte de dados quando o fabricante é usado (não há
+        // colunas equivalentes de IE/Tel/Email/Endereço/Cidade cadastradas para o exportador).
+        // Se o checkbox "exportador também é o fabricante" estiver marcado, essas chaves
+        // permanecem com a expressão original no documento.
+        if (!exportadorEProdutor && dadosFab) {
+            adicionarSeExistir('{{produtorIE}}',      dadosFab.fab_inscricao_estadual);
+            adicionarSeExistir('{{produtorTel}}',     dadosFab.fab_telefone);
+            adicionarSeExistir('{{produtorEmail}}',   dadosFab.fab_email);
+            adicionarSeExistir('{{produtorEnd}}',     dadosFab.fab_endereco);
+            adicionarSeExistir('{{produtorCidade}}',  dadosFab.fab_cidade_estado);
+        }
 
         // --- 4. BUSCA O TEMPLATE HTML E APLICA AS SUBSTITUIÇÕES ---
 
