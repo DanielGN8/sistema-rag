@@ -786,3 +786,38 @@ body {
     accent-color: #2563eb;
     cursor: pointer;
 }
+
+/* Botão Vincular Pessoas */
+.secao-vincular-pessoas { margin: 16px 0 28px; }
+.btn-vincular-elegante {
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: #fff; border: none; padding: 12px 22px; border-radius: 10px;
+    font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.35); transition: transform .15s, box-shadow .15s;
+}
+.btn-vincular-elegante:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(99,102,241,0.45); }
+
+/* Modal de Vínculos */
+.modal-vinculos-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.35);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 9999;
+}
+.modal-vinculos-overlay.ativo { opacity: 1; pointer-events: all; }
+.modal-vinculos-card {
+    background: #fff; border-radius: 16px; padding: 28px; width: 92%; max-width: 520px;
+    max-height: 82vh; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+.modal-vinculos-fechar { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer; }
+.modal-vinculos-busca { display: flex; align-items: center; gap: 8px; background: #f1f5f9; border-radius: 8px; padding: 8px 12px; margin: 14px 0; }
+.modal-vinculos-busca input { border: none; background: none; outline: none; width: 100%; font-size: 14px; }
+.vinculo-lista { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.item-pessoa-vinculo { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+.item-pessoa-vinculo:hover { background: #eef2ff; }
+.item-empresa-vinculo { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+.item-empresa-vinculo:hover { background: #f8fafc; }
+.vinculo-origem-tag { margin-left: auto; color: #94a3b8; font-size: 11px; text-transform: uppercase; }
+.btn-voltar-vinculo { background: none; border: none; color: #6366f1; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+.modal-vinculos-footer { margin-top: 16px; display: flex; justify-content: flex-end; }
+.vinculo-vazio, .vinculo-carregando { color: #94a3b8; text-align: center; padding: 20px 0; }
