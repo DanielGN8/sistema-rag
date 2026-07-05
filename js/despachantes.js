@@ -88,7 +88,7 @@ async function salvarDespachante(e) {
     }
 
     if (resposta.error) {
-        console.error('Erro ao salvar despachante:', resposta.error);
+        console.error('Erro ao salvar cadastro:', resposta.error);
         alert('Erro ao processar dados do despachante: ' + resposta.error.message);
     } else {
         alert(id ? 'Despachante atualizado com sucesso!' : 'Despachante cadastrado com sucesso!');
@@ -176,6 +176,6 @@ function limparFormularioDespachante() {
     formDespachante.reset();
     document.getElementById('despachante-id-oculto').value = '';
     document.getElementById('titulo-form-despachante').innerHTML = `<i class="fa-solid fa-user-tie"></i> Cadastrar Novo Despachante`;
-    document.getElementById('btn-salvar-despachante').textContent = "Salvar Despachante";
+    document.getElementById('btn-salvar-despachante').textContent = "Salvar";
     document.getElementById('btn-cancelar-desp-edicao').style.display = "none";
 }
