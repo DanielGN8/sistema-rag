@@ -806,13 +806,28 @@ body {
 }
 .modal-vinculos-overlay.ativo { opacity: 1; pointer-events: all; }
 .modal-vinculos-card {
-    background: #fff; border-radius: 16px; padding: 28px; width: 92%; max-width: 520px;
-    max-height: 82vh; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    background: #fff; border-radius: 16px; padding: 28px;
+    width: 480px; height: 600px;              /* tamanho fixo */
+    display: flex; flex-direction: column;
+    position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 .modal-vinculos-fechar { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer; }
 .modal-vinculos-busca { display: flex; align-items: center; gap: 8px; background: #f1f5f9; border-radius: 8px; padding: 8px 12px; margin: 14px 0; }
 .modal-vinculos-busca input { border: none; background: none; outline: none; width: 100%; font-size: 14px; }
-.vinculo-lista { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.vinculo-etapa {
+    display: flex; flex-direction: column;
+    height: 100%; min-height: 0;               /* essencial pro scroll interno funcionar */
+}
+.vinculo-lista {
+    flex: 1;                                    /* ocupa todo espaço restante do card */
+    min-height: 0;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 6px;
+    padding-right: 4px;                         /* espaço pra barra de rolagem não colar no texto */
+}
+.vinculo-lista::-webkit-scrollbar { width: 8px; }
+.vinculo-lista::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+.vinculo-lista::-webkit-scrollbar-track { background: transparent; }
 .item-pessoa-vinculo { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
 .item-pessoa-vinculo:hover { background: #eef2ff; }
 .item-empresa-vinculo { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
