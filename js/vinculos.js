@@ -134,14 +134,14 @@ async function selecionarPessoaVinculo(pessoa) {
     await carregarEmpresasVinculo();
 }
 
-// Busca as empresas nas 3 tabelas (transportadores, exportadores, fabricantes)
+// Busca as empresas nas 3 tabelas (transportadoras, exportadores, fabricantes)
 async function carregarEmpresasVinculo() {
     const lista = document.getElementById('vinculo-lista-empresas');
     lista.innerHTML = '<p class="vinculo-carregando">Carregando empresas...</p>';
 
     try {
         const [transp, expo, fab] = await Promise.all([
-            supabaseClient.from('transportadores').select('transportadora'),
+            supabaseClient.from('transportadoras').select('transportadora'),
             supabaseClient.from('exportadores').select('exportador'),
             supabaseClient.from('fabricantes').select('fabricante')
         ]);
