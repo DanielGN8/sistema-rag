@@ -490,6 +490,11 @@ async function gerarDocumentoDJO(e) {
 
         // Exportador
         const exportadorCNPJ = dadosExp.exp_cnpj || '';
+        const exportadorIE = dadosExp.exp_inscricao_estadual || '';
+        const exportadorTEL = dadosExp.exp_telefone || '';
+        const exportadorEmail = dadosExp.exp_email || '';
+        const exportadorEnd = dadosExp.exp_endereco || '';
+        const exportadorCidade = dadosExp.exp_cidade_estado || '';
 
         // Produtor: se checkbox marcado, usa dados do exportador (lógica já existente).
         // Se não marcado, usa os dados do fabricante encontrado na tabela 'fabricantes'.
@@ -501,6 +506,11 @@ async function gerarDocumentoDJO(e) {
             '{{dataDoc}}'              : dataDoc,
             '{{exportadorNome}}'       : exportadorNome,
             '{{exportadorCNPJ}}'       : exportadorCNPJ,
+            '{{exportadorIE}}'         : exportadorIE,
+            '{{exportadorTEL}}'        : exportadorTEL,
+            '{{exportadorEmail}}'      : exportadorEmail,
+            '{{exportadorEnd}}'        : exportadorEnd,
+            '{{exportadoreCidade}}'    : exportadorCidade,
             '{{item}}'                 : itemNome,
             '{{valorMin}}'             : valorMin,
             '{{valorMax}}'             : valorMax,
