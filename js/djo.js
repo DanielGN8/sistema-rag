@@ -491,7 +491,7 @@ async function gerarDocumentoDJO(e) {
         // Exportador
         const exportadorCNPJ = dadosExp.exp_cnpj || '';
         const exportadorIE = dadosExp.exp_inscricao_estadual || '';
-        const exportadorTEL = dadosExp.exp_telefone || '';
+        const exportadorTel = dadosExp.exp_telefone || '';
         const exportadorEmail = dadosExp.exp_email || '';
         const exportadorEnd = dadosExp.exp_endereco || '';
         const exportadorCidade = dadosExp.exp_cidade_estado || '';
@@ -507,10 +507,10 @@ async function gerarDocumentoDJO(e) {
             '{{exportadorNome}}'       : exportadorNome,
             '{{exportadorCNPJ}}'       : exportadorCNPJ,
             '{{exportadorIE}}'         : exportadorIE,
-            '{{exportadorTEL}}'        : exportadorTEL,
+            '{{exportadorTel}}'        : exportadorTel,
             '{{exportadorEmail}}'      : exportadorEmail,
             '{{exportadorEnd}}'        : exportadorEnd,
-            '{{exportadoreCidade}}'    : exportadorCidade,
+            '{{exportadorCidade}}'     : exportadorCidade,
             '{{item}}'                 : itemNome,
             '{{valorMin}}'             : valorMin,
             '{{valorMax}}'             : valorMax,
