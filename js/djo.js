@@ -500,6 +500,11 @@ async function gerarDocumentoDJO(e) {
         // Se não marcado, usa os dados do fabricante encontrado na tabela 'fabricantes'.
         const produtorNome = exportadorEProdutor ? exportadorNome : (dadosFab ? dadosFab.fabricante : null);
         const produtorCNPJ = exportadorEProdutor ? exportadorCNPJ : (dadosFab ? dadosFab.fab_cnpj : null);
+        const produtorIE     = exportadorEProdutor ? exportadorIE     : (dadosFab ? dadosFab.fab_inscricao_estadual : null);
+        const produtorTel    = exportadorEProdutor ? exportadorTel    : (dadosFab ? dadosFab.fab_telefone : null);
+        const produtorEmail  = exportadorEProdutor ? exportadorEmail  : (dadosFab ? dadosFab.fab_email : null);
+        const produtorEnd    = exportadorEProdutor ? exportadorEnd    : (dadosFab ? dadosFab.fab_endereco : null);
+        const produtorCidade = exportadorEProdutor ? exportadorCidade : (dadosFab ? dadosFab.fab_cidade_estado : null);
 
         const substituicoes = {
             '{{numDoc}}'               : numDoc,
@@ -531,26 +536,18 @@ async function gerarDocumentoDJO(e) {
 
         adicionarSeExistir('{{produtorNome}}',   produtorNome);
         adicionarSeExistir('{{produtorCNPJ}}',   produtorCNPJ);
+        adicionarSeExistir('{{produtorIE}}',     produtorIE);
+        adicionarSeExistir('{{produtorTel}}',    produtorTel);
+        adicionarSeExistir('{{produtorEmail}}',  produtorEmail);
+        adicionarSeExistir('{{produtorEnd}}',    produtorEnd);
+        adicionarSeExistir('{{produtorCidade}}', produtorCidade);
 
         // Campos de assinatura/representantes
-        // OBS: "{{despachanteRepresentante}}" e "{{exportadorRepresentante}}" agora vêm do MESMO
-        // despachante escolhido no campo único "Despachante RAG" (que já representa o exportador).
         adicionarSeExistir('{{produtorRepresentante}}',    nomeRepFabricante);
         adicionarSeExistir('{{exportadorRepresentante}}',  nomeRepExportador);
         adicionarSeExistir('{{despachanteRepresentante}}', nomeDespachanteRAG);
         adicionarSeExistir('{{exportadorDoc}}',            exportadorDoc);
 
-        // As variáveis abaixo só têm fonte de dados quando o fabricante é usado (não há
-        // colunas equivalentes de IE/Tel/Email/Endereço/Cidade cadastradas para o exportador).
-        // Se o checkbox "exportador também é o fabricante" estiver marcado, essas chaves
-        // permanecem com a expressão original no documento.
-        if (!exportadorEProdutor && dadosFab) {
-            adicionarSeExistir('{{produtorIE}}',      dadosFab.fab_inscricao_estadual);
-            adicionarSeExistir('{{produtorTel}}',     dadosFab.fab_telefone);
-            adicionarSeExistir('{{produtorEmail}}',   dadosFab.fab_email);
-            adicionarSeExistir('{{produtorEnd}}',     dadosFab.fab_endereco);
-            adicionarSeExistir('{{produtorCidade}}',  dadosFab.fab_cidade_estado);
-        }
 
         // --- 4. BUSCA O TEMPLATE HTML E APLICA AS SUBSTITUIÇÕES ---
 
