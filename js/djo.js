@@ -429,7 +429,7 @@ async function gerarDocumentoDJO(e) {
         // Busca colunas extras do exportador selecionado
         const { data: dadosExp, error: errExp } = await supabaseClient
             .from('exportadores')
-            .select('exportador, exp_cnpj')
+            .select('exportador, exp_cnpj, exp_inscricao_estadual, exp_telefone, exp_email, exp_endereco, exp_cidade_estado')
             .eq('id', exportadorId)
             .single();
 
