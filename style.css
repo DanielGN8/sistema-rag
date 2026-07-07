@@ -89,15 +89,15 @@ body {
     box-shadow: 0 4px 6px rgba(13, 148, 136, 0.15);
 }
 
-/* 3. ROXO PROFUNDO (Menus de Dados, Visualizar Painéis, Alternar Telas) */
+/* 3. LARANJA (Menus de Dados, Visualizar Painéis, Alternar Telas) */
 .btn-roxo {
-    background-color: #6d28d9;
+    background-color: #ea580c;
     color: #ffffff;
-    box-shadow: 0 2px 4px rgba(109, 40, 217, 0.1);
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.1);
 }
 .btn-roxo:hover {
-    background-color: #5b21b6;
-    box-shadow: 0 4px 6px rgba(109, 40, 217, 0.15);
+    background-color: #c2410c;
+    box-shadow: 0 4px 6px rgba(234, 88, 12, 0.15);
 }
 
 /* 4. VERMELHO SUAVE (Excluir, Cancelar, Voltar) */
@@ -291,18 +291,18 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.01);
 }
 
-/* Efeito Hover Inteligente usando a cor Roxa */
+/* Efeito Hover Inteligente usando a cor Laranja */
 .btn-dado:hover {
-    background-color: #f5f3ff;
-    border-color: #8b5cf6;
-    color: #5b21b6;
+    background-color: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.08);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.08);
 }
 
 .btn-dado i {
     font-size: 24px;
-    color: #6d28d9; /* Ícones internos em roxo moderno */
+    color: #ea580c; /* Ícones internos em laranja */
     transition: transform 0.2s ease;
 }
 
